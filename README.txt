@@ -16,6 +16,8 @@ In any code cell, import like following:
 
     from ColabTurtle.Turtle import *
 
+As Colab stores the declared variables in the runtime, call this before using: 
 
+    initializeTurtle()
 
 Have fun drawing!
