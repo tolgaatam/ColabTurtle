@@ -1,9 +1,9 @@
-Left-pad for Python
+Turtle for Google Colab notebooks
 ===================
 
 Installation:
 
-    pip install pad-on-left
+    pip install ColabTurtle
 
 Usage
 
