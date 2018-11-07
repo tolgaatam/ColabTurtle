@@ -7,4 +7,4 @@ Installation:
 
 Usage
 
-    from ColabTurtle import *
+    from ColabTurtle.Turtle import *
