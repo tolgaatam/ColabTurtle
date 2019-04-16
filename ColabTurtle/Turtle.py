@@ -36,7 +36,7 @@ TURTLE_SVG_TEMPLATE = """
 SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02, 11: 0.01, 12: 0.001, 13: 0.0001}
 
 
-# helper function that maps [1,10] speed values to ms delays
+# helper function that maps [1,13] speed values to ms delays
 def _speedToSec(speed):
     return SPEED_TO_SEC_MAP[speed]
 
@@ -197,12 +197,12 @@ def pendown():
     # _updateDrawing()
 
 
-# update the speed of the moves, [1,10]
+# update the speed of the moves, [1,13]
 def speed(speed):
     global timeout
 
-    if speed not in range(1, 11):
-        raise ValueError('speed should be an integer in the interval [1,10]')
+    if speed not in range(1, 14):
+        raise ValueError('speed should be an integer in the interval [1,13]')
     timeout = _speedToSec(speed)
     # TODO: decide if we should put the timout after changing the speed
     # _updateDrawing()
