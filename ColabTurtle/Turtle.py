@@ -33,7 +33,7 @@ TURTLE_SVG_TEMPLATE = """
       </g>
     """
 
-SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02}
+SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02, 11: 0.01, 12: 0.001}
 
 
 # helper function that maps [1,10] speed values to ms delays
@@ -89,7 +89,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     svg_lines_string = DEFAULT_SVG_LINES_STRING
     pen_width = DEFAULT_PEN_WIDTH
 
-    drawing_window = display(HTML(_genereateSvgDrawing()), display_id=True)
+    drawing_window = display(HTML(_generateSvgDrawing()), display_id=True)
 
 
 # helper function for generating svg string of the turtle
@@ -104,7 +104,7 @@ def _generateTurtleSvgDrawing():
 
 
 # helper function for generating the whole svg string
-def _genereateSvgDrawing():
+def _generateSvgDrawing():
     return SVG_TEMPLATE.format(window_width=window_size[0], window_height=window_size[1],
                                background_color=background_color, lines=svg_lines_string,
                                turtle=_generateTurtleSvgDrawing())
@@ -115,7 +115,7 @@ def _updateDrawing():
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     time.sleep(timeout)
-    drawing_window.update(HTML(_genereateSvgDrawing()))
+    drawing_window.update(HTML(_generateSvgDrawing()))
 
 
 # helper function for managing any kind of move to a given 'new_pos' and draw lines if pen is down
