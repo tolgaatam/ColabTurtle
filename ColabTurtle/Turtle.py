@@ -33,7 +33,7 @@ TURTLE_SVG_TEMPLATE = """
       </g>
     """
 
-SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02, 11: 0.01, 12: 0.001}
+SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02, 11: 0.01, 12: 0.001, 13: 0.0001}
 
 
 # helper function that maps [1,10] speed values to ms delays
@@ -70,8 +70,8 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global svg_lines_string
     global pen_width
 
-    if initial_speed not in range(1, 11):
-        raise ValueError('initial_speed should be an integer in interval [1,10]')
+    if initial_speed not in range(1, 14):
+        raise ValueError('initial_speed should be an integer in interval [1,13]')
     timeout = _speedToSec(initial_speed)
     if not (isinstance(initial_window_size, tuple) and len(initial_window_size) == 2 and isinstance(
             initial_window_size[0], int) and isinstance(initial_window_size[1], int)):
