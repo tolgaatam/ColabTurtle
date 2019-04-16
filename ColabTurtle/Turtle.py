@@ -161,6 +161,17 @@ def right(degrees):
     _updateDrawing()
 
 
+# makes the turtle face a given direction
+def face(degrees):
+    global turtle_degree
+
+    if not (isinstance(degrees, int) or isinstance(degrees, float)):
+        raise ValueError('degrees should be a number')
+
+    turtle_degree = degrees % 360
+    _updateDrawing()
+
+
 # makes the turtle move right by 'degrees' degrees (NOT radians)
 def left(degrees):
     if not (isinstance(degrees, int) or isinstance(degrees, float)):
