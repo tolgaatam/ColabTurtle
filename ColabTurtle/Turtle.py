@@ -134,8 +134,8 @@ def _moveToNewPosition(new_pos):
 
 # makes the turtle move forward by 'units' units
 def forward(units):
-    if not isinstance(units, int):
-        raise ValueError('units should be an integer')
+    if not (isinstance(units, int) or isinstance(units, float)):
+        raise ValueError('units should be int or float')
 
     alpha = math.radians(turtle_degree)
     ending_point = (turtle_pos[0] + units * math.cos(alpha), turtle_pos[1] + units * math.sin(alpha))
