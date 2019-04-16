@@ -225,6 +225,15 @@ def sety(y):
         raise ValueError('new y position should be nonnegative')
     _moveToNewPosition((turtle_pos[0], y))
 
+# retrieve the turtle's currrent 'x' x-coordinate
+def getx():
+    return(turtle_pos[0])
+
+
+# retrieve the turtle's currrent 'y' y-coordinate
+def gety():
+    return(turtle_pos[1])
+
 
 # move the turtle to a designated 'x'-'y' coordinate
 def goto(x, y):
