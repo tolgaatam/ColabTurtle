@@ -5,7 +5,7 @@ Installation for Google Colab:
 ----
 Create an empty code cell and type:
 
-    !pip3 install git+https://github.com/enfascination/ColabTurtle.git
+    !pip3 install ColabTurtle
 
 Run the code cell.
 
