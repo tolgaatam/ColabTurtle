@@ -33,10 +33,10 @@ TURTLE_SVG_TEMPLATE = """
       </g>
     """
 
-SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02}
+SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02, 11: 0.01, 12: 0.001, 13: 0.0001}
 
 
-# helper function that maps [1,10] speed values to ms delays
+# helper function that maps [1,13] speed values to ms delays
 def _speedToSec(speed):
     return SPEED_TO_SEC_MAP[speed]
 
@@ -70,8 +70,8 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global svg_lines_string
     global pen_width
 
-    if initial_speed not in range(1, 11):
-        raise ValueError('initial_speed should be an integer in interval [1,10]')
+    if initial_speed not in range(1, 14):
+        raise ValueError('initial_speed should be an integer in interval [1,13]')
     timeout = _speedToSec(initial_speed)
     if not (isinstance(initial_window_size, tuple) and len(initial_window_size) == 2 and isinstance(
             initial_window_size[0], int) and isinstance(initial_window_size[1], int)):
@@ -89,7 +89,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     svg_lines_string = DEFAULT_SVG_LINES_STRING
     pen_width = DEFAULT_PEN_WIDTH
 
-    drawing_window = display(HTML(_genereateSvgDrawing()), display_id=True)
+    drawing_window = display(HTML(_generateSvgDrawing()), display_id=True)
 
 
 # helper function for generating svg string of the turtle
@@ -104,7 +104,7 @@ def _generateTurtleSvgDrawing():
 
 
 # helper function for generating the whole svg string
-def _genereateSvgDrawing():
+def _generateSvgDrawing():
     return SVG_TEMPLATE.format(window_width=window_size[0], window_height=window_size[1],
                                background_color=background_color, lines=svg_lines_string,
                                turtle=_generateTurtleSvgDrawing())
@@ -115,7 +115,7 @@ def _updateDrawing():
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     time.sleep(timeout)
-    drawing_window.update(HTML(_genereateSvgDrawing()))
+    drawing_window.update(HTML(_generateSvgDrawing()))
 
 
 # helper function for managing any kind of move to a given 'new_pos' and draw lines if pen is down
@@ -134,8 +134,8 @@ def _moveToNewPosition(new_pos):
 
 # makes the turtle move forward by 'units' units
 def forward(units):
-    if not isinstance(units, int):
-        raise ValueError('units should be an integer')
+    if not (isinstance(units, int) or isinstance(units, float)):
+        raise ValueError('units should be int or float')
 
     alpha = math.radians(turtle_degree)
     ending_point = (turtle_pos[0] + units * math.cos(alpha), turtle_pos[1] + units * math.sin(alpha))
@@ -158,6 +158,17 @@ def right(degrees):
         raise ValueError('degrees should be a number')
 
     turtle_degree = (turtle_degree + degrees) % 360
+    _updateDrawing()
+
+
+# makes the turtle face a given direction
+def face(degrees):
+    global turtle_degree
+
+    if not (isinstance(degrees, int) or isinstance(degrees, float)):
+        raise ValueError('degrees should be a number')
+
+    turtle_degree = degrees % 360
     _updateDrawing()
 
 
@@ -186,12 +197,12 @@ def pendown():
     # _updateDrawing()
 
 
-# update the speed of the moves, [1,10]
+# update the speed of the moves, [1,13]
 def speed(speed):
     global timeout
 
-    if speed not in range(1, 11):
-        raise ValueError('speed should be an integer in the interval [1,10]')
+    if speed not in range(1, 14):
+        raise ValueError('speed should be an integer in the interval [1,13]')
     timeout = _speedToSec(speed)
     # TODO: decide if we should put the timout after changing the speed
     # _updateDrawing()
@@ -213,6 +224,15 @@ def sety(y):
     if not y >= 0:
         raise ValueError('new y position should be nonnegative')
     _moveToNewPosition((turtle_pos[0], y))
+
+# retrieve the turtle's currrent 'x' x-coordinate
+def getx():
+    return(turtle_pos[0])
+
+
+# retrieve the turtle's currrent 'y' y-coordinate
+def gety():
+    return(turtle_pos[1])
 
 
 # move the turtle to a designated 'x'-'y' coordinate
