@@ -22,7 +22,7 @@ As Colab stores the declared variables in the runtime, call this before using:
 
 Current API
 ----
-This module's API is mostly close with the traditional turtle API. There are some differences, most notably, the angles are handled differently. 0 angle is east and the angles increase clockwise.
+This module's API is mostly close with the traditional turtle API. There are some differences, most notably: the angles are handled differently. 0 angle is east and the angles increase clockwise. Some functions from the traditional turtle library is missing here; however almost all the main functionality is implemented. The functions that this library implements are explained below:
 
 
 `forward(units) | fd(units)` -> Moves the turtle in the direction it is facing, by `units` pixels
