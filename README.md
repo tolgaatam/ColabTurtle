@@ -67,6 +67,8 @@ This module's API is mostly close with the traditional turtle API. There are som
 
 <br/>
 
+<br/>
+
 ```
 goto(x,y) | setpos(x,y) | setposition(x,y)` 
 goto((x,y)) | setpos(x,y) | setposition(x,y)` 
@@ -75,11 +77,15 @@ Moves the turtle to the point defined by x,y. The coordinates can be given separ
 
 <br/>
 
+<br/>
+
 `showturtle() | st()` -> Makes the turtle visible.
 
 `hideturtle() | ht()` -> Makes the turtle invisible.
 
 `isvisible()` -> Returns whether turtle is currently visible as boolean.
+
+<br/>
 
 <br/>
 
@@ -92,6 +98,8 @@ If no parameter given, returns the current background color as string. Else, cha
 - HTML standard color names: 140 color names defined as standard ( https://www.w3schools.com/colors/colors_names.asp ) . Examples: `"red"`, `"black"`, `"magenta"`, `"cyan"` etc.
 - Hex string with 3 or 6 digits, like `"#fff"`, `"FFF"`, `"#dfdfdf"`, `"#DFDFDF"`
 - RGB string, like `"rgb(10 20 30)"`, `"rgb(10, 20, 30)"`
+
+<br/>
 
 <br/>
 
@@ -108,11 +116,15 @@ The same as `bgcolor` but works with the turtle's pen's color.
 
 <br/>
 
+<br/>
+
 ```
 distance(x,y)
 distance((x,y))
 ```
--> Returns the turtle's distance to a given point x,y. The coordinates can be given separately or as a single tuple.
+Returns the turtle's distance to a given point x,y. The coordinates can be given separately or as a single tuple.
+
+<br/>
 
 <br/>
 
@@ -122,6 +134,8 @@ distance((x,y))
 
 `shape(s)` -> Supposed to update or return the shape of the turtle. NOT IMPLEMENTED YET. In this library, we only have the turtle as circle for now. There is a placeholder function that either returns `"circle"` if called without argument. If called with argument, it is a no-op.
 
+
+<br/>
 
 <br/>
 
