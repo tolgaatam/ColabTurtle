@@ -134,7 +134,7 @@ Returns the turtle's distance to a given point x,y. The coordinates can be given
 
 `write(obj)` -> Supposed to write a text on the screen. NOT IMPLEMENTED YET. There is a placeholder function now that does not do anything.
 
-`shape(s)` -> Supposed to update or return the shape of the turtle. NOT IMPLEMENTED YET. In this library, we only have the turtle as circle for now. There is a placeholder function that either returns `"circle"` if called without argument. If called with argument, it is a no-op.
+`shape(s)` -> Supposed to update or return the shape of the turtle. NOT IMPLEMENTED YET. In this library, we only have the turtle as circle for now. There is a placeholder function that returns `"circle"` if called without argument. If called with argument, it is a no-op.
 
 
 <br/>
