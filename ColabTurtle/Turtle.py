@@ -1,6 +1,7 @@
 from IPython.display import display, HTML
 import time
 import math
+import re
 
 # Created at: 23rd October 2018
 #         by: Tolga Atam
