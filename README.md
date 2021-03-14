@@ -28,7 +28,7 @@ This module's API is mostly close with the traditional turtle API. There are som
 `forward(units) | fd(units)` -> Moves the turtle in the direction it is facing, by `units` pixels
 `backward(units) | bk(units) | back(units)` -> Moves the turtle in the opposite of the direction it is facing, by `units` pixels
 
-`right(degrees) | rt(degrees)` -> Turns the turtle to right by the given `degrees`
+`right(degrees) | rt(degrees)` -> Turns the turtle to right by the given `degrees` 
 `face(degrees) | heading(degrees) | setheading(degrees)` -> Turns the turtle to the direction given as `degrees`
 `left(degrees) | lt(degrees)` -> Turns the turtle to left by the given `degrees`
 
