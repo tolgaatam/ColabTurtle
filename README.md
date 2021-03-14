@@ -136,6 +136,10 @@ Returns the turtle's distance to a given point x,y. The coordinates can be given
 
 `shape(s)` -> Supposed to update or return the shape of the turtle. NOT IMPLEMENTED YET. In this library, we only have the turtle as circle for now. There is a placeholder function that returns `"circle"` if called without argument. If called with argument, it is a no-op.
 
+`window_width()` -> Return the width of the turtle window.
+
+`window_height()` -> Return the height of the turtle window.
+
 
 <br/>
 

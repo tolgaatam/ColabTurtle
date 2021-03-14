@@ -442,3 +442,11 @@ def shape(shape=None):
     print('Warning: shape() is a no-op in this library.')
     if shape is None:
         return 'circle'
+
+# return turtle window width
+def window_width():
+    return window_size[0]
+
+# return turtle window height
+def window_height():
+    return window_size[1]
