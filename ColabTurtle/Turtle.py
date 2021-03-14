@@ -18,7 +18,8 @@ DEFAULT_BACKGROUND_COLOR = 'black'
 DEFAULT_IS_PEN_DOWN = True
 DEFAULT_SVG_LINES_STRING = ""
 DEFAULT_PEN_WIDTH = 4
-VALID_COLORS = ('white', 'yellow', 'orange', 'red', 'green', 'blue', 'purple', 'grey', 'black')
+# all 140 color names that modern browsers support. taken from https://www.w3schools.com/colors/colors_names.asp
+VALID_COLORS = {'black', 'navy', 'darkblue', 'mediumblue', 'blue', 'darkgreen', 'green', 'teal', 'darkcyan', 'deepskyblue', 'darkturquoise', 'mediumspringgreen', 'lime', 'springgreen', 'aqua', 'cyan', 'midnightblue', 'dodgerblue', 'lightseagreen', 'forestgreen', 'seagreen', 'darkslategray', 'darkslategrey', 'limegreen', 'mediumseagreen', 'turquoise', 'royalblue', 'steelblue', 'darkslateblue', 'mediumturquoise', 'indigo', 'darkolivegreen', 'cadetblue', 'cornflowerblue', 'rebeccapurple', 'mediumaquamarine', 'dimgray', 'dimgrey', 'slateblue', 'olivedrab', 'slategray', 'slategrey', 'lightslategray', 'lightslategrey', 'mediumslateblue', 'lawngreen', 'chartreuse', 'aquamarine', 'maroon', 'purple', 'olive', 'gray', 'grey', 'skyblue', 'lightskyblue', 'blueviolet', 'darkred', 'darkmagenta', 'saddlebrown', 'darkseagreen', 'lightgreen', 'mediumpurple', 'darkviolet', 'palegreen', 'darkorchid', 'yellowgreen', 'sienna', 'brown', 'darkgray', 'darkgrey', 'lightblue', 'greenyellow', 'paleturquoise', 'lightsteelblue', 'powderblue', 'firebrick', 'darkgoldenrod', 'mediumorchid', 'rosybrown', 'darkkhaki', 'silver', 'mediumvioletred', 'indianred', 'peru', 'chocolate', 'tan', 'lightgray', 'lightgrey', 'thistle', 'orchid', 'goldenrod', 'palevioletred', 'crimson', 'gainsboro', 'plum', 'burlywood', 'lightcyan', 'lavender', 'darksalmon', 'violet', 'palegoldenrod', 'lightcoral', 'khaki', 'aliceblue', 'honeydew', 'azure', 'sandybrown', 'wheat', 'beige', 'whitesmoke', 'mintcream', 'ghostwhite', 'salmon', 'antiquewhite', 'linen', 'lightgoldenrodyellow', 'oldlace', 'red', 'fuchsia', 'magenta', 'deeppink', 'orangered', 'tomato', 'hotpink', 'coral', 'darkorange', 'lightsalmon', 'orange', 'lightpink', 'pink', 'gold', 'peachpuff', 'navajowhite', 'moccasin', 'bisque', 'mistyrose', 'blanchedalmond', 'papayawhip', 'lavenderblush', 'seashell', 'cornsilk', 'lemonchiffon', 'floralwhite', 'snow', 'yellow', 'lightyellow', 'ivory', 'white'}
 SVG_TEMPLATE = """
       <svg width="{window_width}" height="{window_height}">
         <rect width="100%" height="100%" fill="{background_color}"/>
@@ -71,11 +72,11 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global pen_width
 
     if initial_speed not in range(1, 14):
-        raise ValueError('initial_speed should be an integer in interval [1,13]')
+        raise ValueError('initial_speed must be an integer in interval [1,13]')
     timeout = _speedToSec(initial_speed)
     if not (isinstance(initial_window_size, tuple) and len(initial_window_size) == 2 and isinstance(
             initial_window_size[0], int) and isinstance(initial_window_size[1], int)):
-        raise ValueError('window_size should be a tuple of 2 integers')
+        raise ValueError('window_size must be a tuple of 2 integers')
 
     window_size = initial_window_size
     timeout = _speedToSec(initial_speed)
@@ -123,6 +124,9 @@ def _moveToNewPosition(new_pos):
     global turtle_pos
     global svg_lines_string
 
+    # rounding the new_pos to eliminate floating point errors.
+    new_pos = ( round(new_pos[0],3), round(new_pos[1],3) )
+
     start_pos = turtle_pos
     if is_pen_down:
         svg_lines_string += """<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke-linecap="round" style="stroke:{pen_color};stroke-width:{pen_width}"/>""".format(
@@ -134,20 +138,24 @@ def _moveToNewPosition(new_pos):
 
 # makes the turtle move forward by 'units' units
 def forward(units):
-    if not (isinstance(units, int) or isinstance(units, float)):
-        raise ValueError('units should be int or float')
+    if not (isinstance(units, int) and not isinstance(units, float)):
+        raise ValueError('units must be a number.')
 
     alpha = math.radians(turtle_degree)
     ending_point = (turtle_pos[0] + units * math.cos(alpha), turtle_pos[1] + units * math.sin(alpha))
 
     _moveToNewPosition(ending_point)
 
+fd = forward # alias
 
 # makes the turtle move backward by 'units' units
 def backward(units):
-    if not isinstance(units, int):
-        raise ValueError('units should be an integer')
+    if not isinstance(units, int) and not isinstance(units, float):
+        raise ValueError('units must be a number.')
     forward(-1 * units)
+
+bk = backward # alias
+back = backward # alias
 
 
 # makes the turtle move right by 'degrees' degrees (NOT radians)
@@ -155,29 +163,33 @@ def right(degrees):
     global turtle_degree
 
     if not (isinstance(degrees, int) or isinstance(degrees, float)):
-        raise ValueError('degrees should be a number')
+        raise ValueError('degrees must be a number.')
 
     turtle_degree = (turtle_degree + degrees) % 360
     _updateDrawing()
 
+rt = right # alias
 
 # makes the turtle face a given direction
 def face(degrees):
     global turtle_degree
 
     if not (isinstance(degrees, int) or isinstance(degrees, float)):
-        raise ValueError('degrees should be a number')
+        raise ValueError('degrees must be a number.')
 
     turtle_degree = degrees % 360
     _updateDrawing()
 
+setheading = face # alias
+seth = face # alias
 
-# makes the turtle move right by 'degrees' degrees (NOT radians)
+# makes the turtle move right by 'degrees' degrees (NOT radians, this library does not support radians right now)
 def left(degrees):
     if not (isinstance(degrees, int) or isinstance(degrees, float)):
-        raise ValueError('degrees should be a number')
+        raise ValueError('degrees must be a number.')
     right(-1 * degrees)
 
+lt = left
 
 # raises the pen such that following turtle moves will not cause any drawings
 def penup():
@@ -187,6 +199,8 @@ def penup():
     # TODO: decide if we should put the timout after lifting the pen
     # _updateDrawing()
 
+pu = penup # alias
+up = penup # alias
 
 # lowers the pen such that following turtle moves will now cause drawings
 def pendown():
@@ -196,13 +210,15 @@ def pendown():
     # TODO: decide if we should put the timout after releasing the pen
     # _updateDrawing()
 
+pd = pendown # alias
+down = pendown # alias
 
 # update the speed of the moves, [1,13]
 def speed(speed):
     global timeout
 
     if speed not in range(1, 14):
-        raise ValueError('speed should be an integer in the interval [1,13]')
+        raise ValueError('speed must be an integer in the interval [1,13].')
     timeout = _speedToSec(speed)
     # TODO: decide if we should put the timout after changing the speed
     # _updateDrawing()
@@ -210,43 +226,76 @@ def speed(speed):
 
 # move the turtle to a designated 'x' x-coordinate, y-coordinate stays the same
 def setx(x):
-    if not isinstance(x, int):
-        raise ValueError('new x position should be an integer')
+    if not isinstance(x, int) and not isinstance(x, float):
+        raise ValueError('new x position must be a number.')
     if not x >= 0:
-        raise ValueError('new x position should be nonnegative')
+        raise ValueError('new x position must be non-negative.')
     _moveToNewPosition((x, turtle_pos[1]))
 
 
 # move the turtle to a designated 'y' y-coordinate, x-coordinate stays the same
 def sety(y):
-    if not isinstance(y, int):
-        raise ValueError('new y position should be an integer')
+    if not isinstance(y, int) and not isinstance(y, float):
+        raise ValueError('new y position must be a number.')
     if not y >= 0:
-        raise ValueError('new y position should be nonnegative')
+        raise ValueError('new y position must be non-negative.')
     _moveToNewPosition((turtle_pos[0], y))
+
+
+def home():
+    global turtle_pos
+    global turtle_degree
+
+    turtle_pos = (window_size[0] // 2, window_size[1] // 2)
+    turtle_degree = DEFAULT_TURTLE_DEGREE
+
+    _updateDrawing()
 
 # retrieve the turtle's currrent 'x' x-coordinate
 def getx():
     return(turtle_pos[0])
 
+xcor = getx # alias
 
 # retrieve the turtle's currrent 'y' y-coordinate
 def gety():
     return(turtle_pos[1])
 
+ycor = gety # alias
+
+# retrieve the turtle's current position as a (x,y) tuple vector
+def position():
+    return turtle_pos
+
+pos = position # alias
+
+# retrieve the turtle's current angle
+def getheading():
+    return turtle_degree
+
+heading = getheading # alias
 
 # move the turtle to a designated 'x'-'y' coordinate
-def goto(x, y):
-    if not isinstance(x, int):
-        raise ValueError('new x position should be an integer')
+def goto(x, y=None):
+    if isinstance(x, tuple) and y is None:
+        if len(x) != 2:
+            raise ValueError('the tuple argument must be of length 2.')
+
+        y = x[1]
+        x = x[0]
+
+    if not isinstance(x, int) and isinstance(x, float):
+        raise ValueError('new x position must be a number.')
     if not x >= 0:
-        raise ValueError('new x position should be nonnegative')
-    if not isinstance(y, int):
-        raise ValueError('new y position should be an integer')
+        raise ValueError('new x position must be non-negative')
+    if not isinstance(y, int) and  not isinstance(y, float):
+        raise ValueError('new y position must be a number.')
     if not y >= 0:
-        raise ValueError('new y position should be nonnegative')
+        raise ValueError('new y position must be non-negative.')
     _moveToNewPosition((x, y))
 
+setpos = goto # alias
+setposition = goto # alias
 
 # switch turtle visibility to ON
 def showturtle():
@@ -255,44 +304,119 @@ def showturtle():
     is_turtle_visible = True
     _updateDrawing()
 
+st = showturtle # alias
 
-# switch turtle visibility to ON
+# switch turtle visibility to OFF
 def hideturtle():
     global is_turtle_visible
 
     is_turtle_visible = False
     _updateDrawing()
 
+ht = hideturtle # alias
+
+def isvisible():
+    return is_turtle_visible
+
+def _validateColorString(color):
+    if color in VALID_COLORS: # 140 predefined html color names
+        return True
+    if re.search("^#(?:[0-9a-fA-F]{3}){1,2}$", color): # 3 or 6 digit hex color code
+        return True
+    if re.search("rgb\(\s*(?:(?:\d{1,2}|1\d\d|2(?:[0-4]\d|5[0-5]))\s*,?){3}\)$", color): # rgb color code
+        return True
+    return False
+
+def _validateColorTuple(color):
+    if len(color) != 3:
+        return False
+    if not isinstance(color[0], int) or not isinstance(color[1], int) or not isinstance(color[2], int):
+        return False
+    if not 0 <= color[0] <= 255 or not 0 <= color[1] <= 255 or not 0 <= color[2] <= 255:
+        return False
+    return True
+
+def _processColor(color):
+    if isinstance(color, str):
+        if not _validateColorString(color):
+            raise ValueError('color is invalid. it can be a known html color name, 3-6 digit hex string or rgb string.')
+        return color
+    elif isinstance(color, tuple):
+        if not _validateColorTuple(color):
+            raise ValueError('color tuple is invalid. it must be a tuple of three integers, which are in the interval [0,255]')
+        return 'rgb(' + str(color[0]) + ',' + str(color[1]) + ',' + str(color[2]) + ')'
 
 # change the background color of the drawing area; valid colors are defined at VALID_COLORS
 def bgcolor(color):
     global background_color
 
-    if not color in VALID_COLORS:
-        raise ValueError('color value should be one of the following: ' + str(VALID_COLORS))
-    background_color = color
+    background_color = _processColor(color)
     _updateDrawing()
 
 
 # change the color of the pen; valid colors are defined at VALID_COLORS
-def color(color):
+def color(color = None, c2 = None, c3 = None):
     global pen_color
 
-    if not color in VALID_COLORS:
-        raise ValueError('color value should be one of the following: ' + str(VALID_COLORS))
-    pen_color = color
+    if color is None:
+        return pen_color
+    elif c2 is not None:
+        if c2 is None:
+            raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
+        color = (color, c2, c3)
+
+    pen_color = _processColor(color)
     _updateDrawing()
 
+pencolor = color
 
 # change the width of the lines drawn by the turtle, in pixels
-def width(width):
+# if the function is called without arguments, it returns the current width
+def width(width = None):
     global pen_width
 
-    if not isinstance(width, int):
-        raise ValueError('new width position should be an integer')
-    if not width > 0:
-        raise ValueError('new width position should be positive')
+    if width is None:
+        return pen_width
+    else:
+        if not isinstance(width, int):
+            raise ValueError('new width position must be an integer.')
+        if not width > 0:
+            raise ValueError('new width position must be positive.')
 
-    pen_width = width
-    # TODO: decide if we should put the timout after changing the speed
-    # _updateDrawing()
+        pen_width = width
+        # TODO: decide if we should put the timout after changing the pen_width
+        # _updateDrawing()
+
+pensize = width
+
+# calculate the distance between the turtle and a given point
+def distance(x, y=None):
+    if isinstance(x, tuple) and y is None:
+        if len(x) != 2:
+            raise ValueError('the tuple argument must be of length 2.')
+
+        y = x[1]
+        x = x[0]
+
+    if not isinstance(x, int) and isinstance(x, float):
+        raise ValueError('new x position must be a number.')
+    if not x >= 0:
+        raise ValueError('new x position must be non-negative')
+    if not isinstance(y, int) and  not isinstance(y, float):
+        raise ValueError('new y position must be a number.')
+    if not y >= 0:
+        raise ValueError('new y position must be non-negative.')
+
+    if not isinstance(point, tuple) or len(point) != 2 or (not isinstance(point[0], int) and not isinstance(point[0], float)) or (not isinstance(point[1], int) and not isinstance(point[1], float)):
+        raise ValueError('the vector given for the point must be a tuple with 2 numbers.')
+
+    return round(math.sqrt( (turtle_pos[0] - x) ** 2 + (turtle_pos[1] - y) ** 2 ), 4)
+
+def isdown():
+    return is_pen_down
+
+def clear():
+    global svg_lines_string
+
+    svg_lines_string = ""
+    _updateDrawing()
