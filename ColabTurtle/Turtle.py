@@ -5,6 +5,8 @@ import re
 
 # Created at: 23rd October 2018
 #         by: Tolga Atam
+# v2.1.0 Updated at: 15th March 2021
+#         by: Tolga Atam
 
 # Module for drawing classic Turtle figures on Google Colab notebooks.
 # It uses html capabilites of IPython library to draw svg shapes inline.
@@ -354,13 +356,14 @@ def _processColor(color):
         return 'rgb(' + str(color[0]) + ',' + str(color[1]) + ',' + str(color[2]) + ')'
 
 # change the background color of the drawing area
-def bgcolor(color):
+# if no params, return the current background color
+def bgcolor(color = None, c2 = None, c3 = None):
     global background_color
 
     if color is None:
         return background_color
     elif c2 is not None:
-        if c2 is None:
+        if c3 is None:
             raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
         color = (color, c2, c3)
 
@@ -369,13 +372,14 @@ def bgcolor(color):
 
 
 # change the color of the pen
+# if no params, return the current pen color
 def color(color = None, c2 = None, c3 = None):
     global pen_color
 
     if color is None:
         return pen_color
     elif c2 is not None:
-        if c2 is None:
+        if c3 is None:
             raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
         color = (color, c2, c3)
 
@@ -434,8 +438,45 @@ def clear():
     _updateDrawing()
 
 def write(obj, **kwargs):
-    # NOT IMPLEMENTED YET. PLACEHOLDER FUNCTION FOR COMPATIBILITY WITH THE TRADITIONAL TURTLE LIBRARY
-    print('Warning: write() is a no-op in this library.')
+    global svg_lines_string
+    global turtle_pos
+    text = str(obj)
+    font_size = 12
+    font_family = 'Arial'
+    font_type = 'normal'
+    align = 'start'
+
+    if 'align' in kwargs and kwargs['align'] in ('left', 'center', 'right'):
+        if kwargs['align'] == 'left':
+            align = 'start'
+        elif kwargs['align'] == 'center':
+            align = 'middle'
+        else:
+            align = 'end'
+
+    if "font" in kwargs:
+        font = kwargs["font"]
+        if len(font) != 3 or isinstance(font[0], int) == False or isinstance(font[1], str) == False or font[2] not in {'bold','italic','underline','normal'}:
+            raise ValueError('font parameter must be a triplet consisting of font size (int), font family (str) and font type. font type can be one of {bold, italic, underline, normal}')
+        font_size = font[0]
+        font_family = font[1]
+        font_type = font[2]
+        
+    style_string = ""
+    style_string += "font-size:" + str(font_size) + "px;"
+    style_string += "font-family:'" + font_family + "';"
+
+    if font_type == 'bold':
+        style_string += "font-weight:bold;"
+    elif font_type == 'italic':
+        style_string += "font-style:italic;"
+    elif font_type == 'underline':
+        style_string += "text-decoration: underline;"
+
+    
+    svg_lines_string += """<text x="{x}" y="{y}" fill="{fill_color}" text-anchor="{align}" style="{style}">{text}</text>""".format(x=turtle_pos[0], y=turtle_pos[1], text=text, fill_color=pen_color, align=align, style=style_string)
+    
+    _updateDrawing()
 
 def shape(shape=None):
     # NOT IMPLEMENTED YET. THE ONLY POSSIBLE SHAPE IS CIRCLE FOR NOW.

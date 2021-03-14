@@ -132,7 +132,7 @@ Returns the turtle's distance to a given point x,y. The coordinates can be given
 
 `clear()` -> Clear any drawing on the screen.
 
-`write(obj)` -> Supposed to write a text on the screen. NOT IMPLEMENTED YET. There is a placeholder function now that does not do anything.
+`write(obj, align=, font=)` -> Writes the string equivalent of any value to the screen. `align` and `font` **named** parameters can be given as arguments optionally. `align` must be one of `"left","center","right"`. It specifies where to put the text with respect to the turtle. `font` must be a tuple of three values like `(20, "Arial", "bold")`. The first value is the size, second value is the font family (only the ones that your browser natively supports must be used), the third value is font style that must be one of `"normal","bold","italic","underline"`.
 
 `shape(s)` -> Supposed to update or return the shape of the turtle. NOT IMPLEMENTED YET. In this library, we only have the turtle as circle for now. There is a placeholder function that returns `"circle"` if called without argument. If called with argument, it is a no-op.
 
