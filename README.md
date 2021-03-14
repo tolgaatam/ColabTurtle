@@ -28,9 +28,9 @@ This module's API is mostly close with the traditional turtle API. There are som
 `forward(units) | fd(units)` -> Moves the turtle in the direction it is facing, by `units` pixels
 `backward(units) | bk(units) | back(units)` -> Moves the turtle in the opposite of the direction it is facing, by `units` pixels
 
-`right(degrees) | rt(degrees)` -> Turns the turtle to right by the given `degrees` &NewLine;
+`right(degrees) | rt(degrees)` -> Turns the turtle to right by the given `degrees` many degrees.
 `face(degrees) | heading(degrees) | setheading(degrees)` -> Turns the turtle to the direction given as `degrees`
-`left(degrees) | lt(degrees)` -> Turns the turtle to left by the given `degrees`
+`left(degrees) | lt(degrees)` -> Turns the turtle to left by the given `degrees` many degrees.
 
 `penup() | pu() | up()` -> Lifts the pen, turtles movement will not draw anything after this function is called.
 `pendown() | pd()` -> Puts the pen down, causing the turtle movements to start drawing again.
@@ -47,35 +47,39 @@ This module's API is mostly close with the traditional turtle API. There are som
 `position() | pos()` -> Returns the current x,y coordinates of the turtle as a tuple.
 `heading() | getheading()` -> Returns the direction that the turtle is looking at right now, in degrees.
 
+&NewLine;
 ```
 goto(x,y) | setpos(x,y) | setposition(x,y)` 
 goto((x,y)) | setpos(x,y) | setposition(x,y)` 
 ```
--> Moves the turtle to the point defined by x,y. The coordinates can be given separately, or in a single tuple.
+Moves the turtle to the point defined by x,y. The coordinates can be given separately, or in a single tuple.
 
 `showturtle() | st()` -> Makes the turtle visible.
 `hideturtle() | ht()` -> Makes the turtle invisible.
 `isvisible()` -> Returns whether turtle is currently visible as boolean.
 
+&NewLine;
 ```
 bgcolor()
 bgcolor(color)
 bgcolor(r,g,b)
 ```
--> If no parameter given, returns the current background color as string. Else, changes the background color of the drawing area. The color can be given as three separate color parameters as in the RGB color encoding: red,green,blue. The color can be given as a single string as well. Three different formats are accepted for this string:
+If no parameter given, returns the current background color as string. Else, changes the background color of the drawing area. The color can be given as three separate color parameters as in the RGB color encoding: red,green,blue. The color can be given as a single string as well. Three different formats are accepted for this string:
 - HTML standard color names: 140 color names defined as standard ( https://www.w3schools.com/colors/colors_names.asp ) . Examples: `"red"`, `"black"`, `"magenta"`, `"cyan"` etc.
 - Hex string with 3 or 6 digits, like `"#fff"`, `"FFF"`, `"#dfdfdf"`, `"#DFDFDF"`
 - RGB string, like `"rgb(10 20 30)"`, `"rgb(10, 20, 30)"`
 
+&NewLine;
 ```
 color() | pencolor()
 color(color) | pencolor(color)
 bgcolor(r,g,b) | pencolor(r,g,b)
 ```
--> The same as `bgcolor` but works with the turtle's pen's color.
+The same as `bgcolor` but works with the turtle's pen's color.
 
 `width(w) | pensize(w)` -> Changes the width of the pen. If the parameter is omitted, returns the current pen width.
 
+&NewLine;
 ```
 distance(x,y)
 distance((x,y))
