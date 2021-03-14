@@ -354,6 +354,8 @@ def _processColor(color):
         if not _validateColorTuple(color):
             raise ValueError('color tuple is invalid. it must be a tuple of three integers, which are in the interval [0,255]')
         return 'rgb(' + str(color[0]) + ',' + str(color[1]) + ',' + str(color[2]) + ')'
+    else:
+        raise ValueError('the first parameter must be a color string or a tuple')
 
 # change the background color of the drawing area
 # if no params, return the current background color
