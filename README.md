@@ -112,6 +112,8 @@ The same as `bgcolor` but works with the turtle's pen's color.
 
 <br/>
 
+<br/>
+
 `width(w) | pensize(w)` -> Changes the width of the pen. If the parameter is omitted, returns the current pen width.
 
 <br/>
