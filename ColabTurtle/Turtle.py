@@ -43,7 +43,7 @@ def _speedToSec(speed):
     return SPEED_TO_SEC_MAP[speed]
 
 
-timeout = _speedToSec(DEFAULT_SPEED)
+turtle_speed = DEFAULT_SPEED
 
 is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
 pen_color = DEFAULT_PEN_COLOR
@@ -62,7 +62,7 @@ drawing_window = None
 def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE):
     global window_size
     global drawing_window
-    global timeout
+    global turtle_speed
     global is_turtle_visible
     global pen_color
     global turtle_pos
@@ -72,15 +72,15 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global svg_lines_string
     global pen_width
 
-    if initial_speed not in range(1, 14):
+    if isinstance(initial_speed,int) == False or initial_speed not in range(1, 14):
         raise ValueError('initial_speed must be an integer in interval [1,13]')
-    timeout = _speedToSec(initial_speed)
+    turtle_speed = initial_speed
+
     if not (isinstance(initial_window_size, tuple) and len(initial_window_size) == 2 and isinstance(
             initial_window_size[0], int) and isinstance(initial_window_size[1], int)):
         raise ValueError('window_size must be a tuple of 2 integers')
 
     window_size = initial_window_size
-    timeout = _speedToSec(initial_speed)
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
     pen_color = DEFAULT_PEN_COLOR
@@ -116,7 +116,7 @@ def _generateSvgDrawing():
 def _updateDrawing():
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
-    time.sleep(timeout)
+    time.sleep(_speedToSec(turtle_speed))
     drawing_window.update(HTML(_generateSvgDrawing()))
 
 
@@ -214,13 +214,20 @@ def pendown():
 pd = pendown # alias
 down = pendown # alias
 
+def isdown():
+    return is_pen_down
+
 # update the speed of the moves, [1,13]
-def speed(speed):
-    global timeout
+# if argument is omitted, it returns the speed.
+def speed(speed = None):
+    global turtle_speed
+
+    if speed is None:
+        return turtle_speed
 
     if speed not in range(1, 14):
         raise ValueError('speed must be an integer in the interval [1,13].')
-    timeout = _speedToSec(speed)
+    turtle_speed = speed
     # TODO: decide if we should put the timout after changing the speed
     # _updateDrawing()
 
@@ -244,13 +251,10 @@ def sety(y):
 
 
 def home():
-    global turtle_pos
     global turtle_degree
 
-    turtle_pos = (window_size[0] // 2, window_size[1] // 2)
     turtle_degree = DEFAULT_TURTLE_DEGREE
-
-    _updateDrawing()
+    _moveToNewPosition( (window_size[0] // 2, window_size[1] // 2) ) # this will handle updating the drawing.
 
 # retrieve the turtle's currrent 'x' x-coordinate
 def getx():
@@ -339,6 +343,7 @@ def _validateColorTuple(color):
 
 def _processColor(color):
     if isinstance(color, str):
+        color = color.lower()
         if not _validateColorString(color):
             raise ValueError('color is invalid. it can be a known html color name, 3-6 digit hex string or rgb string.')
         return color
@@ -347,15 +352,22 @@ def _processColor(color):
             raise ValueError('color tuple is invalid. it must be a tuple of three integers, which are in the interval [0,255]')
         return 'rgb(' + str(color[0]) + ',' + str(color[1]) + ',' + str(color[2]) + ')'
 
-# change the background color of the drawing area; valid colors are defined at VALID_COLORS
+# change the background color of the drawing area
 def bgcolor(color):
     global background_color
+
+    if color is None:
+        return background_color
+    elif c2 is not None:
+        if c2 is None:
+            raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
+        color = (color, c2, c3)
 
     background_color = _processColor(color)
     _updateDrawing()
 
 
-# change the color of the pen; valid colors are defined at VALID_COLORS
+# change the color of the pen
 def color(color = None, c2 = None, c3 = None):
     global pen_color
 
@@ -413,11 +425,19 @@ def distance(x, y=None):
 
     return round(math.sqrt( (turtle_pos[0] - x) ** 2 + (turtle_pos[1] - y) ** 2 ), 4)
 
-def isdown():
-    return is_pen_down
-
+# clear any text or drawing on the screen
 def clear():
     global svg_lines_string
 
     svg_lines_string = ""
     _updateDrawing()
+
+def write(obj, **kwargs):
+    # NOT IMPLEMENTED YET. PLACEHOLDER FUNCTION FOR COMPATIBILITY WITH THE TRADITIONAL TURTLE LIBRARY
+    print('Warning: write() is a no-op in this library.')
+
+def shape(shape=None):
+    # NOT IMPLEMENTED YET. THE ONLY POSSIBLE SHAPE IS CIRCLE FOR NOW.
+    print('Warning: shape() is a no-op in this library.')
+    if shape is None:
+        return 'circle'
