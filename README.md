@@ -7,7 +7,7 @@ Create an empty code cell and type:
 
     !pip3 install ColabTurtle
 
-Run the code cell.
+Run the code cell. Google Colab will install the library.
 
 
 Usage
@@ -19,9 +19,6 @@ In any code cell, import like following:
 As Colab stores the declared variables in the runtime, call this before using: 
 
     initializeTurtle()
-
-An example code is given in the end of this documentation. Scroll down for it.
-
 
 Example
 ----
