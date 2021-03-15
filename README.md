@@ -20,6 +20,8 @@ As Colab stores the declared variables in the runtime, call this before using:
 
     initializeTurtle()
 
+An example code is given in the end of this documentation. Scroll down for it.
+
 Current API
 ----
 This module's API is mostly close with the traditional turtle API. There are some differences, most notably: the angles are handled differently. 0 angle is east and the angles increase clockwise. Some functions from the traditional turtle library is missing here; however almost all the main functionality is implemented. The functions that this library implements are explained below:
@@ -140,6 +142,101 @@ Returns the turtle's distance to a given point x,y. The coordinates can be given
 
 `window_height()` -> Return the height of the turtle window.
 
+
+<br/>
+
+Example
+----
+
+```
+initializeTurtle()
+color('mediumblue')
+penup()
+goto(100, 250)
+pendown()
+forward(100)
+left(90)
+forward(40)
+right(180)
+forward(80)
+penup()
+right(90)
+forward(50)
+left(90)
+forward(50)
+left(90)
+backward(10)
+pendown()
+speed(10)
+for i in range(18):
+    forward(17)
+    right(20)
+penup()
+shape('circle')
+color(230, 90, 120)
+speed(7)
+right(90)
+forward(160)
+left(90)
+forward(60)
+right(180)
+pendown()
+forward(100)
+left(90)
+forward(80)
+penup()
+shape('turtle')
+forward(50)
+left(90)
+forward(40)
+pendown()
+for i in range(5):
+    forward(17)
+    right(20)
+left(200)
+for i in range(13):
+    forward(17)
+    left(20)
+left(90)
+forward(50)
+penup()
+backward(100)
+left(90)
+forward(40)
+pendown()
+left(155)
+forward(105)
+right(130)
+forward(105)
+backward(45)
+right(115)
+forward(50)
+bgcolor("#dfdfdf")
+penup()
+backward(70)
+left(90)
+forward(100)
+right(90)
+pencolor('black')
+pensize(7)
+pendown()
+forward(650)
+left(180)
+speed(12)
+for i in range(90):
+    forward(7)
+    right(0.2)
+speed(2)
+left(18+180)
+penup()
+forward(300)
+right(90)
+color('rgb(70 110 70)')
+```
+
+This code ends up with the following drawing:
+
+![Drawing that reads "Tolga"](sample_image.jpg?raw=true "Example Code's Final Look")
 
 <br/>
 
