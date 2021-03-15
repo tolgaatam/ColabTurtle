@@ -171,7 +171,7 @@ This module's API is mostly identical to the traditional turtle API. There are s
 
 ```
 goto(x,y) | setpos(x,y) | setposition(x,y)` 
-goto((x,y)) | setpos(x,y) | setposition(x,y)` 
+goto((x,y)) | setpos((x,y)) | setposition((x,y))` 
 ```
 Moves the turtle to the point defined by x,y. The coordinates can be given separately, or in a single tuple.
 
