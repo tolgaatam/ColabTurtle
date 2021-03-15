@@ -29,7 +29,9 @@ Example
 The following code illustrates some usages of the library. For all functions available in this library, please check the API documentation below.
 
 ```
+from ColabTurtle.Turtle import *
 initializeTurtle()
+
 color('mediumblue')
 penup()
 goto(100, 250)
