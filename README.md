@@ -191,10 +191,11 @@ Moves the turtle to the point defined by x,y. The coordinates can be given separ
 
 ```
 bgcolor()
-bgcolor(color)
 bgcolor(r,g,b)
+bgcolor((r,g,b))
+bgcolor(colorstring)
 ```
-If no parameter given, returns the current background color as string. Else, changes the background color of the drawing area. The color can be given as three separate color parameters as in the RGB color encoding: red,green,blue. The color can be given as a single string as well. Three different formats are accepted for this string:
+If no parameter given, returns the current background color as string. Else, changes the background color of the drawing area. The color can be given as three separate color arguments as in the RGB color encoding: red,green,blue. These three numbers can be given in a single tuple as well. The color can be given as a single color string, too! The following formats are accepted for this color string:
 - HTML standard color names: 140 color names defined as standard ( https://www.w3schools.com/colors/colors_names.asp ) . Examples: `"red"`, `"black"`, `"magenta"`, `"cyan"` etc.
 - Hex string with 3 or 6 digits, like `"#fff"`, `"FFF"`, `"#dfdfdf"`, `"#DFDFDF"`
 - RGB string, like `"rgb(10 20 30)"`, `"rgb(10, 20, 30)"`
@@ -205,8 +206,9 @@ If no parameter given, returns the current background color as string. Else, cha
 
 ```
 color() | pencolor()
-color(color) | pencolor(color)
-bgcolor(r,g,b) | pencolor(r,g,b)
+color(r,g,b) | pencolor(r,g,b)
+color((r,g,b)) | pencolor((r,g,b))
+color(colorstring) | pencolor(colorstring)
 ```
 The same as `bgcolor` but works with the turtle's pen's color.
 
