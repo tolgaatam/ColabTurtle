@@ -165,7 +165,7 @@ def _moveToNewPosition(new_pos):
 
 # makes the turtle move forward by 'units' units
 def forward(units):
-    if not (isinstance(units, int) and not isinstance(units, float)):
+    if not isinstance(units, (int,float)):
         raise ValueError('units must be a number.')
 
     alpha = math.radians(turtle_degree)
@@ -177,7 +177,7 @@ fd = forward # alias
 
 # makes the turtle move backward by 'units' units
 def backward(units):
-    if not isinstance(units, int) and not isinstance(units, float):
+    if not isinstance(units, (int,float)):
         raise ValueError('units must be a number.')
     forward(-1 * units)
 
@@ -189,7 +189,7 @@ back = backward # alias
 def right(degrees):
     global turtle_degree
 
-    if not (isinstance(degrees, int) or isinstance(degrees, float)):
+    if not isinstance(degrees, (int,float)):
         raise ValueError('degrees must be a number.')
 
     turtle_degree = (turtle_degree + degrees) % 360
@@ -201,7 +201,7 @@ rt = right # alias
 def face(degrees):
     global turtle_degree
 
-    if not (isinstance(degrees, int) or isinstance(degrees, float)):
+    if not isinstance(degrees, (int,float)):
         raise ValueError('degrees must be a number.')
 
     turtle_degree = degrees % 360
@@ -212,7 +212,7 @@ seth = face # alias
 
 # makes the turtle move right by 'degrees' degrees (NOT radians, this library does not support radians right now)
 def left(degrees):
-    if not (isinstance(degrees, int) or isinstance(degrees, float)):
+    if not isinstance(degrees, (int,float)):
         raise ValueError('degrees must be a number.')
     right(-1 * degrees)
 
@@ -251,7 +251,7 @@ def speed(speed = None):
     if speed is None:
         return turtle_speed
 
-    if speed not in range(1, 14):
+    if isinstance(speed,int) == False or speed not in range(1, 14):
         raise ValueError('speed must be an integer in the interval [1,13].')
     turtle_speed = speed
     # TODO: decide if we should put the timout after changing the speed
@@ -260,18 +260,18 @@ def speed(speed = None):
 
 # move the turtle to a designated 'x' x-coordinate, y-coordinate stays the same
 def setx(x):
-    if not isinstance(x, int) and not isinstance(x, float):
+    if not isinstance(x, (int,float)):
         raise ValueError('new x position must be a number.')
-    if not x >= 0:
+    if x < 0:
         raise ValueError('new x position must be non-negative.')
     _moveToNewPosition((x, turtle_pos[1]))
 
 
 # move the turtle to a designated 'y' y-coordinate, x-coordinate stays the same
 def sety(y):
-    if not isinstance(y, int) and not isinstance(y, float):
+    if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.')
-    if not y >= 0:
+    if y < 0:
         raise ValueError('new y position must be non-negative.')
     _moveToNewPosition((turtle_pos[0], y))
 
@@ -315,13 +315,13 @@ def goto(x, y=None):
         y = x[1]
         x = x[0]
 
-    if not isinstance(x, int) and isinstance(x, float):
+    if not isinstance(x, (int,float)):
         raise ValueError('new x position must be a number.')
-    if not x >= 0:
+    if x < 0:
         raise ValueError('new x position must be non-negative')
-    if not isinstance(y, int) and  not isinstance(y, float):
+    if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.')
-    if not y >= 0:
+    if y < 0:
         raise ValueError('new y position must be non-negative.')
     _moveToNewPosition((x, y))
 
@@ -441,13 +441,13 @@ def distance(x, y=None):
         y = x[1]
         x = x[0]
 
-    if not isinstance(x, int) and isinstance(x, float):
+    if not isinstance(x, (int,float)):
         raise ValueError('new x position must be a number.')
-    if not x >= 0:
+    if x < 0:
         raise ValueError('new x position must be non-negative')
-    if not isinstance(y, int) and  not isinstance(y, float):
+    if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.')
-    if not y >= 0:
+    if not y < 0:
         raise ValueError('new y position must be non-negative.')
 
     if not isinstance(point, tuple) or len(point) != 2 or (not isinstance(point[0], int) and not isinstance(point[0], float)) or (not isinstance(point[1], int) and not isinstance(point[1], float)):
