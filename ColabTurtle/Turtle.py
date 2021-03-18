@@ -15,9 +15,9 @@ import re
 DEFAULT_WINDOW_SIZE = (800, 500)
 DEFAULT_SPEED = 4
 DEFAULT_TURTLE_VISIBILITY = True
-DEFAULT_PEN_COLOR = 'white'
+DEFAULT_PEN_COLOR = 'black'
 DEFAULT_TURTLE_DEGREE = 270
-DEFAULT_BACKGROUND_COLOR = 'black'
+DEFAULT_BACKGROUND_COLOR = 'white'
 DEFAULT_IS_PEN_DOWN = True
 DEFAULT_SVG_LINES_STRING = ""
 DEFAULT_PEN_WIDTH = 4
@@ -28,7 +28,7 @@ DEFAULT_TURTLE_SHAPE = 'turtle'
 VALID_TURTLE_SHAPES = ('turtle', 'circle')
 SVG_TEMPLATE = """
       <svg width="{window_width}" height="{window_height}">
-        <rect width="100%" height="100%" fill="{background_color}"/>
+        <rect width="100%" height="100%" style="fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)/>
         {lines}
         {turtle}
       </svg>
