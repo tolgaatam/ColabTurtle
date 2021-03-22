@@ -520,3 +520,6 @@ def window_width():
 # return turtle window height
 def window_height():
     return window_size[1]
+
+def svg_info:
+    return svg_lines_string
