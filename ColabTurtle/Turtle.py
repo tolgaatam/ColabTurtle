@@ -521,5 +521,5 @@ def window_width():
 def window_height():
     return window_size[1]
 
-def svg_info:
+def svg_info():
     return svg_lines_string
