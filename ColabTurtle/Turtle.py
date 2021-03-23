@@ -521,5 +521,8 @@ def window_width():
 def window_height():
     return window_size[1]
 
-def svg_info():
-    return("""<svg width="{w}" height="{h}">\n"""+svg_lines_string.replace("/>","/>\n")+"</svg>").format(w=window_size[0],h=window_size[1])
+def saveSVG(filename):
+    text_file = open(filename, "w")
+    #return("""<svg width="{w}" height="{h}">\n"""+svg_lines_string.replace("/>","/>\n")+"</svg>").format(w=window_size[0],h=window_size[1])
+    text_file.write("""<svg width="{w}" height="{h}">\n"""+svg_lines_string.replace("/>","/>\n")+"</svg>").format(w=window_size[0],h=window_size[1])
+    text_file.close()
