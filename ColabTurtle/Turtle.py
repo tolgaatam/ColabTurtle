@@ -522,4 +522,4 @@ def window_height():
     return window_size[1]
 
 def svg_info():
-    return """<svg width="{window_width}" height="{window_height}">\n"""+svg_lines_string.replace("/>","/>\n")+"</svg>".format(window_width=window_width,window_height=window_height)
+    return """<svg width="{w}" height="{h}">\n"""+svg_lines_string.replace("/>","/>\n")+"</svg>".format(w=window_size[0],h=window_size[1])
