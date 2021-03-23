@@ -523,6 +523,6 @@ def window_height():
 
 def saveSVG(filename):
     text_file = open(filename, "w")
-    output = """<svg width="{w}" height="{h}">\n"""+svg_lines_string.replace("/>","/>\n")+"</svg>").format(w=window_size[0],h=window_size[1])
+    output = ("""<svg width="{w}" height="{h}">\n"""+svg_lines_string.replace("/>","/>\n")+"</svg>").format(w=window_size[0],h=window_size[1])
     text_file.write(output)
     text_file.close()
