@@ -69,7 +69,7 @@ drawing_window = None
 
 
 # construct the display for turtle
-def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE):
+def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE, bgkolor=DEFAULT_BACKGROUND_COLOR, initial_turtle=DEFAULT_TURTLE_SHAPE):
     global window_size
     global drawing_window
     global turtle_speed
@@ -97,11 +97,13 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     pen_color = DEFAULT_PEN_COLOR
     turtle_pos = (window_size[0] // 2, window_size[1] // 2)
     turtle_degree = DEFAULT_TURTLE_DEGREE
-    background_color = DEFAULT_BACKGROUND_COLOR
+    #background_color = DEFAULT_BACKGROUND_COLOR
+    background_color = bgkolor
     is_pen_down = DEFAULT_IS_PEN_DOWN
     svg_lines_string = DEFAULT_SVG_LINES_STRING
     pen_width = DEFAULT_PEN_WIDTH
-    turtle_shape = DEFAULT_TURTLE_SHAPE
+    #turtle_shape = DEFAULT_TURTLE_SHAPE
+    turtle_shape = initial_turtle
 
     drawing_window = display(HTML(_generateSvgDrawing()), display_id=True)
 
