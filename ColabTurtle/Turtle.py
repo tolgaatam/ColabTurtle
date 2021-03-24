@@ -534,5 +534,5 @@ def saveSVG(filename):
     text_file.close()
 
 def showSVG():
-    output = SVG_TEMPLATE.format(window_width=window_size[0],window_height=window_size[1],background_color=background_color,lines=svg_lines_string.replace("/>","/>\n"))
+    output = SVG_TEMPLATE.format(window_width=window_size[0],window_height=window_size[1],background_color=background_color,lines=svg_lines_string.replace("/>","/>\n"),turtle=_generateTurtleSvgDrawing())
     print(output)
