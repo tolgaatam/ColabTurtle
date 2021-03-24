@@ -535,5 +535,5 @@ def saveSVG(filename):
 
 def showSVG():
     header = """<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}"/>"""
-    output = (header+svg_lines_string.replace("/>","/>\n")+"</svg>").format(window_width=window_size[0],window_height=window_size[1],kolor=background_color)                           
+    output = (header+svg_lines_string.replace("/>","/>\n")+"</svg>").format(w=window_size[0],h=window_size[1],kolor=background_color)                           
     print(output)
