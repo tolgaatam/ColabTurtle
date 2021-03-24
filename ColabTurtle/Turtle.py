@@ -347,7 +347,7 @@ def hideturtle():
     global is_turtle_visible
 
     is_turtle_visible = False
-    _updateDrawing()
+#    _updateDrawing()
 
 ht = hideturtle # alias
 
@@ -516,7 +516,7 @@ def shape(shape=None):
         raise ValueError('shape is invalid. valid options are: ' + str(VALID_TURTLE_SHAPES))
     
     turtle_shape = shape
-    _updateDrawing()
+#    _updateDrawing()
 
 # return turtle window width
 def window_width():
