@@ -28,7 +28,7 @@ DEFAULT_TURTLE_SHAPE = 'turtle'
 VALID_TURTLE_SHAPES = ('turtle', 'circle')
 SVG_TEMPLATE = """
       <svg width="{window_width}" height="{window_height}">  
-        <rect width="100%" height="100%" style="fill:rgb(255,255,255)"/>
+        <rect width="100%" height="100%" style="fill:{background_color}"/>
         {lines}
         {turtle}
       </svg>
