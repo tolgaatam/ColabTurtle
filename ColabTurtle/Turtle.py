@@ -69,7 +69,7 @@ drawing_window = None
 
 
 # construct the display for turtle
-def initializeTurtle(initial_speed=DEFAULT_TURTLE_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE):
+def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE):
     global window_size
     global drawing_window
     global turtle_speed
