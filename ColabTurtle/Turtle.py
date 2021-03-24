@@ -528,12 +528,12 @@ def window_height():
 
 def saveSVG(filename):
     text_file = open(filename, "w")
-    #output = ("""<svg width="{w}" height="{h}">\n"""+svg_lines_string.replace("/>","/>\n")+"</svg>").format(w=window_size[0],h=window_size[1])
-    output = SVG_TEMPLATE.format(window_width=window_size[0],window_height=window_size[1],background_color=background_color,lines=svg_lines_string.replace("/>","/>\n"))
+    header = """<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}"/>\n"""
+    output = (header+svg_lines_string.replace("/>","/>\n")+"</svg>").format(w=window_size[0],h=window_size[1],kolor=background_color) 
     text_file.write(output)
     text_file.close()
 
 def showSVG():
-    header = """<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}"/>"""
+    header = """<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}"/>\n"""
     output = (header+svg_lines_string.replace("/>","/>\n")+"</svg>").format(w=window_size[0],h=window_size[1],kolor=background_color)                           
     print(output)
