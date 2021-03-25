@@ -210,7 +210,7 @@ def face(degrees):
         raise ValueError('degrees must be a number.')
 
     turtle_degree = degrees % 360
-    _updateDrawing()
+#    _updateDrawing()
 
 setheading = face # alias
 seth = face # alias
@@ -338,7 +338,7 @@ def showturtle():
     global is_turtle_visible
 
     is_turtle_visible = True
-    _updateDrawing()
+ #   _updateDrawing()
 
 st = showturtle # alias
 
@@ -347,7 +347,7 @@ def hideturtle():
     global is_turtle_visible
 
     is_turtle_visible = False
-    _updateDrawing()
+   # _updateDrawing()
 
 ht = hideturtle # alias
 
@@ -398,7 +398,7 @@ def bgcolor(color = None, c2 = None, c3 = None):
         color = (color, c2, c3)
 
     background_color = _processColor(color)
-    _updateDrawing()
+#    _updateDrawing()
 
 
 # change the color of the pen
@@ -414,7 +414,7 @@ def color(color = None, c2 = None, c3 = None):
         color = (color, c2, c3)
 
     pen_color = _processColor(color)
-    _updateDrawing()
+#    _updateDrawing()
 
 pencolor = color
 
@@ -516,7 +516,7 @@ def shape(shape=None):
         raise ValueError('shape is invalid. valid options are: ' + str(VALID_TURTLE_SHAPES))
     
     turtle_shape = shape
-    _updateDrawing()
+#    _updateDrawing()
 
 # return turtle window width
 def window_width():
