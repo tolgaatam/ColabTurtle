@@ -525,6 +525,7 @@ def window_width():
 def window_height():
     return window_size[1]
 
+# save the image as an SVG file using given filename
 def saveSVG(filename):
     text_file = open(filename, "w")
     header = """<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}"/>\n"""
@@ -532,16 +533,28 @@ def saveSVG(filename):
     text_file.write(output)
     text_file.close()
 
+# print the SVG code for the image
 def showSVG():
     header = """<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}"/>\n"""
     output = (header+svg_lines_string.replace("/>","/>\n")+"</svg>").format(w=window_size[0],h=window_size[1],kolor=background_color)                           
     print(output)
 
+# reset the global values
 def reset():
+    global turtle_speed
+    global is_turtle_visible
+    global pen_color
+    global turtle_pos
+    global turtle_degree
+    global background_color
+    global is_pen_down
+    global svg_lines_string
+    global pen_width
+    global turtle_shape
+      
     turtle_speed = DEFAULT_SPEED
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
     pen_color = DEFAULT_PEN_COLOR
-    window_size = DEFAULT_WINDOW_SIZE
     turtle_pos = (DEFAULT_WINDOW_SIZE[0] // 2, DEFAULT_WINDOW_SIZE[1] // 2)
     turtle_degree = DEFAULT_TURTLE_DEGREE
     background_color = DEFAULT_BACKGROUND_COLOR
