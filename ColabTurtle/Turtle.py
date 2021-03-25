@@ -346,7 +346,7 @@ def hideturtle():
     global is_turtle_visible
 
     is_turtle_visible = False
-#    _updateDrawing()
+    _updateDrawing()
 
 ht = hideturtle # alias
 
@@ -397,7 +397,7 @@ def bgcolor(color = None, c2 = None, c3 = None):
         color = (color, c2, c3)
 
     background_color = _processColor(color)
-#    _updateDrawing()
+    _updateDrawing()
 
 
 # change the color of the pen
@@ -413,7 +413,7 @@ def color(color = None, c2 = None, c3 = None):
         color = (color, c2, c3)
 
     pen_color = _processColor(color)
-#    _updateDrawing()
+    _updateDrawing()
 
 pencolor = color
 
