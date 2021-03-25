@@ -515,7 +515,7 @@ def shape(shape=None):
         raise ValueError('shape is invalid. valid options are: ' + str(VALID_TURTLE_SHAPES))
     
     turtle_shape = shape
-#    _updateDrawing()
+    _updateDrawing()
 
 # return turtle window width
 def window_width():
