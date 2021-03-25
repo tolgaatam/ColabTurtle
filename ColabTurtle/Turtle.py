@@ -83,7 +83,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global pen_width
     global turtle_shape
 
-    if isinstance(initial_speed,int) == False or initial_speed not in range(1, 14):
+    if isinstance(initial_speed,int) == False or initial_speed not in range(0, 14):
         raise ValueError('initial_speed must be an integer in interval [1,13]')
     turtle_speed = initial_speed
 
@@ -151,7 +151,8 @@ def _generateSvgDrawing():
 def _updateDrawing():
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
-    time.sleep(_speedToSec(turtle_speed))
+    if (turtle_speed != 0):
+        time.sleep(_speedToSec(turtle_speed))
     drawing_window.update(HTML(_generateSvgDrawing()))
 
 
