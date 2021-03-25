@@ -43,7 +43,7 @@ TURTLE_CIRCLE_SVG_TEMPLATE = """
       </g>
     """
 TURTLE_ARROW_SVG_TEMPLATE = """<g visibility={visibility} transform="rotate({degrees},{rotation_x},{rotation_y}) translate({turtle_x}, {turtle_y})">
-<polygon points="-10,0 10,0 0,10"  style=" stroke:none;fill-rule:evenodd;fill:{turtle_color};fill-opacity:1;"  </g>"""
+<polygon points="-10,0 10,0 0,10"  style=" stroke:{turtle_color};fill-rule:evenodd;fill:{turtle_color};fill-opacity:1;"  </g>"""
 
 SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02, 11: 0.01, 12: 0.001, 13: 0.0001}
 
