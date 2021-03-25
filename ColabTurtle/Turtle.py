@@ -129,8 +129,6 @@ def _generateTurtleSvgDrawing():
         degrees += 90
         template = TURTLE_TURTLE_SVG_TEMPLATE
     elif turtle_shape == 'arrow':
-        #turtle_x += 10
-        #turtle_y -= 10
         degrees -= 90
         template = TURTLE_ARROW_SVG_TEMPLATE
     else: #circle
@@ -152,7 +150,7 @@ def _generateSvgDrawing():
 def _updateDrawing():
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
-    time.sleep(_speedToSec(turtle_speed))
+ #   time.sleep(_speedToSec(turtle_speed))
     drawing_window.update(HTML(_generateSvgDrawing()))
 
 
