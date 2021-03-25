@@ -150,7 +150,7 @@ def _generateSvgDrawing():
 def _updateDrawing():
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
- #   time.sleep(_speedToSec(turtle_speed))
+    time.sleep(_speedToSec(turtle_speed))
     drawing_window.update(HTML(_generateSvgDrawing()))
 
 
