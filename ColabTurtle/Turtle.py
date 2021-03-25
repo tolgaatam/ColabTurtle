@@ -53,7 +53,6 @@ def _speedToSec(speed):
 
 
 turtle_speed = DEFAULT_SPEED
-
 is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
 pen_color = DEFAULT_PEN_COLOR
 window_size = DEFAULT_WINDOW_SIZE
@@ -537,3 +536,16 @@ def showSVG():
     header = """<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}"/>\n"""
     output = (header+svg_lines_string.replace("/>","/>\n")+"</svg>").format(w=window_size[0],h=window_size[1],kolor=background_color)                           
     print(output)
+
+def reset():
+    turtle_speed = DEFAULT_SPEED
+    is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
+    pen_color = DEFAULT_PEN_COLOR
+    window_size = DEFAULT_WINDOW_SIZE
+    turtle_pos = (DEFAULT_WINDOW_SIZE[0] // 2, DEFAULT_WINDOW_SIZE[1] // 2)
+    turtle_degree = DEFAULT_TURTLE_DEGREE
+    background_color = DEFAULT_BACKGROUND_COLOR
+    is_pen_down = DEFAULT_IS_PEN_DOWN
+    svg_lines_string = DEFAULT_SVG_LINES_STRING
+    pen_width = DEFAULT_PEN_WIDTH
+    turtle_shape = DEFAULT_TURTLE_SHAPE
