@@ -128,6 +128,8 @@ def _generateTurtleSvgDrawing():
         turtle_y -= 18
         degrees += 90
         template = TURTLE_TURTLE_SVG_TEMPLATE
+    elif turtle_shape == 'arrow':
+        template = TURTLE_ARROW_TEMPLATE
     else: #circle
         degrees -= 90
         template = TURTLE_CIRCLE_SVG_TEMPLATE
