@@ -534,10 +534,10 @@ def window_height():
 # save the image as an SVG file using given filename
 def saveSVG(filename):
     text_file = open(filename, "w")
-    header = """<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}"/>\n"""
-    output = (header+svg_lines_string.replace("/>","/>\n")).format(w=window_size[0],h=window_size[1],kolor=background_color) 
+    header = ("""<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}"/>\n""").format(w=window_size[0],h=window_size[1],kolor=background_color) 
+    tmp = svg_lines_string.replace(">",">\n")
     turtle_svg = _generateTurtleSvgDrawing()
-    output += turtle_svg+"\n</svg>"
+    output = header+tmp+turtle_svg+"\n</svg>"
     text_file.write(output)
     text_file.close()
 
