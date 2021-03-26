@@ -343,8 +343,7 @@ def showturtle():
     global is_turtle_visible
 
     is_turtle_visible = True
-    if drawing_window != None:
-        _updateDrawing()
+#     _updateDrawing()
 
 st = showturtle # alias
 
@@ -353,8 +352,7 @@ def hideturtle():
     global is_turtle_visible
 
     is_turtle_visible = False
-    if drawing_window != None:
-        _updateDrawing()
+#        _updateDrawing()
 
 ht = hideturtle # alias
 
@@ -405,8 +403,7 @@ def bgcolor(color = None, c2 = None, c3 = None):
         color = (color, c2, c3)
 
     background_color = _processColor(color)
-    if drawing_window != None:
-        _updateDrawing()
+#        _updateDrawing()
 
 
 # change the color of the pen
