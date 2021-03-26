@@ -83,8 +83,8 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global pen_width
     global turtle_shape
 
-    if isinstance(initial_speed,int) == False or initial_speed not in range(1, 14):
-        raise ValueError('initial_speed must be an integer in interval [1,13]')
+    if isinstance(initial_speed,int) == False or initial_speed not in range(0, 14):
+        raise ValueError('initial_speed must be an integer in interval [0,13]')
     turtle_speed = initial_speed
 
     if not (isinstance(initial_window_size, tuple) and len(initial_window_size) == 2 and isinstance(
@@ -151,8 +151,9 @@ def _generateSvgDrawing():
 def _updateDrawing():
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
-    time.sleep(_speedToSec(turtle_speed))
-    drawing_window.update(HTML(_generateSvgDrawing()))
+    if (turtle_speed != 0):
+        time.sleep(_speedToSec(turtle_speed))
+        drawing_window.update(HTML(_generateSvgDrawing()))
 
 
 # helper function for managing any kind of move to a given 'new_pos' and draw lines if pen is down
@@ -214,7 +215,7 @@ def face(degrees):
         raise ValueError('degrees must be a number.')
 
     turtle_degree = degrees % 360
-#    _updateDrawing()
+    _updateDrawing()
 
 setheading = face # alias
 seth = face # alias
@@ -252,7 +253,7 @@ down = pendown # alias
 def isdown():
     return is_pen_down
 
-# update the speed of the moves, [1,13]
+# update the speed of the moves, [0,13]
 # if argument is omitted, it returns the speed.
 def speed(speed = None):
     global turtle_speed
@@ -260,8 +261,8 @@ def speed(speed = None):
     if speed is None:
         return turtle_speed
 
-    if isinstance(speed,int) == False or speed not in range(1, 14):
-        raise ValueError('speed must be an integer in the interval [1,13].')
+    if isinstance(speed,int) == False or speed not in range(0, 14):
+        raise ValueError('speed must be an integer in the interval [0,13].')
     turtle_speed = speed
     # TODO: decide if we should put the timout after changing the speed
     # _updateDrawing()
@@ -342,7 +343,7 @@ def showturtle():
     global is_turtle_visible
 
     is_turtle_visible = True
- #   _updateDrawing()
+#     _updateDrawing()
 
 st = showturtle # alias
 
@@ -351,7 +352,7 @@ def hideturtle():
     global is_turtle_visible
 
     is_turtle_visible = False
-   # _updateDrawing()
+#        _updateDrawing()
 
 ht = hideturtle # alias
 
@@ -402,7 +403,7 @@ def bgcolor(color = None, c2 = None, c3 = None):
         color = (color, c2, c3)
 
     background_color = _processColor(color)
-#    _updateDrawing()
+#        _updateDrawing()
 
 
 # change the color of the pen
@@ -567,3 +568,6 @@ def reset():
     svg_lines_string = DEFAULT_SVG_LINES_STRING
     pen_width = DEFAULT_PEN_WIDTH
     turtle_shape = DEFAULT_TURTLE_SHAPE
+
+def done():
+    drawing_window.update(HTML(_generateSvgDrawing()))
