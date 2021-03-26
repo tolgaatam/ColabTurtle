@@ -84,7 +84,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global turtle_shape
 
     if isinstance(initial_speed,int) == False or initial_speed not in range(0, 14):
-        raise ValueError('initial_speed must be an integer in interval [1,13]')
+        raise ValueError('initial_speed must be an integer in interval [0,13]')
     turtle_speed = initial_speed
 
     if not (isinstance(initial_window_size, tuple) and len(initial_window_size) == 2 and isinstance(
@@ -215,7 +215,7 @@ def face(degrees):
         raise ValueError('degrees must be a number.')
 
     turtle_degree = degrees % 360
-#    _updateDrawing()
+    _updateDrawing()
 
 setheading = face # alias
 seth = face # alias
@@ -253,7 +253,7 @@ down = pendown # alias
 def isdown():
     return is_pen_down
 
-# update the speed of the moves, [1,13]
+# update the speed of the moves, [0,13]
 # if argument is omitted, it returns the speed.
 def speed(speed = None):
     global turtle_speed
@@ -261,8 +261,8 @@ def speed(speed = None):
     if speed is None:
         return turtle_speed
 
-    if isinstance(speed,int) == False or speed not in range(1, 14):
-        raise ValueError('speed must be an integer in the interval [1,13].')
+    if isinstance(speed,int) == False or speed not in range(0, 14):
+        raise ValueError('speed must be an integer in the interval [0,13].')
     turtle_speed = speed
     # TODO: decide if we should put the timout after changing the speed
     # _updateDrawing()
@@ -343,7 +343,8 @@ def showturtle():
     global is_turtle_visible
 
     is_turtle_visible = True
- #   _updateDrawing()
+    if drawing_window != none:
+        _updateDrawing()
 
 st = showturtle # alias
 
@@ -352,7 +353,8 @@ def hideturtle():
     global is_turtle_visible
 
     is_turtle_visible = False
-   # _updateDrawing()
+    if drawing_window != none:
+        _updateDrawing()
 
 ht = hideturtle # alias
 
@@ -403,7 +405,8 @@ def bgcolor(color = None, c2 = None, c3 = None):
         color = (color, c2, c3)
 
     background_color = _processColor(color)
-#    _updateDrawing()
+    if drawing_window != none:
+        _updateDrawing()
 
 
 # change the color of the pen
