@@ -153,7 +153,7 @@ def _updateDrawing():
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     if (turtle_speed != 0):
         time.sleep(_speedToSec(turtle_speed))
-    drawing_window.update(HTML(_generateSvgDrawing()))
+        drawing_window.update(HTML(_generateSvgDrawing()))
 
 
 # helper function for managing any kind of move to a given 'new_pos' and draw lines if pen is down
@@ -568,3 +568,6 @@ def reset():
     svg_lines_string = DEFAULT_SVG_LINES_STRING
     pen_width = DEFAULT_PEN_WIDTH
     turtle_shape = DEFAULT_TURTLE_SHAPE
+
+def done():
+    drawing_window.update(HTML(_generateSvgDrawing()))
