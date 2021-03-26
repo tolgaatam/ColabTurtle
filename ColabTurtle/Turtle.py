@@ -537,7 +537,7 @@ def saveSVG(filename):
     header = """<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}"/>\n"""
     output = (header+svg_lines_string.replace("/>","/>\n")).format(w=window_size[0],h=window_size[1],kolor=background_color) 
     turtle_svg = _generateTurtleSvgDrawing()
-    output += turgle_svg+"\n</svg>"
+    output += turtle_svg+"\n</svg>"
     text_file.write(output)
     text_file.close()
 
