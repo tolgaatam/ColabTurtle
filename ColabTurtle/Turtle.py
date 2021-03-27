@@ -530,12 +530,11 @@ def window_width():
 def window_height():
     return window_size[1]
 
-# save the image as an SVG file using given filename
+# save the image as an SVG file using given filename. Set show_turtle=True to include turtle in svg output
 def saveSVG(filename, show_turtle=False):
-    #replacers = {"\>":" \>\n", "\text>":"\text>\n", "\g>":"\g>\n"}
     text_file = open(filename, "w")
     header = ("""<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}">\n""").format(w=window_size[0],h=window_size[1],kolor=background_color) 
-    image = svg_lines_string.replace(">",">\n").replace("\>"," \>")
+    image = svg_lines_string.replace(">",">\n")
     if show_turtle:
         turtle_svg = _generateTurtleSvgDrawing()+" \n"
     else:
@@ -555,7 +554,7 @@ def showSVG(show_turtle=False):
     output = header+image+turtle_svg+"</svg>"
     print(output)
 
-# reset the global values
+# reset the default values
 def reset():
     global turtle_speed
     global is_turtle_visible
