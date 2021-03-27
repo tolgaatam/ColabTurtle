@@ -351,7 +351,7 @@ def hideturtle():
     global is_turtle_visible
 
     is_turtle_visible = False
-     _updateDrawing()
+    _updateDrawing()
 
 ht = hideturtle # alias
 
