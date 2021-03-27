@@ -183,17 +183,17 @@ def _moveToNewPosition(new_pos):
 
     # rounding the new_pos to eliminate floating point errors.
     new_pos = ( round(new_pos[0],3), round(new_pos[1],3) )
-
+    
     start_pos = turtle_pos
     if is_pen_down:
-        svg_lines_string += \
-             """<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke-linecap="round" style="stroke:{pen_color};stroke-width:{pen_width}" />""".format(
-                            x1=start_pos[0],
-                            y1=start_pos[1],
-                            x2=new_pos[0],
-                            y2=new_pos[1],
-                            pen_color=pen_color, 
-                            pen_width=pen_width)
+        svg_lines_string += """
+             <line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke-linecap="round" style="stroke:{pen_color};stroke-width:{pen_width}" />
+             """.format(x1=start_pos[0],
+                        y1=start_pos[1],
+                        x2=new_pos[0],
+                        y2=new_pos[1],
+                        pen_color=pen_color, 
+                        pen_width=pen_width)
 
     turtle_pos = new_pos
     _updateDrawing()
