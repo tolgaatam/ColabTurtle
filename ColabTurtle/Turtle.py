@@ -533,23 +533,27 @@ def window_height():
 
 # save the image as an SVG file using given filename
 def saveSVG(filename, show_turtle=False):
+    #replacers = {"\>":" \>\n", "\text>":"\text>\n", "\g>":"\g>\n"}
     text_file = open(filename, "w")
-    header = ("""<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}"/>\n""").format(w=window_size[0],h=window_size[1],kolor=background_color) 
-    image = svg_lines_string.replace(">",">\n")
+    header = ("""<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}">\n""").format(w=window_size[0],h=window_size[1],kolor=background_color) 
+    image = svg_lines_string.replace(">",">\n").replace("\>"," \>")
     if show_turtle:
-        turtle_svg = _generateTurtleSvgDrawing()
+        turtle_svg = _generateTurtleSvgDrawing()+" \n"
     else:
         turtle_svg = ""
-    output = header+image+turtle_svg+"\n</svg>"
+    output = header+image+turtle_svg+"</svg>"
     text_file.write(output)
     text_file.close()
 
 # print the SVG code for the image
 def showSVG():
-    header = ("""<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}"/>\n""").format(w=window_size[0],h=window_size[1],kolor=background_color) 
-    image = svg_lines_string.replace(">",">\n")
-    turtle_svg = _generateTurtleSvgDrawing()
-    output = header+image+turtle_svg+"\n</svg>"
+    header = ("""<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}">\n""").format(w=window_size[0],h=window_size[1],kolor=background_color) 
+    image = svg_lines_string.replace(">",">\n").replace("\>"," \>")
+    if show_turtle:
+        turtle_svg = _generateTurtleSvgDrawing()+" \n"
+    else:
+        turtle_svg = ""
+    output = header+image+turtle_svg+"</svg>"
     print(output)
 
 # reset the global values
