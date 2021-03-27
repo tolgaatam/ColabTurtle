@@ -342,7 +342,8 @@ def showturtle():
     global is_turtle_visible
 
     is_turtle_visible = True
-#     _updateDrawing()
+    if drawing_window is not None:
+        _updateDrawing()
 
 st = showturtle # alias
 
@@ -351,7 +352,8 @@ def hideturtle():
     global is_turtle_visible
 
     is_turtle_visible = False
-#        _updateDrawing()
+    if drawing_window is not None:
+        _updateDrawing()
 
 ht = hideturtle # alias
 
@@ -419,7 +421,8 @@ def color(color = None, c2 = None, c3 = None):
         color = (color, c2, c3)
 
     pen_color = _processColor(color)
-#    _updateDrawing()
+    if drawing_window is not None:
+        _updateDrawing()
 
 pencolor = color
 
@@ -521,7 +524,8 @@ def shape(shape=None):
         raise ValueError('shape is invalid. valid options are: ' + str(VALID_TURTLE_SHAPES))
     
     turtle_shape = shape
-#    _updateDrawing()
+    if drawing_window is not None:
+        _updateDrawing()
 
 # return turtle window width
 def window_width():
