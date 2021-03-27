@@ -8,6 +8,14 @@ import re
 # v2.1.0 Updated at: 15th March 2021
 #         by: Tolga Atam
 
+# Modified at: March 28, 2021
+#         by:  Larry Riddle
+# Changed default background color to white, default pen color to black
+# Added functions to print or save the svg coding for the image
+# Added "arrow" as a turtle shape
+# Added speed=0 option that displays final image with no animation. 
+# Added done() function so that final image is displayed on screen when speed=0
+
 # Module for drawing classic Turtle figures on Google Colab notebooks.
 # It uses html capabilites of IPython library to draw svg shapes inline.
 # Looks of the figures are inspired from Blockly Games / Turtle (blockly-games.appspot.com/turtle)
@@ -22,7 +30,20 @@ DEFAULT_IS_PEN_DOWN = True
 DEFAULT_SVG_LINES_STRING = ""
 DEFAULT_PEN_WIDTH = 4
 # all 140 color names that modern browsers support. taken from https://www.w3schools.com/colors/colors_names.asp
-VALID_COLORS = ('black', 'navy', 'darkblue', 'mediumblue', 'blue', 'darkgreen', 'green', 'teal', 'darkcyan', 'deepskyblue', 'darkturquoise', 'mediumspringgreen', 'lime', 'springgreen', 'aqua', 'cyan', 'midnightblue', 'dodgerblue', 'lightseagreen', 'forestgreen', 'seagreen', 'darkslategray', 'darkslategrey', 'limegreen', 'mediumseagreen', 'turquoise', 'royalblue', 'steelblue', 'darkslateblue', 'mediumturquoise', 'indigo', 'darkolivegreen', 'cadetblue', 'cornflowerblue', 'rebeccapurple', 'mediumaquamarine', 'dimgray', 'dimgrey', 'slateblue', 'olivedrab', 'slategray', 'slategrey', 'lightslategray', 'lightslategrey', 'mediumslateblue', 'lawngreen', 'chartreuse', 'aquamarine', 'maroon', 'purple', 'olive', 'gray', 'grey', 'skyblue', 'lightskyblue', 'blueviolet', 'darkred', 'darkmagenta', 'saddlebrown', 'darkseagreen', 'lightgreen', 'mediumpurple', 'darkviolet', 'palegreen', 'darkorchid', 'yellowgreen', 'sienna', 'brown', 'darkgray', 'darkgrey', 'lightblue', 'greenyellow', 'paleturquoise', 'lightsteelblue', 'powderblue', 'firebrick', 'darkgoldenrod', 'mediumorchid', 'rosybrown', 'darkkhaki', 'silver', 'mediumvioletred', 'indianred', 'peru', 'chocolate', 'tan', 'lightgray', 'lightgrey', 'thistle', 'orchid', 'goldenrod', 'palevioletred', 'crimson', 'gainsboro', 'plum', 'burlywood', 'lightcyan', 'lavender', 'darksalmon', 'violet', 'palegoldenrod', 'lightcoral', 'khaki', 'aliceblue', 'honeydew', 'azure', 'sandybrown', 'wheat', 'beige', 'whitesmoke', 'mintcream', 'ghostwhite', 'salmon', 'antiquewhite', 'linen', 'lightgoldenrodyellow', 'oldlace', 'red', 'fuchsia', 'magenta', 'deeppink', 'orangered', 'tomato', 'hotpink', 'coral', 'darkorange', 'lightsalmon', 'orange', 'lightpink', 'pink', 'gold', 'peachpuff', 'navajowhite', 'moccasin', 'bisque', 'mistyrose', 'blanchedalmond', 'papayawhip', 'lavenderblush', 'seashell', 'cornsilk', 'lemonchiffon', 'floralwhite', 'snow', 'yellow', 'lightyellow', 'ivory', 'white')
+VALID_COLORS = ('black', 'navy', 'darkblue', 'mediumblue', 'blue', 'darkgreen', 'green', 'teal', 'darkcyan', 'deepskyblue', 'darkturquoise', 
+                'mediumspringgreen', 'lime', 'springgreen', 'aqua', 'cyan', 'midnightblue', 'dodgerblue', 'lightseagreen', 'forestgreen', 'seagreen', 
+                'darkslategray', 'darkslategrey', 'limegreen', 'mediumseagreen', 'turquoise', 'royalblue', 'steelblue', 'darkslateblue', 'mediumturquoise', 
+                'indigo', 'darkolivegreen', 'cadetblue', 'cornflowerblue', 'rebeccapurple', 'mediumaquamarine', 'dimgray', 'dimgrey', 'slateblue', 'olivedrab', 
+                'slategray', 'slategrey', 'lightslategray', 'lightslategrey', 'mediumslateblue', 'lawngreen', 'chartreuse', 'aquamarine', 'maroon', 'purple', 
+                'olive', 'gray', 'grey', 'skyblue', 'lightskyblue', 'blueviolet', 'darkred', 'darkmagenta', 'saddlebrown', 'darkseagreen', 'lightgreen', 
+                'mediumpurple', 'darkviolet', 'palegreen', 'darkorchid', 'yellowgreen', 'sienna', 'brown', 'darkgray', 'darkgrey', 'lightblue', 'greenyellow', 
+                'paleturquoise', 'lightsteelblue', 'powderblue', 'firebrick', 'darkgoldenrod', 'mediumorchid', 'rosybrown', 'darkkhaki', 'silver', 
+                'mediumvioletred', 'indianred', 'peru', 'chocolate', 'tan', 'lightgray', 'lightgrey', 'thistle', 'orchid', 'goldenrod', 'palevioletred', 
+                'crimson', 'gainsboro', 'plum', 'burlywood', 'lightcyan', 'lavender', 'darksalmon', 'violet', 'palegoldenrod', 'lightcoral', 'khaki', 
+                'aliceblue', 'honeydew', 'azure', 'sandybrown', 'wheat', 'beige', 'whitesmoke', 'mintcream', 'ghostwhite', 'salmon', 'antiquewhite', 'linen', 
+                'lightgoldenrodyellow', 'oldlace', 'red', 'fuchsia', 'magenta', 'deeppink', 'orangered', 'tomato', 'hotpink', 'coral', 'darkorange', 
+                'lightsalmon', 'orange', 'lightpink', 'pink', 'gold', 'peachpuff', 'navajowhite', 'moccasin', 'bisque', 'mistyrose', 'blanchedalmond', 
+                'papayawhip', 'lavenderblush', 'seashell', 'cornsilk', 'lemonchiffon', 'floralwhite', 'snow', 'yellow', 'lightyellow', 'ivory', 'white')
 VALID_COLORS_SET = set(VALID_COLORS)
 DEFAULT_TURTLE_SHAPE = 'turtle'
 VALID_TURTLE_SHAPES = ('turtle', 'circle', 'arrow')
@@ -128,14 +149,21 @@ def _generateTurtleSvgDrawing():
         degrees -= 90
         template = TURTLE_CIRCLE_SVG_TEMPLATE
 
-    return template.format(turtle_color=pen_color, turtle_x=turtle_x, turtle_y=turtle_y, \
-                                      visibility=vis, degrees=degrees, rotation_x=turtle_pos[0], rotation_y=turtle_pos[1])
+    return template.format(turtle_color=pen_color, 
+                           turtle_x=turtle_x, 
+                           turtle_y=turtle_y,
+                           visibility=vis, 
+                           degrees=degrees, 
+                           rotation_x=turtle_pos[0], 
+                           rotation_y=turtle_pos[1])
 
 
 # helper function for generating the whole svg string
 def _generateSvgDrawing():
-    return SVG_TEMPLATE.format(window_width=window_size[0], window_height=window_size[1],
-                               background_color=background_color, lines=svg_lines_string,
+    return SVG_TEMPLATE.format(window_width=window_size[0], 
+                               window_height=window_size[1],
+                               background_color=background_color, 
+                               lines=svg_lines_string,
                                turtle=_generateTurtleSvgDrawing())
 
 
@@ -570,5 +598,8 @@ def reset():
     pen_width = DEFAULT_PEN_WIDTH
     turtle_shape = DEFAULT_TURTLE_SHAPE
 
+# Call this function at end of turtle commands when speed=0 (no animation) so that final image is drawn
 def done():
+    if drawing_window == None:
+        raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     drawing_window.update(HTML(_generateSvgDrawing()))
