@@ -15,9 +15,9 @@ import re
 DEFAULT_WINDOW_SIZE = (800, 500)
 DEFAULT_SPEED = 4
 DEFAULT_TURTLE_VISIBILITY = True
-DEFAULT_PEN_COLOR = 'white'
+DEFAULT_PEN_COLOR = 'black'
 DEFAULT_TURTLE_DEGREE = 270
-DEFAULT_BACKGROUND_COLOR = 'black'
+DEFAULT_BACKGROUND_COLOR = 'white'
 DEFAULT_IS_PEN_DOWN = True
 DEFAULT_SVG_LINES_STRING = ""
 DEFAULT_PEN_WIDTH = 4
@@ -92,19 +92,19 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
 
     window_size = initial_window_size
 
-    #is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
+    is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
     #if initial_color.lower()=="white":
     #    pen_color = "black"
     #else:
     #    pen_color = DEFAULT_PEN_COLOR
     turtle_pos = (window_size[0] // 2, window_size[1] // 2)
-    #turtle_degree = DEFAULT_TURTLE_DEGREE
-    #background_color = DEFAULT_BACKGROUND_COLOR
-    #background_color = initial_color
-    #is_pen_down = DEFAULT_IS_PEN_DOWN
+    turtle_degree = DEFAULT_TURTLE_DEGREE
+    background_color = DEFAULT_BACKGROUND_COLOR
+    background_color = initial_color
+    is_pen_down = DEFAULT_IS_PEN_DOWN
     svg_lines_string = DEFAULT_SVG_LINES_STRING
-    #pen_width = DEFAULT_PEN_WIDTH
-    #turtle_shape = DEFAULT_TURTLE_SHAPE
+    pen_width = DEFAULT_PEN_WIDTH
+    turtle_shape = DEFAULT_TURTLE_SHAPE
     #turtle_shape = initial_turtle.lower()
 
     drawing_window = display(HTML(_generateSvgDrawing()), display_id=True)
@@ -342,8 +342,7 @@ def showturtle():
     global is_turtle_visible
 
     is_turtle_visible = True
-    if drawing_window is not None:
-        _updateDrawing()
+    _updateDrawing()
 
 st = showturtle # alias
 
@@ -352,8 +351,7 @@ def hideturtle():
     global is_turtle_visible
 
     is_turtle_visible = False
-    if drawing_window is not None:
-        _updateDrawing()
+     _updateDrawing()
 
 ht = hideturtle # alias
 
@@ -404,8 +402,7 @@ def bgcolor(color = None, c2 = None, c3 = None):
         color = (color, c2, c3)
 
     background_color = _processColor(color)
-    if drawing_window is not None:
-        _updateDrawing()
+    _updateDrawing()
 
 
 # change the color of the pen
@@ -421,8 +418,7 @@ def color(color = None, c2 = None, c3 = None):
         color = (color, c2, c3)
 
     pen_color = _processColor(color)
-    if drawing_window is not None:
-        _updateDrawing()
+    _updateDrawing()
 
 pencolor = color
 
@@ -510,8 +506,7 @@ def write(obj, **kwargs):
         style_string += "font-style:italic;"
     elif font_type == 'underline':
         style_string += "text-decoration: underline;"
-
-    
+            
     svg_lines_string += """<text x="{x}" y="{y}" fill="{fill_color}" text-anchor="{align}" style="{style}">{text}</text>""".format(x=turtle_pos[0], y=turtle_pos[1], text=text, fill_color=pen_color, align=align, style=style_string)
     
     _updateDrawing()
@@ -524,8 +519,7 @@ def shape(shape=None):
         raise ValueError('shape is invalid. valid options are: ' + str(VALID_TURTLE_SHAPES))
     
     turtle_shape = shape
-    if drawing_window is not None:
-        _updateDrawing()
+    _updateDrawing()
 
 # return turtle window width
 def window_width():
