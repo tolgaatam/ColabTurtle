@@ -186,7 +186,7 @@ def _moveToNewPosition(new_pos):
 
     start_pos = turtle_pos
     if is_pen_down:
-        svg_lines_string += 
+        svg_lines_string += \
              """<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke-linecap="round" style="stroke:{pen_color};stroke-width:{pen_width}" />""".format(
                             x1=start_pos[0],
                             y1=start_pos[1],
