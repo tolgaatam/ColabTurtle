@@ -402,7 +402,8 @@ def bgcolor(color = None, c2 = None, c3 = None):
         color = (color, c2, c3)
 
     background_color = _processColor(color)
-#        _updateDrawing()
+    if drawing_window is not None:
+        _updateDrawing()
 
 
 # change the color of the pen
