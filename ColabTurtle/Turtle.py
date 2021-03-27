@@ -186,9 +186,9 @@ def _moveToNewPosition(new_pos):
     
     start_pos = turtle_pos
     if is_pen_down:
-        svg_lines_string += """
-             <line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke-linecap="round" style="stroke:{pen_color};stroke-width:{pen_width}" />
-             """.format(x1=start_pos[0],
+        svg_lines_string += \
+            """<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke-linecap="round" style="stroke:{pen_color};stroke-width:{pen_width}" />""".format(
+                        x1=start_pos[0],
                         y1=start_pos[1],
                         x2=new_pos[0],
                         y2=new_pos[1],
@@ -569,7 +569,9 @@ def saveSVG(filename, show_turtle=False):
 
 # print the SVG code for the image
 def showSVG(show_turtle=False):
-    header = ("""<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}" />\n""").format(w=window_size[0],h=window_size[1],kolor=background_color) 
+    header = ("""<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}" />\n""").format(w=window_size[0],
+                                                                                                                       h=window_size[1],
+                                                                                                                       kolor=background_color) 
     image = svg_lines_string.replace(">",">\n")
     if show_turtle:
         turtle_svg = _generateTurtleSvgDrawing()+" \n"
