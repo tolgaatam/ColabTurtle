@@ -10,7 +10,7 @@ import re
 
 # Modified at: March 28, 2021
 #         by:  Larry Riddle
-# Changed default background color to white, default pen color to black
+# Changed default background color to white, default pen color to black, default turtle degree to 0 (pointing left)
 # Added functions to print or save the svg coding for the image
 # Added "arrow" as a turtle shape
 # Added speed=0 option that displays final image with no animation. 
@@ -24,7 +24,7 @@ DEFAULT_WINDOW_SIZE = (800, 500)
 DEFAULT_SPEED = 4
 DEFAULT_TURTLE_VISIBILITY = True
 DEFAULT_PEN_COLOR = 'black'
-DEFAULT_TURTLE_DEGREE = 270
+DEFAULT_TURTLE_DEGREE = 0
 DEFAULT_BACKGROUND_COLOR = 'white'
 DEFAULT_IS_PEN_DOWN = True
 DEFAULT_SVG_LINES_STRING = ""
