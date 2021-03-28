@@ -560,10 +560,10 @@ def saveSVG(filename, show_turtle=False):
     header = ("""<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}" />\n""").format(w=window_size[0],h=window_size[1],kolor=background_color) 
     image = svg_lines_string.replace(">",">\n")
     if show_turtle:
-        turtle_svg = _generateTurtleSvgDrawing()+" \n"
+        turtle_svg = _generateTurtleSvgDrawing() + " \n"
     else:
         turtle_svg = ""
-    output = header+image+turtle_svg+"</svg>"
+    output = header + image + turtle_svg + "</svg>"
     text_file.write(output)
     text_file.close()
 
@@ -574,35 +574,11 @@ def showSVG(show_turtle=False):
                                                                                                                        kolor=background_color) 
     image = svg_lines_string.replace(">",">\n")
     if show_turtle:
-        turtle_svg = _generateTurtleSvgDrawing()+" \n"
+        turtle_svg = _generateTurtleSvgDrawing() + " \n"
     else:
         turtle_svg = ""
-    output = header+image+turtle_svg+"</svg>"
+    output = header + image + turtle_svg + "</svg>"
     print(output)
-
-# reset the default values
-def reset():
-    global turtle_speed
-    global is_turtle_visible
-    global pen_color
-    global turtle_pos
-    global turtle_degree
-    global background_color
-    global is_pen_down
-    global svg_lines_string
-    global pen_width
-    global turtle_shape
-      
-    turtle_speed = DEFAULT_SPEED
-    is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
-    pen_color = DEFAULT_PEN_COLOR
-    turtle_pos = (DEFAULT_WINDOW_SIZE[0] // 2, DEFAULT_WINDOW_SIZE[1] // 2)
-    turtle_degree = DEFAULT_TURTLE_DEGREE
-    background_color = DEFAULT_BACKGROUND_COLOR
-    is_pen_down = DEFAULT_IS_PEN_DOWN
-    svg_lines_string = DEFAULT_SVG_LINES_STRING
-    pen_width = DEFAULT_PEN_WIDTH
-    turtle_shape = DEFAULT_TURTLE_SHAPE
 
 # Call this function at end of turtle commands when speed=0 (no animation) so that final image is drawn
 def done():
