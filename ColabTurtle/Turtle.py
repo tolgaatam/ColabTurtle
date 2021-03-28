@@ -572,9 +572,8 @@ def saveSVG(filename, show_turtle=False):
 # print the SVG code for the image
 def showSVG(show_turtle=False):
     header = ("""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg">\n""").format(w=window_size[0],
-                                                                                                                    h=window_size[1],
-                                                                                                                    kolor=background_color) 
-    header += """<rect width="100%" height="100%" style="fill:{kolor}" />\n"""
+                                                                                                                      h=window_size[1]) 
+    header += ("""<rect width="100%" height="100%" style="fill:{kolor}" />\n""").format(kolor=background_color)
     image = svg_lines_string.replace(">",">\n")
     if show_turtle:
         turtle_svg = _generateTurtleSvgDrawing() + " \n"
