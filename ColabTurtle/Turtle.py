@@ -575,10 +575,7 @@ def showSVG(show_turtle=False):
                                                                                                                       h=window_size[1]) 
     header += ("""<rect width="100%" height="100%" style="fill:{kolor}" />\n""").format(kolor=background_color)
     image = svg_lines_string.replace(">",">\n")
-    if show_turtle:
-        turtle_svg = _generateTurtleSvgDrawing() + " \n"
-    else:
-        turtle_svg = ""
+    turtle_svg = (_generateTurtleSvgDrawing() + " \n") if show_turtle else ""
     output = header + image + turtle_svg + "</svg>"
     print(output)
 
