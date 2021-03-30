@@ -338,7 +338,7 @@ pos = position # alias
 
 # retrieve the turtle's current angle
 def getheading():
-    return (360 - turtle_degree)
+    return (360 - turtle_degree) % 360
 
 heading = getheading # alias
 
