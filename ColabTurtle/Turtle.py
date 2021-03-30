@@ -114,7 +114,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
         raise ValueError('window_size must be a tuple of 2 integers')
     window_size = initial_window_size
     
-    if initial_mode not in VALID_MODES
+    if initial_mode not in VALID_MODES:
         raise ValueError('mode must be standard or logo')
     angle_mode = initial_mode
 
