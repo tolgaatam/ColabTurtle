@@ -91,7 +91,7 @@ drawing_window = None
 
 
 # construct the display for turtle
-def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE, initial_mode=DEFAULT_MODE):
+def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE, mode=DEFAULT_MODE):
     global window_size
     global drawing_window
     global turtle_speed
@@ -104,6 +104,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global svg_lines_string
     global pen_width
     global turtle_shape
+    global angle_mode
 
     if isinstance(initial_speed,int) == False or initial_speed not in range(0, 11):
         raise ValueError('initial_speed must be an integer in interval [0,10]')
@@ -114,9 +115,9 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
         raise ValueError('window_size must be a tuple of 2 integers')
     window_size = initial_window_size
     
-    if initial_mode not in VALID_MODES:
+    if mode not in VALID_MODES:
         raise ValueError('mode must be standard or logo')
-    angle_mode = initial_mode
+    angle_mode = mode
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
     turtle_pos = (window_size[0] // 2, window_size[1] // 2)
