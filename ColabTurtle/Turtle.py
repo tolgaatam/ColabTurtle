@@ -21,14 +21,14 @@ import re
 # Looks of the figures are inspired from Blockly Games / Turtle (blockly-games.appspot.com/turtle)
 
 DEFAULT_WINDOW_SIZE = (800, 500)
-DEFAULT_SPEED = 4
+DEFAULT_SPEED = 5
 DEFAULT_TURTLE_VISIBILITY = True
 DEFAULT_PEN_COLOR = 'black'
 DEFAULT_TURTLE_DEGREE = 0
 DEFAULT_BACKGROUND_COLOR = 'white'
 DEFAULT_IS_PEN_DOWN = True
 DEFAULT_SVG_LINES_STRING = ""
-DEFAULT_PEN_WIDTH = 4
+DEFAULT_PEN_WIDTH = 1
 # all 140 color names that modern browsers support. taken from https://www.w3schools.com/colors/colors_names.asp
 VALID_COLORS = ('black', 'navy', 'darkblue', 'mediumblue', 'blue', 'darkgreen', 'green', 'teal', 'darkcyan', 'deepskyblue', 'darkturquoise', 
                 'mediumspringgreen', 'lime', 'springgreen', 'aqua', 'cyan', 'midnightblue', 'dodgerblue', 'lightseagreen', 'forestgreen', 'seagreen', 
@@ -45,7 +45,7 @@ VALID_COLORS = ('black', 'navy', 'darkblue', 'mediumblue', 'blue', 'darkgreen', 
                 'lightsalmon', 'orange', 'lightpink', 'pink', 'gold', 'peachpuff', 'navajowhite', 'moccasin', 'bisque', 'mistyrose', 'blanchedalmond', 
                 'papayawhip', 'lavenderblush', 'seashell', 'cornsilk', 'lemonchiffon', 'floralwhite', 'snow', 'yellow', 'lightyellow', 'ivory', 'white')
 VALID_COLORS_SET = set(VALID_COLORS)
-DEFAULT_TURTLE_SHAPE = 'turtle'
+DEFAULT_TURTLE_SHAPE = 'arrow'
 VALID_TURTLE_SHAPES = ('turtle', 'circle', 'arrow')
 SVG_TEMPLATE = """
       <svg width="{window_width}" height="{window_height}">  
@@ -54,21 +54,21 @@ SVG_TEMPLATE = """
         {turtle}
       </svg>
     """
-TURTLE_TURTLE_SVG_TEMPLATE = """<g visibility="{visibility}" transform="rotate({degrees},{rotation_x},{rotation_y}) translate({turtle_x}, {turtle_y})">
+TURTLE_TURTLE_SVG_TEMPLATE = """<g id="turtle" visibility="{visibility}" transform="rotate({degrees},{rotation_x},{rotation_y}) translate({turtle_x}, {turtle_y})">
 <path style=" stroke:none;fill-rule:evenodd;fill:{turtle_color};fill-opacity:1;" d="M 18.214844 0.632812 C 16.109375 1.800781 15.011719 4.074219 15.074219 7.132812 L 15.085938 7.652344 L 14.785156 7.496094 C 13.476562 6.824219 11.957031 6.671875 10.40625 7.066406 C 8.46875 7.550781 6.515625 9.15625 4.394531 11.992188 C 3.0625 13.777344 2.679688 14.636719 3.042969 15.027344 L 3.15625 15.152344 L 3.519531 15.152344 C 4.238281 15.152344 4.828125 14.886719 8.1875 13.039062 C 9.386719 12.378906 10.371094 11.839844 10.378906 11.839844 C 10.386719 11.839844 10.355469 11.929688 10.304688 12.035156 C 9.832031 13.09375 9.257812 14.820312 8.96875 16.078125 C 7.914062 20.652344 8.617188 24.53125 11.070312 27.660156 C 11.351562 28.015625 11.363281 27.914062 10.972656 28.382812 C 8.925781 30.84375 7.945312 33.28125 8.238281 35.1875 C 8.289062 35.527344 8.28125 35.523438 8.917969 35.523438 C 10.941406 35.523438 13.074219 34.207031 15.136719 31.6875 C 15.359375 31.417969 15.328125 31.425781 15.5625 31.574219 C 16.292969 32.042969 18.023438 32.964844 18.175781 32.964844 C 18.335938 32.964844 19.941406 32.210938 20.828125 31.71875 C 20.996094 31.625 21.136719 31.554688 21.136719 31.558594 C 21.203125 31.664062 21.898438 32.414062 22.222656 32.730469 C 23.835938 34.300781 25.5625 35.132812 27.582031 35.300781 C 27.90625 35.328125 27.9375 35.308594 28.007812 34.984375 C 28.382812 33.242188 27.625 30.925781 25.863281 28.425781 L 25.542969 27.96875 L 25.699219 27.785156 C 28.945312 23.960938 29.132812 18.699219 26.257812 11.96875 L 26.207031 11.84375 L 27.945312 12.703125 C 31.53125 14.476562 32.316406 14.800781 33.03125 14.800781 C 33.976562 14.800781 33.78125 13.9375 32.472656 12.292969 C 28.519531 7.355469 25.394531 5.925781 21.921875 7.472656 L 21.558594 7.636719 L 21.578125 7.542969 C 21.699219 6.992188 21.761719 5.742188 21.699219 5.164062 C 21.496094 3.296875 20.664062 1.964844 19.003906 0.855469 C 18.480469 0.503906 18.457031 0.5 18.214844 0.632812" />
 </g>"""
-TURTLE_CIRCLE_SVG_TEMPLATE = """<g visibility="{visibility}" transform="rotate({degrees},{rotation_x},{rotation_y}) translate({turtle_x}, {turtle_y})">
+TURTLE_CIRCLE_SVG_TEMPLATE = """<g id="circle" visibility="{visibility}" transform="rotate({degrees},{rotation_x},{rotation_y}) translate({turtle_x}, {turtle_y})">
 <circle stroke="{turtle_color}" stroke-width="3" fill="transparent" r="12" cx="0" cy="0" />
 <polygon points="0,19 3,16 -3,16" style="fill:{turtle_color};stroke:{turtle_color};stroke-width:2" />
 </g>"""
-TURTLE_ARROW_SVG_TEMPLATE = """<g visibility="{visibility}" transform="rotate({degrees},{rotation_x},{rotation_y}) translate({turtle_x}, {turtle_y})">
-<polygon points="-10,0 0,3 10,0 0,10"  style=" stroke:{turtle_color};fill-rule:evenodd;fill:{turtle_color};fill-opacity:1;" />
+TURTLE_ARROW_SVG_TEMPLATE = """<g id="arrow" visibility="{visibility}" transform="rotate({degrees},{rotation_x},{rotation_y}) translate({turtle_x}, {turtle_y})">
+<polygon points="-4,0 0,1 4,0 0,7"  style=" stroke:{turtle_color};fill-rule:evenodd;fill:{turtle_color};fill-opacity:1;" />
 </g>"""
 
-SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02, 11: 0.01, 12: 0.001, 13: 0.0001}
+SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02}
 
 
-# helper function that maps [1,13] speed values to ms delays
+# helper function that maps [1,10] speed values to ms delays
 def _speedToSec(speed):
     return SPEED_TO_SEC_MAP[speed]
 
@@ -103,8 +103,8 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global pen_width
     global turtle_shape
 
-    if isinstance(initial_speed,int) == False or initial_speed not in range(0, 14):
-        raise ValueError('initial_speed must be an integer in interval [0,13]')
+    if isinstance(initial_speed,int) == False or initial_speed not in range(0, 11):
+        raise ValueError('initial_speed must be an integer in interval [0,10]')
     turtle_speed = initial_speed
 
     if not (isinstance(initial_window_size, tuple) and len(initial_window_size) == 2 and isinstance(
@@ -287,8 +287,8 @@ def speed(speed = None):
     if speed is None:
         return turtle_speed
 
-    if isinstance(speed,int) == False or speed not in range(0, 14):
-        raise ValueError('speed must be an integer in the interval [0,13].')
+    if isinstance(speed,int) == False or speed not in range(0, 11):
+        raise ValueError('speed must be an integer in the interval [0,10].')
     turtle_speed = speed
     # TODO: decide if we should put the timout after changing the speed
     # _updateDrawing()
@@ -557,7 +557,9 @@ def window_height():
 # save the image as an SVG file using given filename. Set show_turtle=True to include turtle in svg output
 def saveSVG(filename, show_turtle=False):
     text_file = open(filename, "w")
-    header = ("""<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}" />\n""").format(w=window_size[0],h=window_size[1],kolor=background_color) 
+    header = ("""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg">\n""").format(w=window_size[0],
+                                                                                                                      h=window_size[1]) 
+    header += ("""<rect width="100%" height="100%" style="fill:{kolor}" />\n""").format(kolor=background_color)
     image = svg_lines_string.replace(">",">\n")
     if show_turtle:
         turtle_svg = _generateTurtleSvgDrawing() + " \n"
@@ -569,14 +571,11 @@ def saveSVG(filename, show_turtle=False):
 
 # print the SVG code for the image
 def showSVG(show_turtle=False):
-    header = ("""<svg width="{w}" height="{h}">\n<rect width="100%" height="100%" style="fill:{kolor}" />\n""").format(w=window_size[0],
-                                                                                                                       h=window_size[1],
-                                                                                                                       kolor=background_color) 
+    header = ("""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg">\n""").format(w=window_size[0],
+                                                                                                                      h=window_size[1]) 
+    header += ("""<rect width="100%" height="100%" style="fill:{kolor}" />\n""").format(kolor=background_color)
     image = svg_lines_string.replace(">",">\n")
-    if show_turtle:
-        turtle_svg = _generateTurtleSvgDrawing() + " \n"
-    else:
-        turtle_svg = ""
+    turtle_svg = (_generateTurtleSvgDrawing() + " \n") if show_turtle else ""
     output = header + image + turtle_svg + "</svg>"
     print(output)
 
