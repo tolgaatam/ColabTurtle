@@ -8,9 +8,8 @@ import re
 # v2.1.0 Updated at: 15th March 2021
 #         by: Tolga Atam
 
-# Modified at: March 28, 2021
-#         by:  Larry Riddle
-# Changed default background color to white, default pen color to black, default turtle degree to 0 (pointing left)
+# Modified March 2021 by Larry Riddle
+# Changed some default values to match python.org turtle package
 # Added functions to print or save the svg coding for the image
 # Added "arrow" as a turtle shape
 # Added speed=0 option that displays final image with no animation. 
@@ -168,6 +167,7 @@ def _generateSvgDrawing():
 
 
 # helper functions for updating the screen using the latest positions/angles/lines etc.
+# If the turtle speed is 0, the update is skipped so animation is done.
 def _updateDrawing():
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
@@ -240,7 +240,7 @@ def face(degrees):
     if not isinstance(degrees, (int,float)):
         raise ValueError('degrees must be a number.')
 
-    turtle_degree = degrees % 360
+    turtle_degree = (360 - degrees) % 360
     _updateDrawing()
 
 setheading = face # alias
@@ -338,7 +338,7 @@ pos = position # alias
 
 # retrieve the turtle's current angle
 def getheading():
-    return turtle_degree
+    return (360 - turtle_degree)
 
 heading = getheading # alias
 
