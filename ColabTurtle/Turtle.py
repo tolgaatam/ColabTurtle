@@ -9,7 +9,7 @@ import re
 #         by: Tolga Atam
 
 # Modified March 2021 by Larry Riddle
-# Changed some default values to match python.org turtle package
+# Changed some default values to match turtle.py package
 # Added functions to print or save the svg coding for the image
 # Added "arrow" as a turtle shape
 # Added speed=0 option that displays final image with no animation. 
@@ -44,8 +44,10 @@ VALID_COLORS = ('black', 'navy', 'darkblue', 'mediumblue', 'blue', 'darkgreen', 
                 'lightsalmon', 'orange', 'lightpink', 'pink', 'gold', 'peachpuff', 'navajowhite', 'moccasin', 'bisque', 'mistyrose', 'blanchedalmond', 
                 'papayawhip', 'lavenderblush', 'seashell', 'cornsilk', 'lemonchiffon', 'floralwhite', 'snow', 'yellow', 'lightyellow', 'ivory', 'white')
 VALID_COLORS_SET = set(VALID_COLORS)
+VALID_MODES = ('standard','logo')
 DEFAULT_TURTLE_SHAPE = 'arrow'
 VALID_TURTLE_SHAPES = ('turtle', 'circle', 'arrow')
+DEFAULT_MODE = 'standard'
 SVG_TEMPLATE = """
       <svg width="{window_width}" height="{window_height}">  
         <rect width="100%" height="100%" style="fill:{background_color}"/>
@@ -83,12 +85,13 @@ is_pen_down = DEFAULT_IS_PEN_DOWN
 svg_lines_string = DEFAULT_SVG_LINES_STRING
 pen_width = DEFAULT_PEN_WIDTH
 turtle_shape = DEFAULT_TURTLE_SHAPE
+angle_mode = DEFAULT_MODE
 
 drawing_window = None
 
 
 # construct the display for turtle
-def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE):
+def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE, initial_mode=DEFAULT_MODE):
     global window_size
     global drawing_window
     global turtle_speed
@@ -110,10 +113,14 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
             initial_window_size[0], int) and isinstance(initial_window_size[1], int)):
         raise ValueError('window_size must be a tuple of 2 integers')
     window_size = initial_window_size
+    
+    if initial_mode not in VALID_MODES
+        raise ValueError('mode must be standard or logo')
+    angle_mode = initial_mode
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
     turtle_pos = (window_size[0] // 2, window_size[1] // 2)
-    turtle_degree = DEFAULT_TURTLE_DEGREE
+    turtle_degree = DEFAULT_TURTLE_DEGREE if angle_mode = 'standard' else 270
     background_color = DEFAULT_BACKGROUND_COLOR
     is_pen_down = DEFAULT_IS_PEN_DOWN
     svg_lines_string = DEFAULT_SVG_LINES_STRING
@@ -240,7 +247,10 @@ def face(degrees):
     if not isinstance(degrees, (int,float)):
         raise ValueError('degrees must be a number.')
 
-    turtle_degree = (360 - degrees) % 360
+    if angle_mode == 'standard':
+        turtle_degree = (360 - degrees) % 360
+    else:
+        turtle_degree = degrees % 360
     _updateDrawing()
 
 setheading = face # alias
@@ -338,7 +348,10 @@ pos = position # alias
 
 # retrieve the turtle's current angle
 def getheading():
-    return (360 - turtle_degree) % 360
+    if angle_mode == 'standard':
+        return (360 - turtle_degree) % 360
+    else:
+        return turtle_degree
 
 heading = getheading # alias
 
@@ -546,6 +559,15 @@ def shape(shape=None):
     turtle_shape = shape
     _updateDrawing()
 
+def mode(mode=None):
+    global angle_mode
+    if shape is None:
+        return angle_mode
+    elif mode not in VALID_MODES:
+        raise ValueError('mode is invalid. valid options are: ' + str(VALID_TURTLE_SHAPES))
+    
+    angle_mode = mode    
+    
 # return turtle window width
 def window_width():
     return window_size[0]
