@@ -10,6 +10,7 @@ import re
 
 # Modified March 2021 by Larry Riddle
 # Changed some default values to match turtle.py package
+# Added options for standard or logo mode
 # Added functions to print or save the svg coding for the image
 # Added "arrow" as a turtle shape
 # Added speed=0 option that displays final image with no animation. 
@@ -66,10 +67,10 @@ TURTLE_ARROW_SVG_TEMPLATE = """<g id="arrow" visibility="{visibility}" transform
 <polygon points="-4,0 0,1 4,0 0,7"  style=" stroke:{turtle_color};fill-rule:evenodd;fill:{turtle_color};fill-opacity:1;" />
 </g>"""
 
-SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02}
+SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02, 11: 0.01, 12: 0.001, 13: 0.0001}
 
 
-# helper function that maps [1,10] speed values to ms delays
+# helper function that maps [1,13] speed values to ms delays
 def _speedToSec(speed):
     return SPEED_TO_SEC_MAP[speed]
 
@@ -106,8 +107,8 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global turtle_shape
     global angle_mode
 
-    if isinstance(initial_speed,int) == False or initial_speed not in range(0, 11):
-        raise ValueError('initial_speed must be an integer in interval [0,10]')
+    if isinstance(initial_speed,int) == False or initial_speed not in range(0, 14):
+        raise ValueError('initial_speed must be an integer in interval [0,13]')
     turtle_speed = initial_speed
 
     if not (isinstance(initial_window_size, tuple) and len(initial_window_size) == 2 and isinstance(
@@ -298,8 +299,8 @@ def speed(speed = None):
     if speed is None:
         return turtle_speed
 
-    if isinstance(speed,int) == False or speed not in range(0, 11):
-        raise ValueError('speed must be an integer in the interval [0,10].')
+    if isinstance(speed,int) == False or speed not in range(0, 14):
+        raise ValueError('speed must be an integer in the interval [0,13].')
     turtle_speed = speed
     # TODO: decide if we should put the timout after changing the speed
     # _updateDrawing()
