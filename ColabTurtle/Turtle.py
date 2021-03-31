@@ -8,7 +8,7 @@ import re
 # v2.1.0 Updated at: 15th March 2021
 #         by: Tolga Atam
 
-# Modified March 2021 by Larry Riddle
+# Modified April 2021 by Larry Riddle
 # Changed some default values to match turtle.py package
 # Added options for standard or logo mode
 # Added functions to print or save the svg coding for the image
@@ -64,7 +64,7 @@ TURTLE_CIRCLE_SVG_TEMPLATE = """<g id="circle" visibility="{visibility}" transfo
 <polygon points="0,19 3,16 -3,16" style="fill:{turtle_color};stroke:{turtle_color};stroke-width:2" />
 </g>"""
 TURTLE_ARROW_SVG_TEMPLATE = """<g id="arrow" visibility="{visibility}" transform="rotate({degrees},{rotation_x},{rotation_y}) translate({turtle_x}, {turtle_y})">
-<polygon points="-4,0 0,1 4,0 0,7"  style=" stroke:{turtle_color};fill-rule:evenodd;fill:{turtle_color};fill-opacity:1;" />
+<polygon points="-4,0 0,1 4,0 0,7"  style=" stroke:{turtle_color};fill-rule:evenodd;fill:{turtle_color};fill-opacity:1;stroke-width:{pen_width}" />
 </g>"""
 
 SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02, 11: 0.01, 12: 0.001, 13: 0.0001}
@@ -163,7 +163,8 @@ def _generateTurtleSvgDrawing():
                            visibility=vis, 
                            degrees=degrees, 
                            rotation_x=turtle_pos[0], 
-                           rotation_y=turtle_pos[1])
+                           rotation_y=turtle_pos[1],
+                           pen_width=pen_width)
 
 
 # helper function for generating the whole svg string
