@@ -336,7 +336,7 @@ def sety(y):
         raise ValueError('new y position must be a number.')
     if y < ymin:
         raise ValueError('new y position must be non-negative.')
-    _moveToNewPosition((turtle_pos[0], _converty(y))
+    _moveToNewPosition((turtle_pos[0], _converty(y)))
 
 
 def home():
