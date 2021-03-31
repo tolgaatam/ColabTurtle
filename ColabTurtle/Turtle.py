@@ -194,9 +194,11 @@ def _updateDrawing():
 
 # convert x to world coordinates
 def _convertx(x):
+    print("convert x")
     return (x-xmin)*xscale
   
 def _converty(y):
+    print("convert y")
     return (ymax-y)*yscale
 
 # helper function for managing any kind of move to a given 'new_pos' and draw lines if pen is down
