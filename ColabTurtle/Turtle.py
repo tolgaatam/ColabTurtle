@@ -87,6 +87,7 @@ svg_lines_string = DEFAULT_SVG_LINES_STRING
 pen_width = DEFAULT_PEN_WIDTH
 turtle_shape = DEFAULT_TURTLE_SHAPE
 angle_mode = DEFAULT_MODE
+xmin,xmax,ymin,ymax = 0,window_size[0],0,window_size[1]
 
 drawing_window = None
 
@@ -106,6 +107,8 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global pen_width
     global turtle_shape
     global angle_mode
+    global xscale
+    global yscale
 
     if isinstance(initial_speed,int) == False or initial_speed not in range(0, 14):
         raise ValueError('initial_speed must be an integer in interval [0,13]')
@@ -119,15 +122,19 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     if mode not in VALID_MODES:
         raise ValueError('mode must be standard or logo')
     angle_mode = mode
+    
+    xscale = window_size[0]/(xmax-xmin)
+    yscale = window_size[1]/(ymax-ymin)
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
-    turtle_pos = (window_size[0] // 2, window_size[1] // 2)
+    turtle_pos = (window_size[0] // 2), window_size[1] // 2)
     turtle_degree = DEFAULT_TURTLE_DEGREE if (angle_mode == 'standard') else (270 - DEFAULT_TURTLE_DEGREE)
     background_color = DEFAULT_BACKGROUND_COLOR
     is_pen_down = DEFAULT_IS_PEN_DOWN
     svg_lines_string = DEFAULT_SVG_LINES_STRING
     pen_width = DEFAULT_PEN_WIDTH
     turtle_shape = DEFAULT_TURTLE_SHAPE
+    
 
     drawing_window = display(HTML(_generateSvgDrawing()), display_id=True)
 
@@ -185,6 +192,12 @@ def _updateDrawing():
         time.sleep(_speedToSec(turtle_speed))
         drawing_window.update(HTML(_generateSvgDrawing()))
 
+# convert x to world coordinates
+def _convertx(x):
+    return (x-xmin)*xscale
+  
+def _converty(y):
+    return (ymax-y)*yscale
 
 # helper function for managing any kind of move to a given 'new_pos' and draw lines if pen is down
 def _moveToNewPosition(new_pos):
@@ -213,9 +226,10 @@ def _moveToNewPosition(new_pos):
 def forward(units):
     if not isinstance(units, (int,float)):
         raise ValueError('units must be a number.')
-
+     
+    
     alpha = math.radians(turtle_degree)
-    ending_point = (turtle_pos[0] + units * math.cos(alpha), turtle_pos[1] + units * math.sin(alpha))
+    ending_point = (turtle_pos[0] + units * xscale * math.cos(alpha), turtle_pos[1] + units * yscale * math.sin(alpha))
 
     _moveToNewPosition(ending_point)
 
@@ -311,18 +325,18 @@ def speed(speed = None):
 def setx(x):
     if not isinstance(x, (int,float)):
         raise ValueError('new x position must be a number.')
-    if x < 0:
+    if x < xmin:
         raise ValueError('new x position must be non-negative.')
-    _moveToNewPosition((x, turtle_pos[1]))
+    _moveToNewPosition((_convertx(x), turtle_pos[1]))
 
 
 # move the turtle to a designated 'y' y-coordinate, x-coordinate stays the same
 def sety(y):
     if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.')
-    if y < 0:
+    if y < ymin:
         raise ValueError('new y position must be non-negative.')
-    _moveToNewPosition((turtle_pos[0], y))
+    _moveToNewPosition((turtle_pos[0], _converty(y))
 
 
 def home():
@@ -369,13 +383,13 @@ def goto(x, y=None):
 
     if not isinstance(x, (int,float)):
         raise ValueError('new x position must be a number.')
-    if x < 0:
+    if x < xmin:
         raise ValueError('new x position must be non-negative')
     if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.')
-    if y < 0:
+    if y < ymin:
         raise ValueError('new y position must be non-negative.')
-    _moveToNewPosition((x, y))
+    _moveToNewPosition((_convertx(x), _converty(y)))
 
 setpos = goto # alias
 setposition = goto # alias
@@ -609,3 +623,18 @@ def done():
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     drawing_window.update(HTML(_generateSvgDrawing()))
+                       
+def setworldcoordinates(llx, lly, urx, ury):
+    global xmin
+    global xmax
+    global ymin
+    global ymax
+    global xscale
+    global yscale
+                       
+    xmin = llx
+    ymin = lly
+    xmax = urx
+    ymax = ury
+    xscale = window_size[0]/(xmax-xmin)
+    yscale = window_size[1]/(ymax-ymin)
