@@ -127,7 +127,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     yscale = window_size[1]/(ymax-ymin)
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
-    turtle_pos = (window_size[0] // 2), window_size[1] // 2)
+    turtle_pos = (window_size[0] // 2, window_size[1] // 2)
     turtle_degree = DEFAULT_TURTLE_DEGREE if (angle_mode == 'standard') else (270 - DEFAULT_TURTLE_DEGREE)
     background_color = DEFAULT_BACKGROUND_COLOR
     is_pen_down = DEFAULT_IS_PEN_DOWN
