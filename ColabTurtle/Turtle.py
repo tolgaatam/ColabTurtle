@@ -8,9 +8,9 @@ import re
 # v2.1.0 Updated at: 15th March 2021
 #         by: Tolga Atam
 
-# Modified at: March 28, 2021
-#         by:  Larry Riddle
-# Changed default background color to white, default pen color to black, default turtle degree to 0 (pointing left)
+# Modified April 2021 by Larry Riddle
+# Changed some default values to match turtle.py package
+# Added options for standard or logo mode
 # Added functions to print or save the svg coding for the image
 # Added "arrow" as a turtle shape
 # Added speed=0 option that displays final image with no animation. 
@@ -45,8 +45,10 @@ VALID_COLORS = ('black', 'navy', 'darkblue', 'mediumblue', 'blue', 'darkgreen', 
                 'lightsalmon', 'orange', 'lightpink', 'pink', 'gold', 'peachpuff', 'navajowhite', 'moccasin', 'bisque', 'mistyrose', 'blanchedalmond', 
                 'papayawhip', 'lavenderblush', 'seashell', 'cornsilk', 'lemonchiffon', 'floralwhite', 'snow', 'yellow', 'lightyellow', 'ivory', 'white')
 VALID_COLORS_SET = set(VALID_COLORS)
+VALID_MODES = ('standard','logo')
 DEFAULT_TURTLE_SHAPE = 'arrow'
 VALID_TURTLE_SHAPES = ('turtle', 'circle', 'arrow')
+DEFAULT_MODE = 'standard'
 SVG_TEMPLATE = """
       <svg width="{window_width}" height="{window_height}">  
         <rect width="100%" height="100%" style="fill:{background_color}"/>
@@ -62,13 +64,13 @@ TURTLE_CIRCLE_SVG_TEMPLATE = """<g id="circle" visibility="{visibility}" transfo
 <polygon points="0,19 3,16 -3,16" style="fill:{turtle_color};stroke:{turtle_color};stroke-width:2" />
 </g>"""
 TURTLE_ARROW_SVG_TEMPLATE = """<g id="arrow" visibility="{visibility}" transform="rotate({degrees},{rotation_x},{rotation_y}) translate({turtle_x}, {turtle_y})">
-<polygon points="-4,0 0,1 4,0 0,7"  style=" stroke:{turtle_color};fill-rule:evenodd;fill:{turtle_color};fill-opacity:1;" />
+<polygon points="-4,0 0,1 4,0 0,7"  style=" stroke:{turtle_color};fill-rule:evenodd;fill:{turtle_color};fill-opacity:1;stroke-width:{pen_width}" />
 </g>"""
 
-SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02}
+SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8: 0.06, 9: 0.04, 10: 0.02, 11: 0.01, 12: 0.001, 13: 0.0001}
 
 
-# helper function that maps [1,10] speed values to ms delays
+# helper function that maps [1,13] speed values to ms delays
 def _speedToSec(speed):
     return SPEED_TO_SEC_MAP[speed]
 
@@ -84,12 +86,13 @@ is_pen_down = DEFAULT_IS_PEN_DOWN
 svg_lines_string = DEFAULT_SVG_LINES_STRING
 pen_width = DEFAULT_PEN_WIDTH
 turtle_shape = DEFAULT_TURTLE_SHAPE
+angle_mode = DEFAULT_MODE
 
 drawing_window = None
 
 
 # construct the display for turtle
-def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE):
+def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE, mode=DEFAULT_MODE):
     global window_size
     global drawing_window
     global turtle_speed
@@ -102,19 +105,24 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global svg_lines_string
     global pen_width
     global turtle_shape
+    global angle_mode
 
-    if isinstance(initial_speed,int) == False or initial_speed not in range(0, 11):
-        raise ValueError('initial_speed must be an integer in interval [0,10]')
+    if isinstance(initial_speed,int) == False or initial_speed not in range(0, 14):
+        raise ValueError('initial_speed must be an integer in interval [0,13]')
     turtle_speed = initial_speed
 
     if not (isinstance(initial_window_size, tuple) and len(initial_window_size) == 2 and isinstance(
             initial_window_size[0], int) and isinstance(initial_window_size[1], int)):
         raise ValueError('window_size must be a tuple of 2 integers')
     window_size = initial_window_size
+    
+    if mode not in VALID_MODES:
+        raise ValueError('mode must be standard or logo')
+    angle_mode = mode
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
     turtle_pos = (window_size[0] // 2, window_size[1] // 2)
-    turtle_degree = DEFAULT_TURTLE_DEGREE
+    turtle_degree = DEFAULT_TURTLE_DEGREE if (angle_mode == 'standard') else (270 - DEFAULT_TURTLE_DEGREE)
     background_color = DEFAULT_BACKGROUND_COLOR
     is_pen_down = DEFAULT_IS_PEN_DOWN
     svg_lines_string = DEFAULT_SVG_LINES_STRING
@@ -155,7 +163,8 @@ def _generateTurtleSvgDrawing():
                            visibility=vis, 
                            degrees=degrees, 
                            rotation_x=turtle_pos[0], 
-                           rotation_y=turtle_pos[1])
+                           rotation_y=turtle_pos[1],
+                           pen_width=pen_width)
 
 
 # helper function for generating the whole svg string
@@ -168,6 +177,7 @@ def _generateSvgDrawing():
 
 
 # helper functions for updating the screen using the latest positions/angles/lines etc.
+# If the turtle speed is 0, the update is skipped so animation is done.
 def _updateDrawing():
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
@@ -240,7 +250,10 @@ def face(degrees):
     if not isinstance(degrees, (int,float)):
         raise ValueError('degrees must be a number.')
 
-    turtle_degree = degrees % 360
+    if angle_mode == 'standard':
+        turtle_degree = (360 - degrees) % 360
+    else:
+        turtle_degree = degrees % 360
     _updateDrawing()
 
 setheading = face # alias
@@ -287,8 +300,8 @@ def speed(speed = None):
     if speed is None:
         return turtle_speed
 
-    if isinstance(speed,int) == False or speed not in range(0, 11):
-        raise ValueError('speed must be an integer in the interval [0,10].')
+    if isinstance(speed,int) == False or speed not in range(0, 14):
+        raise ValueError('speed must be an integer in the interval [0,13].')
     turtle_speed = speed
     # TODO: decide if we should put the timout after changing the speed
     # _updateDrawing()
@@ -338,7 +351,10 @@ pos = position # alias
 
 # retrieve the turtle's current angle
 def getheading():
-    return turtle_degree
+    if angle_mode == 'standard':
+        return (360 - turtle_degree) % 360
+    else:
+        return turtle_degree % 360
 
 heading = getheading # alias
 
@@ -546,6 +562,15 @@ def shape(shape=None):
     turtle_shape = shape
     _updateDrawing()
 
+def mode(mode=None):
+    global angle_mode
+    if shape is None:
+        return angle_mode
+    elif mode not in VALID_MODES:
+        raise ValueError('mode is invalid. valid options are: ' + str(VALID_TURTLE_SHAPES))
+    
+    angle_mode = mode    
+    
 # return turtle window width
 def window_width():
     return window_size[0]
