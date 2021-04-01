@@ -87,7 +87,7 @@ svg_lines_string = DEFAULT_SVG_LINES_STRING
 pen_width = DEFAULT_PEN_WIDTH
 turtle_shape = DEFAULT_TURTLE_SHAPE
 angle_mode = DEFAULT_MODE
-xmin,xmax,ymin,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
+
 
 drawing_window = None
 
@@ -122,6 +122,8 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     if mode not in VALID_MODES:
         raise ValueError('mode must be standard or logo')
     angle_mode = mode
+    
+    xmin,xmax,ymin,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
     
     xscale = window_size[0]/(xmax-xmin)
     yscale = window_size[1]/(ymax-ymin)
