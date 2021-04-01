@@ -555,8 +555,8 @@ def write(obj, **kwargs):
 
     if "font" in kwargs:
         font = kwargs["font"]
-        if len(font) != 3 or isinstance(font[0], int) == False 
-                          or isinstance(font[1], str) == False 
+        if len(font) != 3 or isinstance(font[0], int) == False \
+                          or isinstance(font[1], str) == False \
                           or font[2] not in {'bold','italic','underline','normal'}:
             raise ValueError('font parameter must be a triplet consisting of font size (int), font family (str) and font type. font type can be one of {bold, italic, underline, normal}')
         font_size = font[0]
