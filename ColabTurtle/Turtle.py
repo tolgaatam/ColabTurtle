@@ -669,12 +669,10 @@ def setworldcoordinates(llx, lly, urx, ury):
     xscale = window_size[0]/(xmax-xmin)
     yscale = window_size[1]/(ymax-ymin)
 
-def showBorder(kolor = None, c2 = None, c3 = None):
+def showBorder(kolor = "lightgray", c2 = None, c3 = None):
     global border_color
     
-    if kolor is None:
-        border_color = "lightgray"
-    elif c2 is not None:
+    if c2 is not None:
         if c3 is None:
             raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
         kolor = (kolor, c2, c3)
