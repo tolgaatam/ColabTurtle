@@ -669,9 +669,15 @@ def setworldcoordinates(llx, lly, urx, ury):
     xscale = window_size[0]/(xmax-xmin)
     yscale = window_size[1]/(ymax-ymin)
 
-def drawBorder(draw=True):
+def showBorder():
     global border_color
-    border_color = "lightgray" if draw else ""
+    border_color = "lightgray"
+    _updateDrawing()
+    
+def hideBorder():
+    global border_color
+    border_color = ""
+    _updateDrawing()
   
   
   
