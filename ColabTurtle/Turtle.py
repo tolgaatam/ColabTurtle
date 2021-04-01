@@ -123,7 +123,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
         raise ValueError('mode must be standard or logo')
     angle_mode = mode
     
-    xmin,xmax,ymin,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
+    xmin,ymin,xmax,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
     
     xscale = window_size[0]/(xmax-xmin)
     yscale = window_size[1]/(ymax-ymin)
