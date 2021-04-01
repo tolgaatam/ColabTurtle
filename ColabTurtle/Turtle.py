@@ -488,7 +488,7 @@ def color(color = None, c2 = None, c3 = None):
     pen_color = _processColor(color)
     _updateDrawing()
 
-pencolor = color
+pencolor = color  #alias
 
 # change the width of the lines drawn by the turtle, in pixels
 # if the function is called without arguments, it returns the current width
@@ -507,7 +507,7 @@ def width(width = None):
         # TODO: decide if we should put the timout after changing the pen_width
         # _updateDrawing()
 
-pensize = width
+pensize = width  #alias
 
 # calculate the distance between the turtle and a given point
 def distance(x, y=None):
@@ -669,9 +669,17 @@ def setworldcoordinates(llx, lly, urx, ury):
     xscale = window_size[0]/(xmax-xmin)
     yscale = window_size[1]/(ymax-ymin)
 
-def showBorder():
+def showBorder(kolor = None, c2 = None, c3 = None):
     global border_color
-    border_color = "lightgray"
+    
+    if kolor is None:
+        border_color = "lightgray"
+    elif c2 is not None:
+        if c3 is None:
+            raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
+        kolor = (kolor, c2, c3)
+
+    border_color = _processColor(color)
     _updateDrawing()
     
 def hideBorder():
