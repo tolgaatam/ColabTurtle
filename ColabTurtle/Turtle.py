@@ -20,7 +20,7 @@ import re
 # It uses html capabilites of IPython library to draw svg shapes inline.
 # Looks of the figures are inspired from Blockly Games / Turtle (blockly-games.appspot.com/turtle)
 
-DEFAULT_WINDOW_SIZE = (800, 500)
+DEFAULT_WINDOW_SIZE = (800, 600)
 DEFAULT_SPEED = 5
 DEFAULT_TURTLE_VISIBILITY = True
 DEFAULT_PEN_COLOR = 'black'
@@ -87,7 +87,7 @@ svg_lines_string = DEFAULT_SVG_LINES_STRING
 pen_width = DEFAULT_PEN_WIDTH
 turtle_shape = DEFAULT_TURTLE_SHAPE
 angle_mode = DEFAULT_MODE
-xmin,xmax,ymin,ymax = 0,window_size[0],0,window_size[1]
+xmin,xmax,ymin,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
 
 drawing_window = None
 
@@ -127,7 +127,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     yscale = window_size[1]/(ymax-ymin)
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
-    turtle_pos = (window_size[0] // 2, window_size[1] // 2)
+    turtle_pos = (window_size[0] / 2, window_size[1] / 2)
     turtle_degree = DEFAULT_TURTLE_DEGREE if (angle_mode == 'standard') else (270 - DEFAULT_TURTLE_DEGREE)
     background_color = DEFAULT_BACKGROUND_COLOR
     is_pen_down = DEFAULT_IS_PEN_DOWN
