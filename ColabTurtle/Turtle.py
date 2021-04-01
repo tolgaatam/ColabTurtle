@@ -107,6 +107,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global pen_width
     global turtle_shape
     global angle_mode
+    global xmin,ymin,xmax,ymax
     global xscale
     global yscale
 
