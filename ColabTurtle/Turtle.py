@@ -95,7 +95,7 @@ svg_lines_string = DEFAULT_SVG_LINES_STRING
 pen_width = DEFAULT_PEN_WIDTH
 turtle_shape = DEFAULT_TURTLE_SHAPE
 angle_mode = DEFAULT_MODE
-border_kolor = DEFAULT_BORDER_KOLOR
+border_color = DEFAULT_BORDER_COLOR
 
 
 drawing_window = None
@@ -193,7 +193,7 @@ def _generateSvgDrawing():
                                background_color=background_color, 
                                lines=svg_lines_string,
                                turtle=_generateTurtleSvgDrawing(),
-                               kolor=border_kolor)
+                               kolor=border_color)
 
 
 # helper functions for updating the screen using the latest positions/angles/lines etc.
@@ -670,8 +670,8 @@ def setworldcoordinates(llx, lly, urx, ury):
     yscale = window_size[1]/(ymax-ymin)
 
 def drawBorder(draw=True):
-    global border_kolor
-    border_kolor = "lightgray" if draw else ""
+    global border_color
+    border_color = "lightgray" if draw else ""
   
   
   
