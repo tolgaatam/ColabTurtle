@@ -657,8 +657,8 @@ def setworldcoordinates(llx, lly, urx, ury):
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     elif (urx-llx <= 0):
         raise ValueError("Lower left x-coordinate must be less than upper right x-coordinate")
-    elif (ury-lly <= 0):
-        raise ValueError("Lower left y-coordinate must be less than upper right y-coordinate")
+    #elif (ury-lly <= 0):
+    #    raise ValueError("Lower left y-coordinate must be less than upper right y-coordinate")
     global xmin
     global xmax
     global ymin
