@@ -673,11 +673,11 @@ def setworldcoordinates(llx, lly, urx, ury):
     xscale = window_size[0]/(xmax-xmin)
     yscale = window_size[1]/(ymax-ymin)
 
-# Show a border around the graphics window. Default (no parameters) is lightgray.    
+# Show a border around the graphics window. Default (no parameters) is gray.    
 def showBorder(color = None, c2 = None, c3 = None):
     global border_color
     if color is None:
-        color = "lightgray"
+        color = "gray"
     elif c2 is not None:
         if c3 is None:
             raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
