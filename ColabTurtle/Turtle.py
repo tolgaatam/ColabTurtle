@@ -620,7 +620,8 @@ def saveSVG(filename, show_turtle=False):
     text_file = open(filename, "w")
     header = ("""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg">\n""").format(w=window_size[0],
                                                                                                                       h=window_size[1]) 
-    header += ("""<rect width="100%" height="100%" style="fill:{kolor}" />\n""").format(kolor=background_color)
+    header += ("""<rect width="100%" height="100%" style="fill:{fillcolor};stroke:{kolor};stroke-width:1" />\n""").format(fillcolor=background_color,
+                                                                                                                          kolor=border_color)
     image = svg_lines_string.replace(">",">\n")
     if show_turtle:
         turtle_svg = _generateTurtleSvgDrawing() + " \n"
@@ -636,7 +637,8 @@ def showSVG(show_turtle=False):
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     header = ("""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg">\n""").format(w=window_size[0],
                                                                                                                       h=window_size[1]) 
-    header += ("""<rect width="100%" height="100%" style="fill:{kolor}" />\n""").format(kolor=background_color)
+    header += ("""<rect width="100%" height="100%" style="ffill:{fillcolor};stroke:{kolor};stroke-width:1" />\n""").format(fillcolor=background_color,
+                                                                                                                           kolor=border_color)
     image = svg_lines_string.replace(">",">\n")
     turtle_svg = (_generateTurtleSvgDrawing() + " \n") if show_turtle else ""
     output = header + image + turtle_svg + "</svg>"
@@ -647,7 +649,9 @@ def done():
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     drawing_window.update(HTML(_generateSvgDrawing()))
-                       
+
+# Set up user-defined coordinate system using lower left and upper right corners.
+# ATTENTION: in user-defined coordinate systems angles may appear distorted.
 def setworldcoordinates(llx, lly, urx, ury):
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
@@ -669,6 +673,7 @@ def setworldcoordinates(llx, lly, urx, ury):
     xscale = window_size[0]/(xmax-xmin)
     yscale = window_size[1]/(ymax-ymin)
 
+# Show a border around the graphics window. Default (no parameters) is lightgray.    
 def showBorder(color = None, c2 = None, c3 = None):
     global border_color
     if color is None:
@@ -680,7 +685,8 @@ def showBorder(color = None, c2 = None, c3 = None):
 
     border_color = _processColor(color)
     _updateDrawing()
-    
+
+# Hide the border around the graphics window.    
 def hideBorder():
     global border_color
     border_color = ""
