@@ -637,7 +637,7 @@ def showSVG(show_turtle=False):
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     header = ("""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg">\n""").format(w=window_size[0],
                                                                                                                       h=window_size[1]) 
-    header += ("""<rect width="100%" height="100%" style="ffill:{fillcolor};stroke:{kolor};stroke-width:1" />\n""").format(fillcolor=background_color,
+    header += ("""<rect width="100%" height="100%" style="fill:{fillcolor};stroke:{kolor};stroke-width:1" />\n""").format(fillcolor=background_color,
                                                                                                                            kolor=border_color)
     image = svg_lines_string.replace(">",">\n")
     turtle_svg = (_generateTurtleSvgDrawing() + " \n") if show_turtle else ""
