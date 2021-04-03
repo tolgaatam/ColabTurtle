@@ -10,22 +10,30 @@ import re
 
 # Modified April 2021 by Larry Riddle
 # Changed some default values to match turtle.py package
-# Added options for standard or logo mode
+#   default background color is white, default pen color is black, default pen thickness is 1
+#   default mode is "standard"
+#   center of window has coordinates (0,0)
+# Added option for selecting standard or logo mode when initializing the turtle graphics
+#   "standard" : default direction is to the right (east) and positive angles measured counterclockwise
+#   "logo" : default directon is upward (north) and positive angles measured clockwise
 # Added functions to print or save the svg coding for the image
 # Added "arrow" as a turtle shape
 # Added speed=0 option that displays final image with no animation. 
-# Added done() function so that final image is displayed on screen when speed=0
+#   Added done() function so that final image is displayed on screen when speed=0
+# Added setworldcoordinates function to allow for setting world coordinate system. "World" mode is not used.
+#   This should only be done immediately after initializing the turtle window
 
 # Module for drawing classic Turtle figures on Google Colab notebooks.
 # It uses html capabilites of IPython library to draw svg shapes inline.
 # Looks of the figures are inspired from Blockly Games / Turtle (blockly-games.appspot.com/turtle)
 
-DEFAULT_WINDOW_SIZE = (800, 500)
+DEFAULT_WINDOW_SIZE = (800, 600)
 DEFAULT_SPEED = 5
 DEFAULT_TURTLE_VISIBILITY = True
 DEFAULT_PEN_COLOR = 'black'
 DEFAULT_TURTLE_DEGREE = 0
 DEFAULT_BACKGROUND_COLOR = 'white'
+DEFAULT_BORDER_COLOR = ""
 DEFAULT_IS_PEN_DOWN = True
 DEFAULT_SVG_LINES_STRING = ""
 DEFAULT_PEN_WIDTH = 1
@@ -51,7 +59,7 @@ VALID_TURTLE_SHAPES = ('turtle', 'circle', 'arrow')
 DEFAULT_MODE = 'standard'
 SVG_TEMPLATE = """
       <svg width="{window_width}" height="{window_height}">  
-        <rect width="100%" height="100%" style="fill:{background_color}"/>
+        <rect width="100%" height="100%" style="fill:{background_color};stroke:{kolor};stroke-width:1"/>
         {lines}
         {turtle}
       </svg>
@@ -87,6 +95,8 @@ svg_lines_string = DEFAULT_SVG_LINES_STRING
 pen_width = DEFAULT_PEN_WIDTH
 turtle_shape = DEFAULT_TURTLE_SHAPE
 angle_mode = DEFAULT_MODE
+border_color = DEFAULT_BORDER_COLOR
+
 
 drawing_window = None
 
@@ -106,6 +116,9 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global pen_width
     global turtle_shape
     global angle_mode
+    global xmin,ymin,xmax,ymax
+    global xscale
+    global yscale
 
     if isinstance(initial_speed,int) == False or initial_speed not in range(0, 14):
         raise ValueError('initial_speed must be an integer in interval [0,13]')
@@ -119,15 +132,21 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     if mode not in VALID_MODES:
         raise ValueError('mode must be standard or logo')
     angle_mode = mode
+    
+    xmin,ymin,xmax,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
+    
+    xscale = window_size[0]/(xmax-xmin)
+    yscale = window_size[1]/(ymax-ymin)
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
-    turtle_pos = (window_size[0] // 2, window_size[1] // 2)
+    turtle_pos = (window_size[0] / 2, window_size[1] / 2)
     turtle_degree = DEFAULT_TURTLE_DEGREE if (angle_mode == 'standard') else (270 - DEFAULT_TURTLE_DEGREE)
     background_color = DEFAULT_BACKGROUND_COLOR
     is_pen_down = DEFAULT_IS_PEN_DOWN
     svg_lines_string = DEFAULT_SVG_LINES_STRING
     pen_width = DEFAULT_PEN_WIDTH
     turtle_shape = DEFAULT_TURTLE_SHAPE
+    
 
     drawing_window = display(HTML(_generateSvgDrawing()), display_id=True)
 
@@ -173,7 +192,8 @@ def _generateSvgDrawing():
                                window_height=window_size[1],
                                background_color=background_color, 
                                lines=svg_lines_string,
-                               turtle=_generateTurtleSvgDrawing())
+                               turtle=_generateTurtleSvgDrawing(),
+                               kolor=border_color)
 
 
 # helper functions for updating the screen using the latest positions/angles/lines etc.
@@ -185,6 +205,12 @@ def _updateDrawing():
         time.sleep(_speedToSec(turtle_speed))
         drawing_window.update(HTML(_generateSvgDrawing()))
 
+# convert to world coordinates
+def _convertx(x):
+    return (x-xmin)*xscale
+  
+def _converty(y):
+    return (ymax-y)*yscale
 
 # helper function for managing any kind of move to a given 'new_pos' and draw lines if pen is down
 def _moveToNewPosition(new_pos):
@@ -213,9 +239,10 @@ def _moveToNewPosition(new_pos):
 def forward(units):
     if not isinstance(units, (int,float)):
         raise ValueError('units must be a number.')
-
+     
+    
     alpha = math.radians(turtle_degree)
-    ending_point = (turtle_pos[0] + units * math.cos(alpha), turtle_pos[1] + units * math.sin(alpha))
+    ending_point = (turtle_pos[0] + units * xscale * math.cos(alpha), turtle_pos[1] + units * yscale * math.sin(alpha))
 
     _moveToNewPosition(ending_point)
 
@@ -311,18 +338,18 @@ def speed(speed = None):
 def setx(x):
     if not isinstance(x, (int,float)):
         raise ValueError('new x position must be a number.')
-    if x < 0:
-        raise ValueError('new x position must be non-negative.')
-    _moveToNewPosition((x, turtle_pos[1]))
+    #if x < xmin:
+    #    raise ValueError('new x position must be non-negative.')
+    _moveToNewPosition((_convertx(x), turtle_pos[1]))
 
 
 # move the turtle to a designated 'y' y-coordinate, x-coordinate stays the same
 def sety(y):
     if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.')
-    if y < 0:
-        raise ValueError('new y position must be non-negative.')
-    _moveToNewPosition((turtle_pos[0], y))
+   # if y < ymin:
+    #    raise ValueError('new y position must be non-negative.')
+    _moveToNewPosition((turtle_pos[0], _converty(y)))
 
 
 def home():
@@ -333,19 +360,19 @@ def home():
 
 # retrieve the turtle's currrent 'x' x-coordinate
 def getx():
-    return(turtle_pos[0])
+    return(turtle_pos[0]/xscale+xmin)
 
 xcor = getx # alias
 
 # retrieve the turtle's currrent 'y' y-coordinate
 def gety():
-    return(turtle_pos[1])
+    return(ymax-turtle_pos[1]/yscale)
 
 ycor = gety # alias
 
 # retrieve the turtle's current position as a (x,y) tuple vector
 def position():
-    return turtle_pos
+    return (turtle_pos[0]/xscale+xmin, ymax - turtle_pos[1]/yscale)
 
 pos = position # alias
 
@@ -369,13 +396,13 @@ def goto(x, y=None):
 
     if not isinstance(x, (int,float)):
         raise ValueError('new x position must be a number.')
-    if x < 0:
-        raise ValueError('new x position must be non-negative')
+    #if x < xmin:
+    #    raise ValueError('new x position must be non-negative')
     if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.')
-    if y < 0:
-        raise ValueError('new y position must be non-negative.')
-    _moveToNewPosition((x, y))
+    #if y < ymin:
+    #    raise ValueError('new y position must be non-negative.')
+    _moveToNewPosition((_convertx(x), _converty(y)))
 
 setpos = goto # alias
 setposition = goto # alias
@@ -461,7 +488,7 @@ def color(color = None, c2 = None, c3 = None):
     pen_color = _processColor(color)
     _updateDrawing()
 
-pencolor = color
+pencolor = color  #alias
 
 # change the width of the lines drawn by the turtle, in pixels
 # if the function is called without arguments, it returns the current width
@@ -480,7 +507,7 @@ def width(width = None):
         # TODO: decide if we should put the timout after changing the pen_width
         # _updateDrawing()
 
-pensize = width
+pensize = width  #alias
 
 # calculate the distance between the turtle and a given point
 def distance(x, y=None):
@@ -493,17 +520,17 @@ def distance(x, y=None):
 
     if not isinstance(x, (int,float)):
         raise ValueError('new x position must be a number.')
-    if x < 0:
-        raise ValueError('new x position must be non-negative')
+    #if x < 0:
+    #    raise ValueError('new x position must be non-negative')
     if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.')
-    if not y < 0:
-        raise ValueError('new y position must be non-negative.')
+    #if not y < 0:
+    #    raise ValueError('new y position must be non-negative.')
 
     if not isinstance(point, tuple) or len(point) != 2 or (not isinstance(point[0], int) and not isinstance(point[0], float)) or (not isinstance(point[1], int) and not isinstance(point[1], float)):
         raise ValueError('the vector given for the point must be a tuple with 2 numbers.')
 
-    return round(math.sqrt( (turtle_pos[0] - x) ** 2 + (turtle_pos[1] - y) ** 2 ), 4)
+    return round(math.sqrt( (turtle_pos[0] - _convertx(x)) ** 2 + (turtle_pos[1] - _convert(y)) ** 2 ), 4)
 
 # clear any text or drawing on the screen
 def clear():
@@ -531,7 +558,9 @@ def write(obj, **kwargs):
 
     if "font" in kwargs:
         font = kwargs["font"]
-        if len(font) != 3 or isinstance(font[0], int) == False or isinstance(font[1], str) == False or font[2] not in {'bold','italic','underline','normal'}:
+        if len(font) != 3 or isinstance(font[0], int) == False \
+                          or isinstance(font[1], str) == False \
+                          or font[2] not in {'bold','italic','underline','normal'}:
             raise ValueError('font parameter must be a triplet consisting of font size (int), font family (str) and font type. font type can be one of {bold, italic, underline, normal}')
         font_size = font[0]
         font_family = font[1]
@@ -548,7 +577,12 @@ def write(obj, **kwargs):
     elif font_type == 'underline':
         style_string += "text-decoration: underline;"
             
-    svg_lines_string += """<text x="{x}" y="{y}" fill="{fill_color}" text-anchor="{align}" style="{style}">{text}</text>""".format(x=turtle_pos[0], y=turtle_pos[1], text=text, fill_color=pen_color, align=align, style=style_string)
+    svg_lines_string += """<text x="{x}" y="{y}" fill="{fill_color}" text-anchor="{align}" style="{style}">{text}</text>""".format(x=turtle_pos[0], 
+                                                                                                                                   y=turtle_pos[1], 
+                                                                                                                                   text=text, 
+                                                                                                                                   fill_color=pen_color, 
+                                                                                                                                   align=align, 
+                                                                                                                                   style=style_string)
     
     _updateDrawing()
 
@@ -557,7 +591,7 @@ def shape(shape=None):
     if shape is None:
         return turtle_shape
     elif shape not in VALID_TURTLE_SHAPES:
-        raise ValueError('shape is invalid. valid options are: ' + str(VALID_TURTLE_SHAPES))
+        raise ValueError('Shape is invalid. Valid options are: ' + str(VALID_TURTLE_SHAPES))
     
     turtle_shape = shape
     _updateDrawing()
@@ -567,7 +601,7 @@ def mode(mode=None):
     if shape is None:
         return angle_mode
     elif mode not in VALID_MODES:
-        raise ValueError('mode is invalid. valid options are: ' + str(VALID_TURTLE_SHAPES))
+        raise ValueError('Mode is invalid. Valid options are: ' + str(VALID_TURTLE_SHAPES))
     
     angle_mode = mode    
     
@@ -581,10 +615,13 @@ def window_height():
 
 # save the image as an SVG file using given filename. Set show_turtle=True to include turtle in svg output
 def saveSVG(filename, show_turtle=False):
+    if drawing_window == None:
+        raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     text_file = open(filename, "w")
     header = ("""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg">\n""").format(w=window_size[0],
                                                                                                                       h=window_size[1]) 
-    header += ("""<rect width="100%" height="100%" style="fill:{kolor}" />\n""").format(kolor=background_color)
+    header += ("""<rect width="100%" height="100%" style="fill:{fillcolor};stroke:{kolor};stroke-width:1" />\n""").format(fillcolor=background_color,
+                                                                                                                          kolor=border_color)
     image = svg_lines_string.replace(">",">\n")
     if show_turtle:
         turtle_svg = _generateTurtleSvgDrawing() + " \n"
@@ -596,9 +633,12 @@ def saveSVG(filename, show_turtle=False):
 
 # print the SVG code for the image
 def showSVG(show_turtle=False):
+    if drawing_window == None:
+        raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     header = ("""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg">\n""").format(w=window_size[0],
                                                                                                                       h=window_size[1]) 
-    header += ("""<rect width="100%" height="100%" style="fill:{kolor}" />\n""").format(kolor=background_color)
+    header += ("""<rect width="100%" height="100%" style="fill:{fillcolor};stroke:{kolor};stroke-width:1" />\n""").format(fillcolor=background_color,
+                                                                                                                           kolor=border_color)
     image = svg_lines_string.replace(">",">\n")
     turtle_svg = (_generateTurtleSvgDrawing() + " \n") if show_turtle else ""
     output = header + image + turtle_svg + "</svg>"
@@ -609,3 +649,48 @@ def done():
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     drawing_window.update(HTML(_generateSvgDrawing()))
+
+# Set up user-defined coordinate system using lower left and upper right corners.
+# ATTENTION: in user-defined coordinate systems angles may appear distorted.
+def setworldcoordinates(llx, lly, urx, ury):
+    if drawing_window == None:
+        raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
+    elif (urx-llx <= 0):
+        raise ValueError("Lower left x-coordinate must be less than upper right x-coordinate")
+    elif (ury-lly <= 0):
+        raise ValueError("Lower left y-coordinate must be less than upper right y-coordinate")
+    global xmin
+    global xmax
+    global ymin
+    global ymax
+    global xscale
+    global yscale
+                       
+    xmin = llx
+    ymin = lly
+    xmax = urx
+    ymax = ury
+    xscale = window_size[0]/(xmax-xmin)
+    yscale = window_size[1]/(ymax-ymin)
+
+# Show a border around the graphics window. Default (no parameters) is gray.    
+def showBorder(color = None, c2 = None, c3 = None):
+    global border_color
+    if color is None:
+        color = "gray"
+    elif c2 is not None:
+        if c3 is None:
+            raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
+        color = (color, c2, c3)
+
+    border_color = _processColor(color)
+    _updateDrawing()
+
+# Hide the border around the graphics window.    
+def hideBorder():
+    global border_color
+    border_color = ""
+    _updateDrawing()
+  
+  
+  
