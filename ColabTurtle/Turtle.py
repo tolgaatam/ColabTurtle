@@ -53,7 +53,7 @@ VALID_COLORS = ('black', 'navy', 'darkblue', 'mediumblue', 'blue', 'darkgreen', 
                 'lightsalmon', 'orange', 'lightpink', 'pink', 'gold', 'peachpuff', 'navajowhite', 'moccasin', 'bisque', 'mistyrose', 'blanchedalmond', 
                 'papayawhip', 'lavenderblush', 'seashell', 'cornsilk', 'lemonchiffon', 'floralwhite', 'snow', 'yellow', 'lightyellow', 'ivory', 'white')
 VALID_COLORS_SET = set(VALID_COLORS)
-VALID_MODES = ('standard','logo')
+VALID_MODES = ('standard','logo','world')
 DEFAULT_TURTLE_SHAPE = 'arrow'
 VALID_TURTLE_SHAPES = ('turtle', 'circle', 'arrow')
 DEFAULT_MODE = 'standard'
@@ -130,7 +130,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     window_size = initial_window_size
     
     if mode not in VALID_MODES:
-        raise ValueError('mode must be standard or logo')
+        raise ValueError('mode must be standard, logo, or world')
     angle_mode = mode
     
     xmin,ymin,xmax,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
@@ -140,7 +140,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
     turtle_pos = (window_size[0] / 2, window_size[1] / 2)
-    turtle_degree = DEFAULT_TURTLE_DEGREE if (angle_mode == 'standard') else (270 - DEFAULT_TURTLE_DEGREE)
+    turtle_degree = DEFAULT_TURTLE_DEGREE if (angle_mode != 'logo') else (270 - DEFAULT_TURTLE_DEGREE)
     background_color = DEFAULT_BACKGROUND_COLOR
     is_pen_down = DEFAULT_IS_PEN_DOWN
     svg_lines_string = DEFAULT_SVG_LINES_STRING
@@ -277,10 +277,10 @@ def face(degrees):
     if not isinstance(degrees, (int,float)):
         raise ValueError('degrees must be a number.')
 
-    if angle_mode == 'standard':
-        turtle_degree = (360 - degrees) % 360
-    else:
+    if angle_mode == 'logo':
         turtle_degree = degrees % 360
+    else:
+        turtle_degree = (360 - degrees) % 360
     _updateDrawing()
 
 setheading = face # alias
@@ -355,8 +355,8 @@ def sety(y):
 def home():
     global turtle_degree
 
-    turtle_degree = DEFAULT_TURTLE_DEGREE
-    _moveToNewPosition( (window_size[0] // 2, window_size[1] // 2) ) # this will handle updating the drawing.
+    turtle_degree = DEFAULT_TURTLE_DEGREE if (angle_mode != 'logo') else (270 - DEFAULT_TURTLE_DEGREE)
+    _moveToNewPosition( (window_size[0] / 2, window_size[1] / 2) ) # this will handle updating the drawing.
 
 # retrieve the turtle's currrent 'x' x-coordinate
 def getx():
@@ -378,10 +378,10 @@ pos = position # alias
 
 # retrieve the turtle's current angle
 def getheading():
-    if angle_mode == 'standard':
-        return (360 - turtle_degree) % 360
-    else:
+    if angle_mode == 'logo':
         return turtle_degree % 360
+    else:
+        return (360 - turtle_degree) % 360
 
 heading = getheading # alias
 
@@ -396,12 +396,8 @@ def goto(x, y=None):
 
     if not isinstance(x, (int,float)):
         raise ValueError('new x position must be a number.')
-    #if x < xmin:
-    #    raise ValueError('new x position must be non-negative')
     if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.')
-    #if y < ymin:
-    #    raise ValueError('new y position must be non-negative.')
     _moveToNewPosition((_convertx(x), _converty(y)))
 
 setpos = goto # alias
@@ -524,8 +520,7 @@ def distance(x, y=None):
     if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.')
 
-   # return round(math.sqrt( (turtle_pos[0] - _convertx(x)) ** 2 + (turtle_pos[1] - _convert(y)) ** 2 ), 4)
-    return round(math.sqrt( (pos()[0] - x) ** 2 + (pos()[1] - y) ** 2 ), 4)
+    return round(math.sqrt( (pos()[0] - x) ** 2 + (pos()[1] - y) ** 2 ), 8)
 
 # clear any text or drawing on the screen
 def clear():
@@ -660,6 +655,7 @@ def setworldcoordinates(llx, lly, urx, ury):
     global ymax
     global xscale
     global yscale
+    global angle_mode
                        
     xmin = llx
     ymin = lly
@@ -667,6 +663,8 @@ def setworldcoordinates(llx, lly, urx, ury):
     ymax = ury
     xscale = window_size[0]/(xmax-xmin)
     yscale = window_size[1]/(ymax-ymin)
+    angle_mode = "world"
+    
 
 # Show a border around the graphics window. Default (no parameters) is gray.    
 def showBorder(color = None, c2 = None, c3 = None):
