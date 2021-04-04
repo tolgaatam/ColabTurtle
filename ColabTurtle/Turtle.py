@@ -525,7 +525,7 @@ def distance(x, y=None):
         raise ValueError('new y position must be a number.')
 
    # return round(math.sqrt( (turtle_pos[0] - _convertx(x)) ** 2 + (turtle_pos[1] - _convert(y)) ** 2 ), 4)
-     return round(math.sqrt( (pos()[0] - x) ** 2 + (pos()[1] - y) ** 2 ), 4)
+    return round(math.sqrt( (pos()[0] - x) ** 2 + (pos()[1] - y) ** 2 ), 4)
 
 # clear any text or drawing on the screen
 def clear():
