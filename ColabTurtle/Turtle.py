@@ -530,7 +530,8 @@ def distance(x, y=None):
     if not isinstance(point, tuple) or len(point) != 2 or (not isinstance(point[0], int) and not isinstance(point[0], float)) or (not isinstance(point[1], int) and not isinstance(point[1], float)):
         raise ValueError('the vector given for the point must be a tuple with 2 numbers.')
 
-    return round(math.sqrt( (turtle_pos[0] - _convertx(x)) ** 2 + (turtle_pos[1] - _convert(y)) ** 2 ), 4)
+   # return round(math.sqrt( (turtle_pos[0] - _convertx(x)) ** 2 + (turtle_pos[1] - _convert(y)) ** 2 ), 4)
+     return round(math.sqrt( (pos()[0] - x) ** 2 + (pos()[1] - y) ** 2 ), 4)
 
 # clear any text or drawing on the screen
 def clear():
@@ -656,9 +657,9 @@ def setworldcoordinates(llx, lly, urx, ury):
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     elif (urx-llx <= 0):
-        raise ValueError("Lower left x-coordinate must be less than upper right x-coordinate")
-    #elif (ury-lly <= 0):
-    #    raise ValueError("Lower left y-coordinate must be less than upper right y-coordinate")
+        raise ValueError("Lower left x-coordinate should be less than upper right x-coordinate")
+    elif (ury-lly <= 0):
+        raise ValueError("Lower left y-coordinate should be less than upper right y-coordinate")
     global xmin
     global xmax
     global ymin
