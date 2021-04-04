@@ -588,10 +588,10 @@ def shape(shape=None):
 
 def mode(mode=None):
     global angle_mode
-    if shape is None:
+    if mode is None:
         return angle_mode
     elif mode not in VALID_MODES:
-        raise ValueError('Mode is invalid. Valid options are: ' + str(VALID_TURTLE_SHAPES))
+        raise ValueError('Mode is invalid. Valid options are: ' + str(VALID_MODES))
     
     angle_mode = mode    
     
