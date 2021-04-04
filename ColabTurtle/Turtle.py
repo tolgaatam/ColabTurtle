@@ -20,7 +20,7 @@ import re
 # Added "arrow" as a turtle shape
 # Added speed=0 option that displays final image with no animation. 
 #   Added done() function so that final image is displayed on screen when speed=0
-# Added setworldcoordinates function to allow for setting world coordinate system. "World" mode is not used.
+# Added setworldcoordinates function to allow for setting world coordinate system.
 #   This should only be done immediately after initializing the turtle window
 
 # Module for drawing classic Turtle figures on Google Colab notebooks.
@@ -87,14 +87,14 @@ turtle_speed = DEFAULT_SPEED
 is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
 pen_color = DEFAULT_PEN_COLOR
 window_size = DEFAULT_WINDOW_SIZE
-turtle_pos = (DEFAULT_WINDOW_SIZE[0] // 2, DEFAULT_WINDOW_SIZE[1] // 2)
+turtle_pos = (DEFAULT_WINDOW_SIZE[0] / 2, DEFAULT_WINDOW_SIZE[1] / 2)
 turtle_degree = DEFAULT_TURTLE_DEGREE
 background_color = DEFAULT_BACKGROUND_COLOR
 is_pen_down = DEFAULT_IS_PEN_DOWN
 svg_lines_string = DEFAULT_SVG_LINES_STRING
 pen_width = DEFAULT_PEN_WIDTH
 turtle_shape = DEFAULT_TURTLE_SHAPE
-angle_mode = DEFAULT_MODE
+_mode = DEFAULT_MODE
 border_color = DEFAULT_BORDER_COLOR
 
 
@@ -115,10 +115,11 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global svg_lines_string
     global pen_width
     global turtle_shape
-    global angle_mode
+    global _mode
     global xmin,ymin,xmax,ymax
     global xscale
     global yscale
+    
 
     if isinstance(initial_speed,int) == False or initial_speed not in range(0, 14):
         raise ValueError('initial_speed must be an integer in interval [0,13]')
@@ -131,7 +132,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     
     if mode not in VALID_MODES:
         raise ValueError('mode must be standard, logo, or world')
-    angle_mode = mode
+    _mode = mode
     
     xmin,ymin,xmax,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
     
@@ -140,7 +141,7 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
     turtle_pos = (window_size[0] / 2, window_size[1] / 2)
-    turtle_degree = DEFAULT_TURTLE_DEGREE if (angle_mode != 'logo') else (270 - DEFAULT_TURTLE_DEGREE)
+    turtle_degree = DEFAULT_TURTLE_DEGREE if (_mode != 'logo') else (270 - DEFAULT_TURTLE_DEGREE)
     background_color = DEFAULT_BACKGROUND_COLOR
     is_pen_down = DEFAULT_IS_PEN_DOWN
     svg_lines_string = DEFAULT_SVG_LINES_STRING
@@ -277,10 +278,10 @@ def face(degrees):
     if not isinstance(degrees, (int,float)):
         raise ValueError('degrees must be a number.')
 
-    if angle_mode == 'logo':
-        turtle_degree = degrees % 360
-    else:
+    if _mode in ["standard","world"]: 
         turtle_degree = (360 - degrees) % 360
+    else: # mode = "logo"
+        turtle_degree = degrees % 360
     _updateDrawing()
 
 setheading = face # alias
@@ -330,16 +331,11 @@ def speed(speed = None):
     if isinstance(speed,int) == False or speed not in range(0, 14):
         raise ValueError('speed must be an integer in the interval [0,13].')
     turtle_speed = speed
-    # TODO: decide if we should put the timout after changing the speed
-    # _updateDrawing()
-
 
 # move the turtle to a designated 'x' x-coordinate, y-coordinate stays the same
 def setx(x):
     if not isinstance(x, (int,float)):
         raise ValueError('new x position must be a number.')
-    #if x < xmin:
-    #    raise ValueError('new x position must be non-negative.')
     _moveToNewPosition((_convertx(x), turtle_pos[1]))
 
 
@@ -347,15 +343,12 @@ def setx(x):
 def sety(y):
     if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.')
-   # if y < ymin:
-    #    raise ValueError('new y position must be non-negative.')
     _moveToNewPosition((turtle_pos[0], _converty(y)))
-
 
 def home():
     global turtle_degree
 
-    turtle_degree = DEFAULT_TURTLE_DEGREE if (angle_mode != 'logo') else (270 - DEFAULT_TURTLE_DEGREE)
+    turtle_degree = DEFAULT_TURTLE_DEGREE if (_mode != 'logo') else (270 - DEFAULT_TURTLE_DEGREE)
     _moveToNewPosition( (window_size[0] / 2, window_size[1] / 2) ) # this will handle updating the drawing.
 
 # retrieve the turtle's currrent 'x' x-coordinate
@@ -378,10 +371,10 @@ pos = position # alias
 
 # retrieve the turtle's current angle
 def getheading():
-    if angle_mode == 'logo':
-        return turtle_degree % 360
-    else:
+    if _mode in ["standard","world"]:
         return (360 - turtle_degree) % 360
+    else: # mode = "logo"
+        return turtle_degree % 360
 
 heading = getheading # alias
 
@@ -587,13 +580,16 @@ def shape(shape=None):
     _updateDrawing()
 
 def mode(mode=None):
-    global angle_mode
+    global _mode
     if mode is None:
-        return angle_mode
+        return _mode
     elif mode not in VALID_MODES:
         raise ValueError('Mode is invalid. Valid options are: ' + str(VALID_MODES))
     
-    angle_mode = mode    
+    _mode = mode
+
+    home()
+    clear()
     
 # return turtle window width
 def window_width():
