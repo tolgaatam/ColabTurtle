@@ -520,15 +520,9 @@ def distance(x, y=None):
 
     if not isinstance(x, (int,float)):
         raise ValueError('new x position must be a number.')
-    #if x < 0:
-    #    raise ValueError('new x position must be non-negative')
+
     if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.')
-    #if not y < 0:
-    #    raise ValueError('new y position must be non-negative.')
-
-    if not isinstance(point, tuple) or len(point) != 2 or (not isinstance(point[0], int) and not isinstance(point[0], float)) or (not isinstance(point[1], int) and not isinstance(point[1], float)):
-        raise ValueError('the vector given for the point must be a tuple with 2 numbers.')
 
    # return round(math.sqrt( (turtle_pos[0] - _convertx(x)) ** 2 + (turtle_pos[1] - _convert(y)) ** 2 ), 4)
      return round(math.sqrt( (pos()[0] - x) ** 2 + (pos()[1] - y) ** 2 ), 4)
