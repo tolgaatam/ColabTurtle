@@ -285,7 +285,9 @@ def face(degrees):
 
     if _mode in ["standard","world"]: 
         turtle_degree = (360 - degrees) % 360
-    else: # mode = "logo"
+    elif _mode == "logo":
+        turtle_degree = (degrees - 270) % 360
+    else:
         turtle_degree = degrees % 360
     _updateDrawing()
 
@@ -380,7 +382,9 @@ pos = position # alias
 def getheading():
     if _mode in ["standard","world"]:
         return (360 - turtle_degree) % 360
-    else: # mode = "logo"
+    elif _mode == "logo":
+        return (turtle_degree + 90) % 360
+    else: # mode = "logo*"
         return turtle_degree % 360
 
 heading = getheading # alias
