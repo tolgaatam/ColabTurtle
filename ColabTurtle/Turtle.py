@@ -355,7 +355,7 @@ def sety(y):
 def home():
     global turtle_degree
 
-    turtle_degree = DEFAULT_TURTLE_DEGREE if (_mode != 'logo') else (270 - DEFAULT_TURTLE_DEGREE)
+    turtle_degree = DEFAULT_TURTLE_DEGREE if (_mode in ["standard","world"]) else (270 - DEFAULT_TURTLE_DEGREE)
     _moveToNewPosition( (window_size[0] / 2, window_size[1] / 2) ) # this will handle updating the drawing.
     
 reset = home # alias
@@ -545,8 +545,10 @@ def towards(x, y=None):
     result = round(math.atan2(dy,dx)*180.0/math.pi, 10) % 360.0
     if _mode in ["standard","world"]:
         return result
-    else: # mode = "logo"
-        return (90-result) % 360
+    elif _mode == "logo"
+        return (90 - result) % 360
+    else:  # mode = "logo*"
+        return (390 - result) % 360
   
 # clear any text or drawing on the screen
 def clear():
