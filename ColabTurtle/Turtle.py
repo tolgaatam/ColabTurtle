@@ -532,7 +532,7 @@ def towards(x, y=None):
     dx = x - turtle_pos[0]
     dy = y - turtle_pos[1]
     print(dx,dy)
-    print(math.atan2(dy,dx)
+    print(math.atan2(dy,dx))
     result = round(math.atan2(dy,dx)*180.0/math.pi, 10) % 360.0
     if _mode in ["standard","world"]:
         return result
