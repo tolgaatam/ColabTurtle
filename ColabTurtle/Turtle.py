@@ -545,7 +545,7 @@ def towards(x, y=None):
     result = round(math.atan2(dy,dx)*180.0/math.pi, 10) % 360.0
     if _mode in ["standard","world"]:
         return result
-    elif _mode == "logo"
+    elif _mode == "logo":
         return (90 - result) % 360
     else:  # mode = "logo*"
         return (390 - result) % 360
