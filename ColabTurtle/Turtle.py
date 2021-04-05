@@ -374,7 +374,7 @@ ycor = gety # alias
 
 # retrieve the turtle's current position as a (x,y) tuple vector
 def position():
-    return (turtle_pos[0]/xscale+xmin, ymax - turtle_pos[1]/yscale)
+    return (turtle_pos[0]/xscale+xmin, ymax-turtle_pos[1]/yscale)
 
 pos = position # alias
 
@@ -548,7 +548,7 @@ def towards(x, y=None):
     elif _mode == "logo":
         return (90 - result) % 360
     else:  # mode = "logo*"
-        return (390 - result) % 360
+        return (360 - result) % 360
   
 # clear any text or drawing on the screen
 def clear():
