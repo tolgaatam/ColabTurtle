@@ -350,6 +350,8 @@ def home():
 
     turtle_degree = DEFAULT_TURTLE_DEGREE if (_mode != 'logo') else (270 - DEFAULT_TURTLE_DEGREE)
     _moveToNewPosition( (window_size[0] / 2, window_size[1] / 2) ) # this will handle updating the drawing.
+    
+reset = home # alias
 
 # retrieve the turtle's currrent 'x' x-coordinate
 def getx():
@@ -503,7 +505,6 @@ def distance(x, y=None):
     if isinstance(x, tuple) and y is None:
         if len(x) != 2:
             raise ValueError('the tuple argument must be of length 2.')
-
         y = x[1]
         x = x[0]
 
@@ -515,6 +516,27 @@ def distance(x, y=None):
 
     return round(math.sqrt( (pos()[0] - x) ** 2 + (pos()[1] - y) ** 2 ), 8)
 
+def towards(x, y=None):
+    if isinstance(x, tuple) and y is None:
+        if len(x) != 2:
+            raise ValueError('the tuple argument must be of length 2.')
+        y = x[1]
+        x = x[0] 
+        
+    if not isinstance(x, (int,float)):
+        raise ValueError('new x position must be a number.')
+
+    if not isinstance(y, (int,float)):
+        raise ValueError('new y position must be a number.') 
+    
+    dx = x - turtle_pos[0]
+    dy = y - turtle_pos[1]
+    result = round(math.atan2(dy, dx)*180.0/math.pi, 10) % 360.0
+    if _mode in ["standard","world"]:
+        return result
+    else:
+        return (90-result) % 360
+  
 # clear any text or drawing on the screen
 def clear():
     global svg_lines_string
@@ -587,9 +609,10 @@ def mode(mode=None):
         raise ValueError('Mode is invalid. Valid options are: ' + str(VALID_MODES))
     
     _mode = mode
-
-    home()
+    
     clear()
+    home()
+    
     
 # return turtle window width
 def window_width():
