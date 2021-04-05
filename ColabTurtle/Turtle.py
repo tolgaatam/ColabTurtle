@@ -103,7 +103,7 @@ drawing_window = None
 
 
 # construct the display for turtle
-def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE, mode=DEFAULT_MODE):
+def initializeTurtle(speed=DEFAULT_SPEED, window=DEFAULT_WINDOW_SIZE, mode=DEFAULT_MODE):
     global window_size
     global drawing_window
     global turtle_speed
@@ -122,17 +122,17 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global yscale
     
 
-    if isinstance(initial_speed,int) == False or initial_speed not in range(0, 14):
+    if isinstance(speed,int) == False or speed not in range(0, 14):
         raise ValueError('initial_speed must be an integer in interval [0,13]')
-    turtle_speed = initial_speed
+    turtle_speed = speed
 
-    if not (isinstance(initial_window_size, tuple) and len(initial_window_size) == 2 and isinstance(
-            initial_window_size[0], int) and isinstance(initial_window_size[1], int)):
-        raise ValueError('window_size must be a tuple of 2 integers')
-    window_size = initial_window_size
+    if not (isinstance(window, tuple) and len(window) == 2 and isinstance(
+            window[0], int) and isinstance(window[1], int)):
+        raise ValueError('window must be a tuple of 2 integers')
+    window_size = window
     
     if mode not in VALID_MODES:
-        raise ValueError('mode must be standard, logo, or world')
+        raise ValueError('mode must be standard, world, logo, or logo*')
     _mode = mode
     
     if mode != "logo*":
