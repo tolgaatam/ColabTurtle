@@ -248,7 +248,7 @@ def forward(units):
      
     
     alpha = math.radians(turtle_degree)
-    ending_point = (turtle_pos[0] + units * xscale * math.cos(alpha), turtle_pos[1] + units * yscale * math.sin(alpha))
+    ending_point = (turtle_pos[0] + units * xscale * math.cos(alpha), turtle_pos[1] + units * abs(yscale) * math.sin(alpha))
 
     _moveToNewPosition(ending_point)
 
