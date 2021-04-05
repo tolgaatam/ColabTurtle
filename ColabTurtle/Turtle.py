@@ -514,7 +514,7 @@ def distance(x, y=None):
     if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.')
 
-    return round(math.sqrt( (pos()[0] - x) ** 2 + (pos()[1] - y) ** 2 ), 8)
+    return round(math.sqrt( (getx() - x) ** 2 + (gety() - y) ** 2 ), 8)
 
 def towards(x, y=None):
     if isinstance(x, tuple) and y is None:
@@ -529,10 +529,8 @@ def towards(x, y=None):
     if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.') 
     
-    dx = x - pos()[0]
-    dy = y - pos()[1]
-    print(dx,dy)
-    print(math.atan2(dy,dx))
+    dx = x - getx()
+    dy = y - gety()
     result = round(math.atan2(dy,dx)*180.0/math.pi, 10) % 360.0
     if _mode in ["standard","world"]:
         return result
