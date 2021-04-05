@@ -22,6 +22,7 @@ import re
 #   Added done() function so that final image is displayed on screen when speed=0
 # Added setworldcoordinates function to allow for setting world coordinate system.
 #   This should only be done immediately after initializing the turtle window
+# Added towards() function to return the angle between the line from turtle position to specified position.
 
 # Module for drawing classic Turtle figures on Google Colab notebooks.
 # It uses html capabilites of IPython library to draw svg shapes inline.
@@ -516,6 +517,8 @@ def distance(x, y=None):
 
     return round(math.sqrt( (getx() - x) ** 2 + (gety() - y) ** 2 ), 8)
 
+# Return the angle between the line from turtle position to position specified by (x,y)
+# This depends on the turtle’s start orientation which depends on the mode - standard/world or logo.  
 def towards(x, y=None):
     if isinstance(x, tuple) and y is None:
         if len(x) != 2:
@@ -534,7 +537,7 @@ def towards(x, y=None):
     result = round(math.atan2(dy,dx)*180.0/math.pi, 10) % 360.0
     if _mode in ["standard","world"]:
         return result
-    else:
+    else: # mode = "logo"
         return (90-result) % 360
   
 # clear any text or drawing on the screen
@@ -662,19 +665,20 @@ def done():
 # Set up user-defined coordinate system using lower left and upper right corners.
 # ATTENTION: in user-defined coordinate systems angles may appear distorted.
 def setworldcoordinates(llx, lly, urx, ury):
-    if drawing_window == None:
-        raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
-    elif (urx-llx <= 0):
-        raise ValueError("Lower left x-coordinate should be less than upper right x-coordinate")
-    elif (ury-lly <= 0):
-        raise ValueError("Lower left y-coordinate should be less than upper right y-coordinate")
     global xmin
     global xmax
     global ymin
     global ymax
     global xscale
     global yscale
-    global angle_mode
+    global _mode
+    
+    if drawing_window == None:
+        raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
+    elif (urx-llx <= 0):
+        raise ValueError("Lower left x-coordinate should be less than upper right x-coordinate")
+    elif (ury-lly <= 0):
+        raise ValueError("Lower left y-coordinate should be less than upper right y-coordinate")
                        
     xmin = llx
     ymin = lly
@@ -682,7 +686,7 @@ def setworldcoordinates(llx, lly, urx, ury):
     ymax = ury
     xscale = window_size[0]/(xmax-xmin)
     yscale = window_size[1]/(ymax-ymin)
-    angle_mode = "world"
+    _mode = "world"
     
 
 # Show a border around the graphics window. Default (no parameters) is gray.    
