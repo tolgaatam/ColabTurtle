@@ -548,7 +548,7 @@ def towards(x, y=None):
     elif _mode == "logo":
         return (90 - result) % 360
     else:  # mode = "logo*"
-        return (360 - result) % 360
+        return result
   
 # clear any text or drawing on the screen
 def clear():
