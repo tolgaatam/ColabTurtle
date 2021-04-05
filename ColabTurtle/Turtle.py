@@ -54,7 +54,7 @@ VALID_COLORS = ('black', 'navy', 'darkblue', 'mediumblue', 'blue', 'darkgreen', 
                 'lightsalmon', 'orange', 'lightpink', 'pink', 'gold', 'peachpuff', 'navajowhite', 'moccasin', 'bisque', 'mistyrose', 'blanchedalmond', 
                 'papayawhip', 'lavenderblush', 'seashell', 'cornsilk', 'lemonchiffon', 'floralwhite', 'snow', 'yellow', 'lightyellow', 'ivory', 'white')
 VALID_COLORS_SET = set(VALID_COLORS)
-VALID_MODES = ('standard','logo','world')
+VALID_MODES = ('standard','logo','world','logo*')
 DEFAULT_TURTLE_SHAPE = 'arrow'
 VALID_TURTLE_SHAPES = ('turtle', 'circle', 'arrow')
 DEFAULT_MODE = 'standard'
@@ -135,10 +135,14 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
         raise ValueError('mode must be standard, logo, or world')
     _mode = mode
     
-    xmin,ymin,xmax,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
-    
-    xscale = window_size[0]/(xmax-xmin)
-    yscale = window_size[1]/(ymax-ymin)
+    if mode != "logo*":
+        xmin,ymin,xmax,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
+        xscale = window_size[0]/(xmax-xmin)
+        yscale = window_size[1]/(ymax-ymin)
+    else:
+        xmin,ymax = 0,0
+        xscale = 1
+        yscale = -1
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
     turtle_pos = (window_size[0] / 2, window_size[1] / 2)
