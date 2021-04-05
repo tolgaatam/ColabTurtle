@@ -529,8 +529,8 @@ def towards(x, y=None):
     if not isinstance(y, (int,float)):
         raise ValueError('new y position must be a number.') 
     
-    dx = x - turtle_pos[0]
-    dy = y - turtle_pos[1]
+    dx = x - pos()[0]
+    dy = y - pos()[1]
     print(dx,dy)
     print(math.atan2(dy,dx))
     result = round(math.atan2(dy,dx)*180.0/math.pi, 10) % 360.0
