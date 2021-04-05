@@ -542,13 +542,15 @@ def towards(x, y=None):
     
     dx = x - getx()
     dy = y - gety()
+    if _mode == "logo*":
+        dy = -dy
     result = round(math.atan2(dy,dx)*180.0/math.pi, 10) % 360.0
     if _mode in ["standard","world"]:
         return result
     elif _mode == "logo":
         return (90 - result) % 360
     else:  # mode = "logo*"
-        return result
+        return (360 - result) % 360
   
 # clear any text or drawing on the screen
 def clear():
