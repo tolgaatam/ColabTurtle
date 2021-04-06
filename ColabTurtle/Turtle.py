@@ -13,14 +13,17 @@ import re
 #   default background color is white, default pen color is black, default pen thickness is 1
 #   default mode is "standard"
 #   center of window has coordinates (0,0)
-# Added option for selecting standard or logo mode when initializing the turtle graphics
+# Added option for selecting a mode when initializing the turtle graphics
 #   "standard" : default direction is to the right (east) and positive angles measured counterclockwise
-#   "logo" : default directon is upward (north) and positive angles measured clockwise
+#   "logo" : default directon is upward (north) and positive angles are measured clockwise with 0° pointing up.
+#   "svg": This is a special mode to handle how the original ColabTurtle worked. The coordinate systme is the same
+#          as that used with SVG. The upper left corner is (0,0) with positive x direction being to the right, and the 
+#          positive y direction being to the bottom. Positive angles are measured clockwise with 0° pointing right.
 # Added functions to print or save the svg coding for the image
 # Added "arrow" as a turtle shape
 # Added speed=0 option that displays final image with no animation. 
 #   Added done() function so that final image is displayed on screen when speed=0
-# Added setworldcoordinates function to allow for setting world coordinate system.
+# Added setworldcoordinates function to allow for setting world coordinate system. This sets the mode to "world".
 #   This should only be done immediately after initializing the turtle window
 # Added towards() function to return the angle between the line from turtle position to specified position.
 
@@ -54,7 +57,7 @@ VALID_COLORS = ('black', 'navy', 'darkblue', 'mediumblue', 'blue', 'darkgreen', 
                 'lightsalmon', 'orange', 'lightpink', 'pink', 'gold', 'peachpuff', 'navajowhite', 'moccasin', 'bisque', 'mistyrose', 'blanchedalmond', 
                 'papayawhip', 'lavenderblush', 'seashell', 'cornsilk', 'lemonchiffon', 'floralwhite', 'snow', 'yellow', 'lightyellow', 'ivory', 'white')
 VALID_COLORS_SET = set(VALID_COLORS)
-VALID_MODES = ('standard','logo','world')
+VALID_MODES = ('standard','logo','world','svg')
 DEFAULT_TURTLE_SHAPE = 'arrow'
 VALID_TURTLE_SHAPES = ('turtle', 'circle', 'arrow')
 DEFAULT_MODE = 'standard'
@@ -103,7 +106,7 @@ drawing_window = None
 
 
 # construct the display for turtle
-def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE, mode=DEFAULT_MODE):
+def initializeTurtle(speed=DEFAULT_SPEED, window=DEFAULT_WINDOW_SIZE, mode=DEFAULT_MODE):
     global window_size
     global drawing_window
     global turtle_speed
@@ -122,27 +125,31 @@ def initializeTurtle(initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WI
     global yscale
     
 
-    if isinstance(initial_speed,int) == False or initial_speed not in range(0, 14):
+    if isinstance(speed,int) == False or speed not in range(0, 14):
         raise ValueError('initial_speed must be an integer in interval [0,13]')
-    turtle_speed = initial_speed
+    turtle_speed = speed
 
-    if not (isinstance(initial_window_size, tuple) and len(initial_window_size) == 2 and isinstance(
-            initial_window_size[0], int) and isinstance(initial_window_size[1], int)):
-        raise ValueError('window_size must be a tuple of 2 integers')
-    window_size = initial_window_size
+    if not (isinstance(window, tuple) and len(window) == 2 and isinstance(
+            window[0], int) and isinstance(window[1], int)):
+        raise ValueError('window must be a tuple of 2 integers')
+    window_size = window
     
     if mode not in VALID_MODES:
-        raise ValueError('mode must be standard, logo, or world')
+        raise ValueError('mode must be standard, world, logo, or svg')
     _mode = mode
     
-    xmin,ymin,xmax,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
-    
-    xscale = window_size[0]/(xmax-xmin)
-    yscale = window_size[1]/(ymax-ymin)
+    if mode != "svg":
+        xmin,ymin,xmax,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
+        xscale = window_size[0]/(xmax-xmin)
+        yscale = window_size[1]/(ymax-ymin)
+    else:
+        xmin,ymax = 0,0
+        xscale = 1
+        yscale = -1
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
     turtle_pos = (window_size[0] / 2, window_size[1] / 2)
-    turtle_degree = DEFAULT_TURTLE_DEGREE if (_mode != 'logo') else (270 - DEFAULT_TURTLE_DEGREE)
+    turtle_degree = DEFAULT_TURTLE_DEGREE if (_mode in ["standard","world"]) else (270 - DEFAULT_TURTLE_DEGREE)
     background_color = DEFAULT_BACKGROUND_COLOR
     is_pen_down = DEFAULT_IS_PEN_DOWN
     svg_lines_string = DEFAULT_SVG_LINES_STRING
@@ -244,7 +251,7 @@ def forward(units):
      
     
     alpha = math.radians(turtle_degree)
-    ending_point = (turtle_pos[0] + units * xscale * math.cos(alpha), turtle_pos[1] + units * yscale * math.sin(alpha))
+    ending_point = (turtle_pos[0] + units * xscale * math.cos(alpha), turtle_pos[1] + units * abs(yscale) * math.sin(alpha))
 
     _moveToNewPosition(ending_point)
 
@@ -281,7 +288,9 @@ def face(degrees):
 
     if _mode in ["standard","world"]: 
         turtle_degree = (360 - degrees) % 360
-    else: # mode = "logo"
+    elif _mode == "logo":
+        turtle_degree = (270 + degrees) % 360
+    else: # mode = "svg"
         turtle_degree = degrees % 360
     _updateDrawing()
 
@@ -299,10 +308,7 @@ lt = left
 # raises the pen such that following turtle moves will not cause any drawings
 def penup():
     global is_pen_down
-
     is_pen_down = False
-    # TODO: decide if we should put the timout after lifting the pen
-    # _updateDrawing()
 
 pu = penup # alias
 up = penup # alias
@@ -310,10 +316,7 @@ up = penup # alias
 # lowers the pen such that following turtle moves will now cause drawings
 def pendown():
     global is_pen_down
-
     is_pen_down = True
-    # TODO: decide if we should put the timout after releasing the pen
-    # _updateDrawing()
 
 pd = pendown # alias
 down = pendown # alias
@@ -349,7 +352,7 @@ def sety(y):
 def home():
     global turtle_degree
 
-    turtle_degree = DEFAULT_TURTLE_DEGREE if (_mode != 'logo') else (270 - DEFAULT_TURTLE_DEGREE)
+    turtle_degree = DEFAULT_TURTLE_DEGREE if (_mode in ["standard","world"]) else (270 - DEFAULT_TURTLE_DEGREE)
     _moveToNewPosition( (window_size[0] / 2, window_size[1] / 2) ) # this will handle updating the drawing.
     
 reset = home # alias
@@ -368,7 +371,7 @@ ycor = gety # alias
 
 # retrieve the turtle's current position as a (x,y) tuple vector
 def position():
-    return (turtle_pos[0]/xscale+xmin, ymax - turtle_pos[1]/yscale)
+    return (turtle_pos[0]/xscale+xmin, ymax-turtle_pos[1]/yscale)
 
 pos = position # alias
 
@@ -376,7 +379,9 @@ pos = position # alias
 def getheading():
     if _mode in ["standard","world"]:
         return (360 - turtle_degree) % 360
-    else: # mode = "logo"
+    elif _mode == "logo":
+        return (turtle_degree - 270) % 360
+    else: # mode = "svg"
         return turtle_degree % 360
 
 heading = getheading # alias
@@ -496,8 +501,6 @@ def width(width = None):
             raise ValueError('new width position must be positive.')
 
         pen_width = width
-        # TODO: decide if we should put the timout after changing the pen_width
-        # _updateDrawing()
 
 pensize = width  #alias
 
@@ -534,11 +537,15 @@ def towards(x, y=None):
     
     dx = x - getx()
     dy = y - gety()
+    if _mode == "svg":
+        dy = -dy
     result = round(math.atan2(dy,dx)*180.0/math.pi, 10) % 360.0
     if _mode in ["standard","world"]:
         return result
-    else: # mode = "logo"
-        return (90-result) % 360
+    elif _mode == "logo":
+        return (90 - result) % 360
+    else:  # mode = "svg"
+        return (360 - result) % 360
   
 # clear any text or drawing on the screen
 def clear():
@@ -611,11 +618,9 @@ def mode(mode=None):
     elif mode not in VALID_MODES:
         raise ValueError('Mode is invalid. Valid options are: ' + str(VALID_MODES))
     
-    _mode = mode
-    
+    _mode = mode    
     clear()
     home()
-    
     
 # return turtle window width
 def window_width():
@@ -654,7 +659,7 @@ def showSVG(show_turtle=False):
     image = svg_lines_string.replace(">",">\n")
     turtle_svg = (_generateTurtleSvgDrawing() + " \n") if show_turtle else ""
     output = header + image + turtle_svg + "</svg>"
-    print(output)
+    print(output) 
 
 # Call this function at end of turtle commands when speed=0 (no animation) so that final image is drawn
 def done():
