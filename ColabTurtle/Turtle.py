@@ -15,7 +15,10 @@ import re
 #   center of window has coordinates (0,0)
 # Added option for selecting standard or logo mode when initializing the turtle graphics
 #   "standard" : default direction is to the right (east) and positive angles measured counterclockwise
-#   "logo" : default directon is upward (north) and positive angles measured clockwise
+#   "logo" : default directon is upward (north) and positive angles are measured clockwise with 0° pointing up.
+#   "logo*": This is a special mode to handle how the original ColabTurtle worked. The coordinate systme is the same
+#            as that used with SVG. The upper left corner is (0,0) with positive x direction being to the right, and the 
+#            positive y direction being to the bottom. Positive angles are measured clockwise with 0° pointing right.
 # Added functions to print or save the svg coding for the image
 # Added "arrow" as a turtle shape
 # Added speed=0 option that displays final image with no animation. 
@@ -666,7 +669,7 @@ def showSVG(show_turtle=False):
     image = svg_lines_string.replace(">",">\n")
     turtle_svg = (_generateTurtleSvgDrawing() + " \n") if show_turtle else ""
     output = header + image + turtle_svg + "</svg>"
-    print(output)
+    print(output) 
 
 # Call this function at end of turtle commands when speed=0 (no animation) so that final image is drawn
 def done():
