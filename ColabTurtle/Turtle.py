@@ -16,9 +16,9 @@ import re
 # Added option for selecting standard or logo mode when initializing the turtle graphics
 #   "standard" : default direction is to the right (east) and positive angles measured counterclockwise
 #   "logo" : default directon is upward (north) and positive angles are measured clockwise with 0° pointing up.
-#   "logo*": This is a special mode to handle how the original ColabTurtle worked. The coordinate systme is the same
-#            as that used with SVG. The upper left corner is (0,0) with positive x direction being to the right, and the 
-#            positive y direction being to the bottom. Positive angles are measured clockwise with 0° pointing right.
+#   "svg": This is a special mode to handle how the original ColabTurtle worked. The coordinate systme is the same
+#          as that used with SVG. The upper left corner is (0,0) with positive x direction being to the right, and the 
+#          positive y direction being to the bottom. Positive angles are measured clockwise with 0° pointing right.
 # Added functions to print or save the svg coding for the image
 # Added "arrow" as a turtle shape
 # Added speed=0 option that displays final image with no animation. 
@@ -57,7 +57,7 @@ VALID_COLORS = ('black', 'navy', 'darkblue', 'mediumblue', 'blue', 'darkgreen', 
                 'lightsalmon', 'orange', 'lightpink', 'pink', 'gold', 'peachpuff', 'navajowhite', 'moccasin', 'bisque', 'mistyrose', 'blanchedalmond', 
                 'papayawhip', 'lavenderblush', 'seashell', 'cornsilk', 'lemonchiffon', 'floralwhite', 'snow', 'yellow', 'lightyellow', 'ivory', 'white')
 VALID_COLORS_SET = set(VALID_COLORS)
-VALID_MODES = ('standard','logo','world','logo*')
+VALID_MODES = ('standard','logo','world','svg')
 DEFAULT_TURTLE_SHAPE = 'arrow'
 VALID_TURTLE_SHAPES = ('turtle', 'circle', 'arrow')
 DEFAULT_MODE = 'standard'
@@ -138,7 +138,7 @@ def initializeTurtle(speed=DEFAULT_SPEED, window=DEFAULT_WINDOW_SIZE, mode=DEFAU
         raise ValueError('mode must be standard, world, logo, or logo*')
     _mode = mode
     
-    if mode != "logo*":
+    if mode != "svg":
         xmin,ymin,xmax,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
         xscale = window_size[0]/(xmax-xmin)
         yscale = window_size[1]/(ymax-ymin)
@@ -290,7 +290,7 @@ def face(degrees):
         turtle_degree = (360 - degrees) % 360
     elif _mode == "logo":
         turtle_degree = (270 + degrees) % 360
-    else:
+    else: # mode = "svg"
         turtle_degree = degrees % 360
     _updateDrawing()
 
@@ -308,10 +308,7 @@ lt = left
 # raises the pen such that following turtle moves will not cause any drawings
 def penup():
     global is_pen_down
-
     is_pen_down = False
-    # TODO: decide if we should put the timout after lifting the pen
-    # _updateDrawing()
 
 pu = penup # alias
 up = penup # alias
@@ -319,10 +316,7 @@ up = penup # alias
 # lowers the pen such that following turtle moves will now cause drawings
 def pendown():
     global is_pen_down
-
     is_pen_down = True
-    # TODO: decide if we should put the timout after releasing the pen
-    # _updateDrawing()
 
 pd = pendown # alias
 down = pendown # alias
@@ -387,7 +381,7 @@ def getheading():
         return (360 - turtle_degree) % 360
     elif _mode == "logo":
         return (turtle_degree - 270) % 360
-    else: # mode = "logo*"
+    else: # mode = "svg"
         return turtle_degree % 360
 
 heading = getheading # alias
@@ -507,8 +501,6 @@ def width(width = None):
             raise ValueError('new width position must be positive.')
 
         pen_width = width
-        # TODO: decide if we should put the timout after changing the pen_width
-        # _updateDrawing()
 
 pensize = width  #alias
 
@@ -545,14 +537,14 @@ def towards(x, y=None):
     
     dx = x - getx()
     dy = y - gety()
-    if _mode == "logo*":
+    if _mode == "svg":
         dy = -dy
     result = round(math.atan2(dy,dx)*180.0/math.pi, 10) % 360.0
     if _mode in ["standard","world"]:
         return result
     elif _mode == "logo":
         return (90 - result) % 360
-    else:  # mode = "logo*"
+    else:  # mode = "svg"
         return (360 - result) % 360
   
 # clear any text or drawing on the screen
@@ -626,11 +618,9 @@ def mode(mode=None):
     elif mode not in VALID_MODES:
         raise ValueError('Mode is invalid. Valid options are: ' + str(VALID_MODES))
     
-    _mode = mode
-    
+    _mode = mode    
     clear()
     home()
-    
     
 # return turtle window width
 def window_width():
