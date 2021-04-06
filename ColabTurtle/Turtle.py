@@ -13,7 +13,7 @@ import re
 #   default background color is white, default pen color is black, default pen thickness is 1
 #   default mode is "standard"
 #   center of window has coordinates (0,0)
-# Added option for selecting standard or logo mode when initializing the turtle graphics
+# Added option for selecting a mode when initializing the turtle graphics
 #   "standard" : default direction is to the right (east) and positive angles measured counterclockwise
 #   "logo" : default directon is upward (north) and positive angles are measured clockwise with 0° pointing up.
 #   "svg": This is a special mode to handle how the original ColabTurtle worked. The coordinate systme is the same
@@ -23,7 +23,7 @@ import re
 # Added "arrow" as a turtle shape
 # Added speed=0 option that displays final image with no animation. 
 #   Added done() function so that final image is displayed on screen when speed=0
-# Added setworldcoordinates function to allow for setting world coordinate system.
+# Added setworldcoordinates function to allow for setting world coordinate system. This sets the mode to "world".
 #   This should only be done immediately after initializing the turtle window
 # Added towards() function to return the angle between the line from turtle position to specified position.
 
