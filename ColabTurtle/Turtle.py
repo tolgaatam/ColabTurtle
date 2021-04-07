@@ -100,6 +100,7 @@ pen_width = DEFAULT_PEN_WIDTH
 turtle_shape = DEFAULT_TURTLE_SHAPE
 _mode = DEFAULT_MODE
 border_color = DEFAULT_BORDER_COLOR
+is_filling = False
 
 
 drawing_window = None
@@ -155,6 +156,8 @@ def initializeTurtle(speed=DEFAULT_SPEED, window=DEFAULT_WINDOW_SIZE, mode=DEFAU
     svg_lines_string = DEFAULT_SVG_LINES_STRING
     pen_width = DEFAULT_PEN_WIDTH
     turtle_shape = DEFAULT_TURTLE_SHAPE
+    is_filling = False
+    svg_fill_string = ''
     
 
     drawing_window = display(HTML(_generateSvgDrawing()), display_id=True)
@@ -225,6 +228,7 @@ def _converty(y):
 def _moveToNewPosition(new_pos):
     global turtle_pos
     global svg_lines_string
+    global svg_fill_string
 
     # rounding the new_pos to eliminate floating point errors.
     new_pos = ( round(new_pos[0],3), round(new_pos[1],3) )
@@ -239,11 +243,32 @@ def _moveToNewPosition(new_pos):
                         y2=new_pos[1],
                         pen_color=pen_color, 
                         pen_width=pen_width)
-
+    if is_filling:
+        svg_fill_string += """ L {x1} {y1} """.format(x1=new_pos[0],y1=new_pos[1])
     turtle_pos = new_pos
     _updateDrawing()
 
+#initialize the string for the svg path of the filled shape    
+def begin_fill():
+    global is_filling
+    global svg_fill_string
+    if not is_filling:
+        svg_fill_string = """<path d="M {x1} {y1} """.format(x1=turtle_pos[0], y1=turtle_pos[1])
+        is_filling = True
 
+#terminate the string for the svg path of the filled shape and append to the list of drawn svg shapes    
+def end_fill():
+    global is_filling
+    global svg_fill_string
+    global svg_lines_string
+    
+    if is_filling:
+        is_filling = False
+        svg_fill_string += """"Z stroke="none" fill="{fillcolor}" />""".format(fillcolor=pen_color)
+        svg_lines_string += svg_fill_string
+        svg_fill_string = ''
+        _updateDrawing()
+        
 # makes the turtle move forward by 'units' units
 def forward(units):
     if not isinstance(units, (int,float)):
