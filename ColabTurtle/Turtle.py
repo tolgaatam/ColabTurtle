@@ -37,6 +37,7 @@ DEFAULT_TURTLE_VISIBILITY = True
 DEFAULT_PEN_COLOR = 'black'
 DEFAULT_TURTLE_DEGREE = 0
 DEFAULT_BACKGROUND_COLOR = 'white'
+DEFAULT_FILL_COLOR = 'black'
 DEFAULT_BORDER_COLOR = ""
 DEFAULT_IS_PEN_DOWN = True
 DEFAULT_SVG_LINES_STRING = ""
@@ -101,6 +102,7 @@ turtle_shape = DEFAULT_TURTLE_SHAPE
 _mode = DEFAULT_MODE
 border_color = DEFAULT_BORDER_COLOR
 is_filling = False
+fill_color = DEFAULT_FILL_COLOR
 
 
 drawing_window = None
@@ -158,6 +160,7 @@ def initializeTurtle(speed=DEFAULT_SPEED, window=DEFAULT_WINDOW_SIZE, mode=DEFAU
     turtle_shape = DEFAULT_TURTLE_SHAPE
     is_filling = False
     svg_fill_string = ''
+    fill_color = DEFAULT_FILL_COLOR
     
 
     drawing_window = display(HTML(_generateSvgDrawing()), display_id=True)
@@ -264,7 +267,7 @@ def end_fill():
     
     if is_filling:
         is_filling = False
-        svg_fill_string += """"Z stroke="none" fill="{fillcolor}" />""".format(fillcolor=pen_color)
+        svg_fill_string += """"Z stroke="none" fill="{fillcolor}" />""".format(fill_color)
         svg_lines_string += svg_fill_string
         svg_fill_string = ''
         _updateDrawing()
@@ -511,6 +514,21 @@ def color(color = None, c2 = None, c3 = None):
     _updateDrawing()
 
 pencolor = color  #alias
+
+# change the fill color
+# if no params, return the current fill color
+def fillcolor(color = None, c2 = None, c3 = None):
+    global fill_color
+
+    if color is None:
+        return background_color
+    elif c2 is not None:
+        if c3 is None:
+            raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
+        color = (color, c2, c3)
+
+    fill_color = _processColor(color)
+    _updateDrawing()
 
 # change the width of the lines drawn by the turtle, in pixels
 # if the function is called without arguments, it returns the current width
