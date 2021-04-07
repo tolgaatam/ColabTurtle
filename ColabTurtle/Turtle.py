@@ -22,10 +22,12 @@ import re
 # Added functions to print or save the svg coding for the image
 # Added "arrow" as a turtle shape
 # Added speed=0 option that displays final image with no animation. 
-#   Added done() function so that final image is displayed on screen when speed=0
+#   Added done function so that final image is displayed on screen when speed=0
 # Added setworldcoordinates function to allow for setting world coordinate system. This sets the mode to "world".
 #   This should only be done immediately after initializing the turtle window
-# Added towards() function to return the angle between the line from turtle position to specified position.
+# Added towards function to return the angle between the line from turtle position to specified position.
+# Implemented begin_fill and end_fill functions from aronma/ColabTurtle_2 github. Added fillcolor function.
+#   Because the fill is controlled by svg rules, the result may differ from classic turtle fill.
 
 # Module for drawing classic Turtle figures on Google Colab notebooks.
 # It uses html capabilites of IPython library to draw svg shapes inline.
@@ -87,7 +89,7 @@ SPEED_TO_SEC_MAP = {1: 1.5, 2: 0.9, 3: 0.7, 4: 0.5, 5: 0.3, 6: 0.18, 7: 0.12, 8:
 def _speedToSec(speed):
     return SPEED_TO_SEC_MAP[speed]
 
-
+timeout = _speedToSec(DEFAULT_SPEED)
 turtle_speed = DEFAULT_SPEED
 is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
 pen_color = DEFAULT_PEN_COLOR
@@ -126,11 +128,13 @@ def initializeTurtle(speed=DEFAULT_SPEED, window=DEFAULT_WINDOW_SIZE, mode=DEFAU
     global xmin,ymin,xmax,ymax
     global xscale
     global yscale
+    global timeout
     
 
     if isinstance(speed,int) == False or speed not in range(0, 14):
         raise ValueError('initial_speed must be an integer in interval [0,13]')
     turtle_speed = speed
+    timeout = _speedToSec(speed)
 
     if not (isinstance(window, tuple) and len(window) == 2 and isinstance(
             window[0], int) and isinstance(window[1], int)):
@@ -217,7 +221,7 @@ def _updateDrawing():
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
     if (turtle_speed != 0):
-        time.sleep(_speedToSec(turtle_speed))
+        time.sleep(timeout)
         drawing_window.update(HTML(_generateSvgDrawing()))
 
 # convert to world coordinates
@@ -355,14 +359,17 @@ def isdown():
 # update the speed of the moves, [0,13]
 # if argument is omitted, it returns the speed.
 def speed(speed = None):
+    global timeout
     global turtle_speed
-
+    
     if speed is None:
         return turtle_speed
 
     if isinstance(speed,int) == False or speed not in range(0, 14):
         raise ValueError('speed must be an integer in the interval [0,13].')
+        
     turtle_speed = speed
+    timeout = _speedToSec(speed)
 
 # move the turtle to a designated 'x' x-coordinate, y-coordinate stays the same
 def setx(x):
@@ -521,7 +528,7 @@ def fillcolor(color = None, c2 = None, c3 = None):
     global fill_color
 
     if color is None:
-        return background_color
+        return fill_color
     elif c2 is not None:
         if c3 is None:
             raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
