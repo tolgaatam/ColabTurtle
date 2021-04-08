@@ -302,7 +302,10 @@ def arc(radius, degrees):
     alpha = math.radians(turtle_degree)
     beta = alpha + math.radians(90)
     theta = math.radians(degrees)
-    gamma = theta+alpha-math.radians(90)
+    if radius > 0:
+        gamma = theta+alpha-math.radians(90)
+    else:
+        gamma = alpha-theta-math.radians(90)
     
     circle_center = (turtle_pos[0] + radius * xscale * math.sin(alpha), turtle_pos[1] - radius * abs(yscale) * math.cos(alpha))
     ending_point = (circle_center[0] + radius*math.cos(gamma) , circle_center[1] + radius*math.sin(gamma))
