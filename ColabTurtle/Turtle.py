@@ -263,11 +263,13 @@ def _arctoNewPosition(r,new_pos):
     global svg_fill_string
     
     sweep = 0 if r > 0 else 1
+    rx = r*xscale
+    ry = r*abs(yscale)
     
     start_pos = turtle_pos
     if is_pen_down:
         svg_lines_string += """<path d="M {x1} {y1} A {rx} {ry} 0 0 {s} {x2} {y2}" stroke-linecap="round" fill="transparent" style="stroke:{pen_color};stroke-width:{pen_width}"/>""".format(
-            x1=start_pos[0], y1=start_pos[1],rx = r, ry = r, x2=new_pos[0], y2=new_pos[1], pen_color=pen_color, pen_width=pen_width, s=sweep)    
+            x1=start_pos[0], y1=start_pos[1],rx = rx, ry = ry, x2=new_pos[0], y2=new_pos[1], pen_color=pen_color, pen_width=pen_width, s=sweep)    
     if is_filling:
         svg_fill_string += """ A {rx} {ry} 0 0 {s} {x2} {y2} """.format(rx=r,ry=r,x2=new_pos[0],y2=new_pos[1],s=sweep)
     
