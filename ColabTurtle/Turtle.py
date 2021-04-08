@@ -309,7 +309,6 @@ def arc(radius, degrees):
 
     circle_center = (turtle_pos[0] + radius * xscale * math.sin(alpha), turtle_pos[1] - radius * abs(yscale) * math.cos(alpha))
     ending_point = (circle_center[0] + radius*math.cos(gamma) , circle_center[1] + radius*math.sin(gamma))
-    print(circle_center,ending_point)
    
     _arctoNewPosition(radius,ending_point)
     
@@ -328,6 +327,7 @@ def circle(radius, degrees=360):
     if degrees < 0:
         raise ValueError('degrees should be a positive number')
     
+    
     while degrees > 0:
         if degrees > 90:
             arc(radius, 90)
@@ -340,7 +340,6 @@ def forward(units):
     if not isinstance(units, (int,float)):
         raise ValueError('units must be a number.')
      
-    
     alpha = math.radians(turtle_degree)
     ending_point = (turtle_pos[0] + units * xscale * math.cos(alpha), turtle_pos[1] + units * abs(yscale) * math.sin(alpha))
 
