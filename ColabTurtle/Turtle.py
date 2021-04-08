@@ -326,7 +326,7 @@ def circle(radius, degrees=360):
     
     while degrees > 0:
         if degrees > 90:
-            arc(radius, 90)
+            arc(abs(radius), 90)
         else:
             arc(abs(radius), degrees)
         degrees += -90        
