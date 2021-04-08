@@ -111,7 +111,7 @@ drawing_window = None
 
 
 # construct the display for turtle
-def initializeTurtle(speed=DEFAULT_SPEED, window=DEFAULT_WINDOW_SIZE, mode=DEFAULT_MODE):
+def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=DEFAULT_MODE):
     global window_size
     global drawing_window
     global turtle_speed
@@ -304,12 +304,12 @@ def arc(radius, degrees):
     theta = math.radians(degrees)
     gamma = theta+alpha-math.radians(90)
     
-    circle_center = (turtle_pos[0] + radius * math.cos(beta), turtle_pos[1] + radius * math.sin(beta))
+    circle_center = (turtle_pos[0] + radius * xscale * math.sin(alpha), turtle_pos[1] + radius * abs(yscale) * math.cos(alpha))
     ending_point = (circle_center[0] + radius*math.cos(gamma) ,circle_center[1] + radius*math.sin(gamma))
     
     _arctoNewPosition(radius,ending_point)
     
-    turtle_degree = (turtle_degree + degrees) % 360
+    turtle_degree = (turtle_degree - degrees) % 360
     _updateDrawing()
 
 # since SVG has some ambiguity when using an arc path for a complete circle...
