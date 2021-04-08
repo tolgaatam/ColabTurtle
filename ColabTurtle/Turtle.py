@@ -270,7 +270,7 @@ def _arctoNewPosition(r,new_pos):
         svg_fill_string += """ A {rx} {ry} 0 0 0 {x2} {y2} """.format(rx=r,ry=r,x2=new_pos[0],y2=new_pos[1])
     
     turtle_pos = new_pos
-    _updateDrawing()    
+    #_updateDrawing()    
     
 # initialize the string for the svg path of the filled shape
 # from aronma/ColabTurtle_2 github
