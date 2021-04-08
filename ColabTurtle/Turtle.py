@@ -28,6 +28,10 @@ import re
 # Added towards function to return the angle between the line from turtle position to specified position.
 # Implemented begin_fill and end_fill functions from aronma/ColabTurtle_2 github. Added fillcolor function.
 #   Because the fill is controlled by svg rules, the result may differ from classic turtle fill.
+# Implemented circle (arc) function from aronma/ColabTurtle_2 github. Modified these to match behavior of circle function in
+#   classic turtle.py package. If the radius is positive, the center of the circle is to the left of the turtle and the
+#   path is drawn in the counterclockwise direction. If the radius is negative, the center of the circle is to the right of
+#   the turtle and path is drawn in the clockwise direction.
 
 # Module for drawing classic Turtle figures on Google Colab notebooks.
 # It uses html capabilites of IPython library to draw svg shapes inline.
@@ -111,7 +115,7 @@ drawing_window = None
 
 
 # construct the display for turtle
-def initializeTurtle(speed=DEFAULT_SPEED, window=DEFAULT_WINDOW_SIZE, mode=DEFAULT_MODE):
+def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=DEFAULT_MODE):
     global window_size
     global drawing_window
     global turtle_speed
@@ -255,7 +259,29 @@ def _moveToNewPosition(new_pos):
     turtle_pos = new_pos
     _updateDrawing()
 
-#initialize the string for the svg path of the filled shape    
+# helper function for drawing arcs of radius 'r' to 'new_pos' and draw line if pen is down
+# Modified from aronma/ColabTurtle_2 github
+def _arctoNewPosition(r,new_pos):
+    global turtle_pos
+    global svg_lines_string
+    global svg_fill_string
+    
+    sweep = 0 if r > 0 else 1  # SVG arc sweep flag
+    rx = r*xscale
+    ry = r*abs(yscale)
+    
+    start_pos = turtle_pos
+    if is_pen_down:
+        svg_lines_string += """<path d="M {x1} {y1} A {rx} {ry} 0 0 {s} {x2} {y2}" stroke-linecap="round" fill="transparent" style="stroke:{pen_color};stroke-width:{pen_width}"/>""".format(
+            x1=start_pos[0], y1=start_pos[1],rx = rx, ry = ry, x2=new_pos[0], y2=new_pos[1], pen_color=pen_color, pen_width=pen_width, s=sweep)    
+    if is_filling:
+        svg_fill_string += """ A {rx} {ry} 0 0 {s} {x2} {y2} """.format(rx=r,ry=r,x2=new_pos[0],y2=new_pos[1],s=sweep)
+    
+    turtle_pos = new_pos
+    #_updateDrawing()    
+    
+# initialize the string for the svg path of the filled shape
+# from aronma/ColabTurtle_2 github
 def begin_fill():
     global is_filling
     global svg_fill_string
@@ -263,7 +289,8 @@ def begin_fill():
         svg_fill_string = """<path d="M {x1} {y1} """.format(x1=turtle_pos[0], y1=turtle_pos[1])
         is_filling = True
 
-#terminate the string for the svg path of the filled shape and append to the list of drawn svg shapes    
+# terminate the string for the svg path of the filled shape and append to the list of drawn svg shapes
+# from aronma/ColabTurtle_2 github
 def end_fill():
     global is_filling
     global svg_fill_string
@@ -272,16 +299,51 @@ def end_fill():
     if is_filling:
         is_filling = False
         svg_fill_string += """"Z stroke="none" fill="{fillcolor}" />""".format(fillcolor=fill_color)
-        svg_lines_string += svg_fill_string
+        svg_lines_string = svg_fill_string + svg_lines_string
         svg_fill_string = ''
         _updateDrawing()
+
+# draws a circular arc, centered 90degrees to the right of the turtle
+# Modified from aronma/ColabTurtle_2 github
+def arc(radius, degrees):
+    global turtle_degree
+    alpha = math.radians(turtle_degree)
+    theta = math.radians(degrees)
+    
+    s = radius/abs(radius)
+    gamma = alpha+s*theta-math.radians(90)
+
+    circle_center = (turtle_pos[0] + radius*xscale*math.sin(alpha), turtle_pos[1] - radius*abs(yscale)*math.cos(alpha))
+    ending_point = (round(circle_center[0] + radius*xscale*math.cos(gamma),3) , round(circle_center[1] + radius*abs(yscale)*math.sin(gamma),3))
+   
+    _arctoNewPosition(radius,ending_point)
+    
+    turtle_degree = (turtle_degree - s*degrees) % 360
+    _updateDrawing()
+
+# Since SVG has some ambiguity when using an arc path for a complete circle,
+# the circle function is broken into chunks of at most 90 degrees
+# From aronma/ColabTurtle_2 github
+def circle(radius, degrees=360):
+    if not (isinstance(radius, int) or isinstance(radius, float)):
+        raise ValueError('circle radius should be a number')
+    if not (isinstance(degrees, int) or isinstance(degrees,float)):
+        raise ValueError('degrees should be a number')      
+    if degrees < 0:
+        raise ValueError('degrees should be a positive number')
+     
+    while degrees > 0:
+        if degrees > 90:
+            arc(radius, 90)
+        else:
+            arc(radius, degrees)
+        degrees += -90        
         
 # makes the turtle move forward by 'units' units
 def forward(units):
     if not isinstance(units, (int,float)):
         raise ValueError('units must be a number.')
      
-    
     alpha = math.radians(turtle_degree)
     ending_point = (turtle_pos[0] + units * xscale * math.cos(alpha), turtle_pos[1] + units * abs(yscale) * math.sin(alpha))
 
