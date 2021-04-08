@@ -306,6 +306,7 @@ def arc(radius, degrees):
     
     circle_center = (turtle_pos[0] + radius * xscale * math.sin(alpha), turtle_pos[1] - radius * abs(yscale) * math.cos(alpha))
     ending_point = (circle_center[0] + radius*math.cos(gamma) , circle_center[1] + radius*math.sin(gamma))
+    print(circle_center,ending_point)
    
     _arctoNewPosition(radius,ending_point)
     
@@ -326,9 +327,9 @@ def circle(radius, degrees=360):
     
     while degrees > 0:
         if degrees > 90:
-            arc(abs(radius), 90)
+            arc(radius, 90)
         else:
-            arc(abs(radius), degrees)
+            arc(radius, degrees)
         degrees += -90        
         
 # makes the turtle move forward by 'units' units
