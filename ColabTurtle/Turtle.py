@@ -305,7 +305,7 @@ def arc(radius, degrees):
     gamma = theta+alpha-math.radians(90)
     
     circle_center = (turtle_pos[0] + radius * xscale * math.sin(alpha), turtle_pos[1] - radius * abs(yscale) * math.cos(alpha))
-    ending_point = (circle_center[0] - radius*math.cos(gamma) , circle_center[1] + radius*math.sin(gamma))
+    ending_point = (circle_center[0] + radius*math.cos(gamma) , circle_center[1] + radius*math.sin(gamma))
    
     _arctoNewPosition(radius,ending_point)
     
