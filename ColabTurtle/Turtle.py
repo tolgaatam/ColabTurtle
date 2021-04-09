@@ -19,8 +19,8 @@ import re
 #   "svg": This is a special mode to handle how the original ColabTurtle worked. The coordinate systme is the same
 #          as that used with SVG. The upper left corner is (0,0) with positive x direction being to the right, and the 
 #          positive y direction being to the bottom. Positive angles are measured clockwise with 0° pointing right.
-# Added functions to print or save the svg coding for the image
-# Added "arrow" as a turtle shape
+# Added functions to print or save the svg coding for the image.
+# Added "arrow" as a turtle shape (also default shape).
 # Added speed=0 option that displays final image with no animation. 
 #   Added done function so that final image is displayed on screen when speed=0
 # Added setworldcoordinates function to allow for setting world coordinate system. This sets the mode to "world".
@@ -32,6 +32,9 @@ import re
 #   classic turtle.py package. If the radius is positive, the center of the circle is to the left of the turtle and the
 #   path is drawn in the counterclockwise direction. If the radius is negative, the center of the circle is to the right of
 #   the turtle and path is drawn in the clockwise direction.
+# Original ColabTurtle defaults can be set by calling TADefaults() after importing the package but before initializeTurtle.
+#   This sets default background to black, default pen color to white, default pen width to 4, and default shape to Turtle.
+#   It also sets the mode to "svg".
 
 # Module for drawing classic Turtle figures on Google Colab notebooks.
 # It uses html capabilites of IPython library to draw svg shapes inline.
@@ -115,7 +118,7 @@ drawing_window = None
 
 
 # construct the display for turtle
-def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=DEFAULT_MODE):
+def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=None):
     global window_size
     global drawing_window
     global turtle_speed
@@ -145,11 +148,14 @@ def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=DEFAU
         raise ValueError('window must be a tuple of 2 integers')
     window_size = window
     
-    if mode not in VALID_MODES:
+    if mode == None:
+        _mode = DEFAULT_MODE
+    elif mode not in VALID_MODES:
         raise ValueError('mode must be standard, world, logo, or svg')
-    _mode = mode
+    else:
+        _mode = mode
     
-    if mode != "svg":
+    if _mode != "svg":
         xmin,ymin,xmax,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
         xscale = window_size[0]/(xmax-xmin)
         yscale = window_size[1]/(ymax-ymin)
@@ -157,11 +163,13 @@ def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=DEFAU
         xmin,ymax = 0,0
         xscale = 1
         yscale = -1
+       
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
     turtle_pos = (window_size[0] / 2, window_size[1] / 2)
     turtle_degree = DEFAULT_TURTLE_DEGREE if (_mode in ["standard","world"]) else (270 - DEFAULT_TURTLE_DEGREE)
     background_color = DEFAULT_BACKGROUND_COLOR
+    pen_color = DEFAULT_PEN_COLOR
     is_pen_down = DEFAULT_IS_PEN_DOWN
     svg_lines_string = DEFAULT_SVG_LINES_STRING
     pen_width = DEFAULT_PEN_WIDTH
@@ -825,5 +833,17 @@ def hideBorder():
     border_color = ""
     _updateDrawing()
   
-  
+def TADefaults():
+    global DEFAULT_BACKGROUND_COLOR
+    global DEFAULT_PEN_COLOR
+    global DEFAULT_PEN_WIDTH
+    global DEFAULT_MODE
+    global DEFAULT_TURTLE_SHAPE
+    
+    DEFAULT_BACKGROUND_COLOR = "black"
+    DEFAULT_PEN_COLOR = "white"
+    DEFAULT_PEN_WIDTH = 4
+    DEFAULT_MODE = 'svg'
+    DEFAULT_TURTLE_SHAPE = "turtle"
+    
   
