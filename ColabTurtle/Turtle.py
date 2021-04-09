@@ -165,6 +165,7 @@ def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=DEFAU
     turtle_pos = (window_size[0] / 2, window_size[1] / 2)
     turtle_degree = DEFAULT_TURTLE_DEGREE if (_mode in ["standard","world"]) else (270 - DEFAULT_TURTLE_DEGREE)
     background_color = DEFAULT_BACKGROUND_COLOR
+    pen_color = DEFAULT_PEN_COLOR
     is_pen_down = DEFAULT_IS_PEN_DOWN
     svg_lines_string = DEFAULT_SVG_LINES_STRING
     pen_width = DEFAULT_PEN_WIDTH
@@ -829,11 +830,15 @@ def hideBorder():
     _updateDrawing()
   
 def TADefaults():
-    global DEFAULT_PEN_COLOR
+    global DEFAULT_BACKGROUND_COLOR
     global DEFAULT_PEN_COLOR
     global DEFAULT_PEN_WIDTH
+    global DEFAULT_MODE
+    global DEFAULT_TURTLE_SHAPE
     DEFAULT_BACKGROUND_COLOR = "black"
     DEFAULT_PEN_COLOR = "white"
     DEFAULT_PEN_WIDTH = 3
+    DEFAULT_MODE = "svg"
+    DEFAULT_TURTLE_SHAPE = "turtle"
     
   
