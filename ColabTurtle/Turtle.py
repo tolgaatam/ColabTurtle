@@ -19,8 +19,8 @@ import re
 #   "svg": This is a special mode to handle how the original ColabTurtle worked. The coordinate systme is the same
 #          as that used with SVG. The upper left corner is (0,0) with positive x direction being to the right, and the 
 #          positive y direction being to the bottom. Positive angles are measured clockwise with 0° pointing right.
-# Added functions to print or save the svg coding for the image
-# Added "arrow" as a turtle shape
+# Added functions to print or save the svg coding for the image.
+# Added "arrow" as a turtle shape (also default shape).
 # Added speed=0 option that displays final image with no animation. 
 #   Added done function so that final image is displayed on screen when speed=0
 # Added setworldcoordinates function to allow for setting world coordinate system. This sets the mode to "world".
@@ -32,6 +32,9 @@ import re
 #   classic turtle.py package. If the radius is positive, the center of the circle is to the left of the turtle and the
 #   path is drawn in the counterclockwise direction. If the radius is negative, the center of the circle is to the right of
 #   the turtle and path is drawn in the clockwise direction.
+# Original ColabTurtle defaults can be set by calling TADefaults() after importing the package but before initializeTurtle.
+#   This sets default background to black, default pen color to white, default pen width to 4, and default shape to Turtle.
+#   It also sets the mode to "svg".
 
 # Module for drawing classic Turtle figures on Google Colab notebooks.
 # It uses html capabilites of IPython library to draw svg shapes inline.
@@ -151,9 +154,6 @@ def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=None)
         raise ValueError('mode must be standard, world, logo, or svg')
     else:
         _mode = mode
-    print(DEFAULT_MODE)
-    print(mode)
-    print(_mode)
     
     if _mode != "svg":
         xmin,ymin,xmax,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
@@ -842,7 +842,7 @@ def TADefaults():
     
     DEFAULT_BACKGROUND_COLOR = "black"
     DEFAULT_PEN_COLOR = "white"
-    DEFAULT_PEN_WIDTH = 3
+    DEFAULT_PEN_WIDTH = 4
     DEFAULT_MODE = 'svg'
     DEFAULT_TURTLE_SHAPE = "turtle"
     
