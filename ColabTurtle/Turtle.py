@@ -157,6 +157,9 @@ def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=DEFAU
         xmin,ymax = 0,0
         xscale = 1
         yscale = -1
+        
+    print(DEFAULT_BACKGROUND_COLOR)
+    print(DEFAULT_PEN_COLOR)
 
     is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
     turtle_pos = (window_size[0] / 2, window_size[1] / 2)
