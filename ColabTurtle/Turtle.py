@@ -115,7 +115,7 @@ drawing_window = None
 
 
 # construct the display for turtle
-def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=DEFAULT_MODE):
+def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=None):
     global window_size
     global drawing_window
     global turtle_speed
@@ -145,9 +145,12 @@ def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=DEFAU
         raise ValueError('window must be a tuple of 2 integers')
     window_size = window
     
-    if mode not in VALID_MODES:
+    if mode == None:
+        _mode = DEFAULT_MODE
+    elif mode not in VALID_MODES:
         raise ValueError('mode must be standard, world, logo, or svg')
-    _mode = mode
+    else:
+        _mode = mode
     print(DEFAULT_MODE)
     print(mode)
     print(_mode)
