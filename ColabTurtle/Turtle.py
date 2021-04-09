@@ -148,8 +148,9 @@ def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=DEFAU
     if mode not in VALID_MODES:
         raise ValueError('mode must be standard, world, logo, or svg')
     _mode = mode
+    print(_mode)
     
-    if mode != "svg":
+    if _mode != "svg":
         xmin,ymin,xmax,ymax = -window_size[0]/2,-window_size[1]/2,window_size[0]/2,window_size[1]/2
         xscale = window_size[0]/(xmax-xmin)
         yscale = window_size[1]/(ymax-ymin)
@@ -833,10 +834,11 @@ def TADefaults():
     global DEFAULT_PEN_WIDTH
     global DEFAULT_MODE
     global DEFAULT_TURTLE_SHAPE
+    
     DEFAULT_BACKGROUND_COLOR = "black"
     DEFAULT_PEN_COLOR = "white"
     DEFAULT_PEN_WIDTH = 3
-    DEFAULT_MODE = "svg"
+    DEFAULT_MODE = 'svg'
     DEFAULT_TURTLE_SHAPE = "turtle"
     
   
