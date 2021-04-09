@@ -825,5 +825,12 @@ def hideBorder():
     border_color = ""
     _updateDrawing()
   
-  
+def TADefaults()
+    global DEFAULT_PEN_COLOR
+    global DEFAULT_PEN_COLOR
+    global DEFAULT_PEN_WIDTH
+    DEFAULT_BACKGROUND_COLOR = "black"
+    DEFAULT_PEN_COLOR = "white"
+    DEFAULT_PEN_WIDTH = 3
+    
   
