@@ -148,6 +148,7 @@ def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=DEFAU
     if mode not in VALID_MODES:
         raise ValueError('mode must be standard, world, logo, or svg')
     _mode = mode
+    print(DEFAULT_MODE)
     print(_mode)
     
     if _mode != "svg":
