@@ -144,7 +144,7 @@ def initializeTurtle(window=None, speed=None, mode=None):
         raise ValueError('initial_speed must be an integer in interval [0,13]')
     else:
         turtle_speed = speed
-    timeout = _speedToSec(speed)
+    timeout = _speedToSec(turtle_speed)
 
     if window == None:
         window_size = DEFAULT_WINDOW_SIZE
