@@ -2,11 +2,11 @@ from distutils.core import setup
 
 setup(
     name='ColabTurtle',
-    version='3.0.0',
-    packages=['ColabTurtleB'],
-    url='https://github.com/mathriddle/ColabTurtleB',
+    version='2.1.0',
+    packages=['ColabTurtle'],
+    url='https://github.com/tolgaatam/ColabTurtle',
     license='MIT',
-    author='Larry Riddle',
-    author_email='lriddle@agnesscott.edu',
+    author='Tolga Atam',
+    author_email='atam@sabanciuniv.edu',
     description='An HTML based Turtle implementation, in order to work in Google Colab'
 )
