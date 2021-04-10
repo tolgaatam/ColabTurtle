@@ -295,8 +295,10 @@ def _arctoNewPosition(r,new_pos):
 def begin_fill():
     global is_filling
     global svg_fill_string
+    global svg_lines_string_orig
     if not is_filling:
         svg_fill_string = """<path d="M {x1} {y1} """.format(x1=turtle_pos[0], y1=turtle_pos[1])
+        svg_lines_string_orig = svg_lines_string
         is_filling = True
 
 # terminate the string for the svg path of the filled shape and append to the list of drawn svg shapes
@@ -308,8 +310,8 @@ def end_fill():
     
     if is_filling:
         is_filling = False
-        svg_fill_string += """Z" stroke="none" fill="{fillcolor}" />""".format(fillcolor=fill_color)
-        svg_lines_string = svg_fill_string + svg_lines_string
+        svg_fill_string += """Z" stroke="{pencolor}" fill="{fillcolor}" />""".format(pencolor=pen_color, fillcolor=fill_color)
+        svg_lines_string = svg_fill_string + svg_lines_string_orig
         svg_fill_string = ''
         _updateDrawing()
 
