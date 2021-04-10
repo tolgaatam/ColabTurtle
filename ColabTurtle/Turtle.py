@@ -281,8 +281,8 @@ def _arctoNewPosition(r,new_pos):
     ry = r*abs(yscale)
     
     start_pos = turtle_pos
-    if is_pen_down:
-        svg_lines_string += """<path d="M {x1} {y1} A {rx} {ry} 0 0 {s} {x2} {y2}" stroke-linecap="round" fill="transparent" style="stroke:{pen_color};stroke-width:{pen_width}"/>""".format(
+    if is_pen_down:  
+        svg_lines_string += """<path d="M {x1} {y1} A {rx} {ry} 0 0 {s} {x2} {y2}" stroke-linecap="round" fill="transparent" fill-opacity="0" style="stroke:{pen_color};stroke-width:{pen_width}"/>""".format(
             x1=start_pos[0], y1=start_pos[1],rx = rx, ry = ry, x2=new_pos[0], y2=new_pos[1], pen_color=pen_color, pen_width=pen_width, s=sweep)    
     if is_filling:
         svg_fill_string += """ A {rx} {ry} 0 0 {s} {x2} {y2} """.format(rx=r,ry=r,x2=new_pos[0],y2=new_pos[1],s=sweep)
@@ -308,7 +308,7 @@ def end_fill():
     
     if is_filling:
         is_filling = False
-        svg_fill_string += """"Z stroke="none" fill="{fillcolor}" />""".format(fillcolor=fill_color)
+        svg_fill_string += """Z" stroke="none" fill="{fillcolor}" />""".format(fillcolor=fill_color)
         svg_lines_string = svg_fill_string + svg_lines_string
         svg_fill_string = ''
         _updateDrawing()
@@ -757,6 +757,8 @@ def window_height():
 def saveSVG(filename, show_turtle=False):
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
+    if filename[-4:] != ".svg":
+        filename += ".svg"
     text_file = open(filename, "w")
     header = ("""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg">\n""").format(w=window_size[0],
                                                                                                                       h=window_size[1]) 
