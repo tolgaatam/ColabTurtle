@@ -303,8 +303,10 @@ def begin_fill():
         svg_lines_string_orig = svg_lines_string
         is_filling = True
 
-# terminate the string for the svg path of the filled shape and append to the list of drawn svg shapes
-# from aronma/ColabTurtle_2 github
+# terminate the string for the svg path of the filled shape and prepend to the list of drawn svg shapes
+# Modified from aronma/ColabTurtle_2 github github
+# The original svg_lines_string was previously stored to be used when the fill is finished because the svg_fill_string will include
+# the svg code for the path generated between the begin and end fill commands. 
 def end_fill():
     global is_filling
     global svg_fill_string
@@ -312,21 +314,22 @@ def end_fill():
     
     if is_filling:
         is_filling = False
-        svg_fill_string += """ stroke-linecap="round" style="stroke:{pencolor};stroke-width:{penwidth}" fill="{fillcolor}" />""".format(pencolor=pen_color,
+        svg_fill_string += """" stroke-linecap="round" style="stroke:{pencolor};stroke-width:{penwidth}" fill="{fillcolor}" />""".format(pencolor=pen_color,
                                                                                                                    penwidth=pen_width,
                                                                                                                    fillcolor=fill_color)
         svg_lines_string = svg_fill_string + svg_lines_string_orig
         svg_fill_string = ''
         _updateDrawing()
 
-# draws a circular arc, centered 90degrees to the right of the turtle
+# draws a circular arc
 # Modified from aronma/ColabTurtle_2 github
+# Positive radius has arc to left of turtle, negative radius has arc to right of turtle
 def arc(radius, degrees):
     global turtle_degree
     alpha = math.radians(turtle_degree)
     theta = math.radians(degrees)
     
-    s = radius/abs(radius)
+    s = radius/abs(radius)  # 1=left, -1=right
     gamma = alpha-s*theta
 
     circle_center = (turtle_pos[0] + radius*xscale*math.sin(alpha), turtle_pos[1] - radius*abs(yscale)*math.cos(alpha))
