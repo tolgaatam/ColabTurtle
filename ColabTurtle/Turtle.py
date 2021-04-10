@@ -268,7 +268,7 @@ def _moveToNewPosition(new_pos):
     _updateDrawing()
 
 # helper function for drawing arcs of radius 'r' to 'new_pos' and draw line if pen is down
-# Modified from aronma/ColabTurtle_2 github
+# Modified from aronma/ColabTurtle_2 github to allow arc on either side of turtle
 # Positive radius has circle to left of turtle moving counterclockwise
 # Negative radius has circle to right of turtle moving clockwise
 def _arctoNewPosition(r,new_pos):
@@ -291,7 +291,9 @@ def _arctoNewPosition(r,new_pos):
     #_updateDrawing()    
     
 # initialize the string for the svg path of the filled shape
-# from aronma/ColabTurtle_2 github
+# modified from aronma/ColabTurtle_2 github repo
+# The current svg_lines_string is stored to be used when the fill is finished because the svg_fill_string will include
+# the svg code for the path generated between the begin and end fill commands.
 def begin_fill():
     global is_filling
     global svg_fill_string
