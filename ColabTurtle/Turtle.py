@@ -118,7 +118,7 @@ drawing_window = None
 
 
 # construct the display for turtle
-def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=None):
+def initializeTurtle(window=None, speed=None, mode=None):
     global window_size
     global drawing_window
     global turtle_speed
@@ -138,15 +138,21 @@ def initializeTurtle(window=DEFAULT_WINDOW_SIZE, speed=DEFAULT_SPEED, mode=None)
     global timeout
     
 
-    if isinstance(speed,int) == False or speed not in range(0, 14):
+    if speed == None:
+         turtle_speed = DEFAULT_SPEED
+    elif isinstance(speed,int) == False or speed not in range(0, 14):
         raise ValueError('initial_speed must be an integer in interval [0,13]')
-    turtle_speed = speed
+    else:
+        turtle_speed = speed
     timeout = _speedToSec(speed)
 
-    if not (isinstance(window, tuple) and len(window) == 2 and isinstance(
+    if window == None:
+        window_size = DEFAULT_WINDOW_SIZE
+    elif not (isinstance(window, tuple) and len(window) == 2 and isinstance(
             window[0], int) and isinstance(window[1], int)):
         raise ValueError('window must be a tuple of 2 integers')
-    window_size = window
+    else:
+        window_size = window
     
     if mode == None:
         _mode = DEFAULT_MODE
