@@ -308,7 +308,7 @@ def end_fill():
     
     if is_filling:
         is_filling = False
-        svg_fill_string += """"Z stroke="none" fill="{fillcolor}" />""".format(fillcolor=fill_color)
+        svg_fill_string += """ Z" stroke="none" fill="{fillcolor}" />""".format(fillcolor=fill_color)
         svg_lines_string = svg_fill_string + svg_lines_string
         svg_fill_string = ''
         _updateDrawing()
