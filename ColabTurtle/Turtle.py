@@ -308,7 +308,7 @@ def end_fill():
     
     if is_filling:
         is_filling = False
-        svg_fill_string += """ Z" stroke="none" fill="{fillcolor}" />""".format(fillcolor=fill_color)
+        svg_fill_string += """Z" stroke="none" fill="{fillcolor}" />""".format(fillcolor=fill_color)
         svg_lines_string = svg_fill_string + svg_lines_string
         svg_fill_string = ''
         _updateDrawing()
@@ -757,6 +757,8 @@ def window_height():
 def saveSVG(filename, show_turtle=False):
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
+    if filename[-4:] != ".svg":
+        filename += ".svg"
     text_file = open(filename, "w")
     header = ("""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg">\n""").format(w=window_size[0],
                                                                                                                       h=window_size[1]) 
