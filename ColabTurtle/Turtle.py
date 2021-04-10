@@ -312,7 +312,7 @@ def end_fill():
     
     if is_filling:
         is_filling = False
-        svg_fill_string += """Z" stroke-linecap="round" style="stroke:{pencolor};stroke-width:{penwidth}" fill="{fillcolor}" />""".format(pencolor=pen_color,
+        svg_fill_string += """ stroke-linecap="round" style="stroke:{pencolor};stroke-width:{penwidth}" fill="{fillcolor}" />""".format(pencolor=pen_color,
                                                                                                                    penwidth=pen_width,
                                                                                                                    fillcolor=fill_color)
         svg_lines_string = svg_fill_string + svg_lines_string_orig
