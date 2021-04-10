@@ -268,7 +268,7 @@ def _moveToNewPosition(new_pos):
     _updateDrawing()
 
 # helper function for drawing arcs of radius 'r' to 'new_pos' and draw line if pen is down
-# Modified from aronma/ColabTurtle_2 github
+# Modified from aronma/ColabTurtle_2 github to allow arc on either side of turtle
 # Positive radius has circle to left of turtle moving counterclockwise
 # Negative radius has circle to right of turtle moving clockwise
 def _arctoNewPosition(r,new_pos):
@@ -291,16 +291,22 @@ def _arctoNewPosition(r,new_pos):
     #_updateDrawing()    
     
 # initialize the string for the svg path of the filled shape
-# from aronma/ColabTurtle_2 github
+# modified from aronma/ColabTurtle_2 github repo
+# The current svg_lines_string is stored to be used when the fill is finished because the svg_fill_string will include
+# the svg code for the path generated between the begin and end fill commands.
 def begin_fill():
     global is_filling
     global svg_fill_string
+    global svg_lines_string_orig
     if not is_filling:
         svg_fill_string = """<path d="M {x1} {y1} """.format(x1=turtle_pos[0], y1=turtle_pos[1])
+        svg_lines_string_orig = svg_lines_string
         is_filling = True
 
-# terminate the string for the svg path of the filled shape and append to the list of drawn svg shapes
-# from aronma/ColabTurtle_2 github
+# terminate the string for the svg path of the filled shape and prepend to the list of drawn svg shapes
+# Modified from aronma/ColabTurtle_2 github github
+# The original svg_lines_string was previously stored to be used when the fill is finished because the svg_fill_string will include
+# the svg code for the path generated between the begin and end fill commands. 
 def end_fill():
     global is_filling
     global svg_fill_string
@@ -308,19 +314,22 @@ def end_fill():
     
     if is_filling:
         is_filling = False
-        svg_fill_string += """Z" stroke="none" fill="{fillcolor}" />""".format(fillcolor=fill_color)
-        svg_lines_string = svg_fill_string + svg_lines_string
+        svg_fill_string += """" stroke-linecap="round" style="stroke:{pencolor};stroke-width:{penwidth}" fill="{fillcolor}" />""".format(pencolor=pen_color,
+                                                                                                                   penwidth=pen_width,
+                                                                                                                   fillcolor=fill_color)
+        svg_lines_string = svg_fill_string + svg_lines_string_orig
         svg_fill_string = ''
         _updateDrawing()
 
-# draws a circular arc, centered 90degrees to the right of the turtle
+# draws a circular arc
 # Modified from aronma/ColabTurtle_2 github
+# Positive radius has arc to left of turtle, negative radius has arc to right of turtle
 def arc(radius, degrees):
     global turtle_degree
     alpha = math.radians(turtle_degree)
     theta = math.radians(degrees)
     
-    s = radius/abs(radius)
+    s = radius/abs(radius)  # 1=left, -1=right
     gamma = alpha-s*theta
 
     circle_center = (turtle_pos[0] + radius*xscale*math.sin(alpha), turtle_pos[1] - radius*abs(yscale)*math.cos(alpha))
