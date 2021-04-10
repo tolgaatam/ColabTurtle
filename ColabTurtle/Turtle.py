@@ -32,7 +32,7 @@ import re
 #   classic turtle.py package. If the radius is positive, the center of the circle is to the left of the turtle and the
 #   path is drawn in the counterclockwise direction. If the radius is negative, the center of the circle is to the right of
 #   the turtle and path is drawn in the clockwise direction.
-# Original ColabTurtle defaults can be set by calling TADefaults() after importing the package but before initializeTurtle.
+# Original ColabTurtle defaults can be set by calling OldDefaults() after importing the package but before initializeTurtle.
 #   This sets default background to black, default pen color to white, default pen width to 4, and default shape to Turtle.
 #   It also sets the mode to "svg".
 
@@ -269,6 +269,8 @@ def _moveToNewPosition(new_pos):
 
 # helper function for drawing arcs of radius 'r' to 'new_pos' and draw line if pen is down
 # Modified from aronma/ColabTurtle_2 github
+# Positive radius has circle to left of turtle moving counterclockwise
+# Negative radius has circle to right of turtle moving clockwise
 def _arctoNewPosition(r,new_pos):
     global turtle_pos
     global svg_lines_string
@@ -319,15 +321,11 @@ def arc(radius, degrees):
     theta = math.radians(degrees)
     
     s = radius/abs(radius)
-    #gamma = alpha+s*theta-math.radians(90)
     gamma = alpha-s*theta
 
     circle_center = (turtle_pos[0] + radius*xscale*math.sin(alpha), turtle_pos[1] - radius*abs(yscale)*math.cos(alpha))
-    #ending_point = (round(circle_center[0] + radius*xscale*math.cos(gamma),3) , round(circle_center[1] + radius*abs(yscale)*math.sin(gamma),3))
     ending_point = (round(circle_center[0] - radius*xscale*math.sin(gamma),3) , round(circle_center[1] + radius*abs(yscale)*math.cos(gamma),3))
-    print(turtle_degree, circle_center, ending_point)
   
-   
     _arctoNewPosition(radius,ending_point)
     
     turtle_degree = (turtle_degree - s*degrees) % 360
@@ -336,6 +334,7 @@ def arc(radius, degrees):
 # Since SVG has some ambiguity when using an arc path for a complete circle,
 # the circle function is broken into chunks of at most 90 degrees
 # From aronma/ColabTurtle_2 github
+# Positive radius has circle to left of turtle, negative radius has circle to right of turtle
 def circle(radius, degrees=360):
     if not (isinstance(radius, int) or isinstance(radius, float)):
         raise ValueError('circle radius should be a number')
@@ -837,7 +836,8 @@ def hideBorder():
     border_color = ""
     _updateDrawing()
   
-def TADefaults():
+# Set the defaults used in the original version of ColabTurtle package
+def OldDefaults():
     global DEFAULT_BACKGROUND_COLOR
     global DEFAULT_PEN_COLOR
     global DEFAULT_PEN_WIDTH
