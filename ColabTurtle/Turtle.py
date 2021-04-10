@@ -137,6 +137,13 @@ def initializeTurtle(window=None, speed=None, mode=None):
     global yscale
     global timeout
     
+    if window == None:
+        window_size = DEFAULT_WINDOW_SIZE
+    elif not (isinstance(window, tuple) and len(window) == 2 and isinstance(
+            window[0], int) and isinstance(window[1], int)):
+        raise ValueError('window must be a tuple of 2 integers')
+    else:
+        window_size = window
 
     if speed == None:
          turtle_speed = DEFAULT_SPEED
@@ -145,14 +152,6 @@ def initializeTurtle(window=None, speed=None, mode=None):
     else:
         turtle_speed = speed
     timeout = _speedToSec(turtle_speed)
-
-    if window == None:
-        window_size = DEFAULT_WINDOW_SIZE
-    elif not (isinstance(window, tuple) and len(window) == 2 and isinstance(
-            window[0], int) and isinstance(window[1], int)):
-        raise ValueError('window must be a tuple of 2 integers')
-    else:
-        window_size = window
     
     if mode == None:
         _mode = DEFAULT_MODE
