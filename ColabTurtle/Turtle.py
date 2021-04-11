@@ -594,7 +594,7 @@ def bgcolor(color = None, c2 = None, c3 = None):
 
 # change the color of the pen
 # if no params, return the current pen color
-def color(color = None, c2 = None, c3 = None):
+def pencolor(color = None, c2 = None, c3 = None):
     global pen_color
 
     if color is None:
@@ -606,8 +606,6 @@ def color(color = None, c2 = None, c3 = None):
 
     pen_color = _processColor(color)
     _updateDrawing()
-
-pencolor = color  #alias
 
 # change the fill color
 # if no params, return the current fill color
@@ -624,6 +622,21 @@ def fillcolor(color = None, c2 = None, c3 = None):
     fill_color = _processColor(color)
     _updateDrawing()
 
+def color(*args)
+    if args:
+        narg = len(args)
+        if narg == 1:
+            pen_color = fill_color = _processColor(args[0])
+        elif narg == 2:
+            pen_color = _processColor(args[0])
+            fill_color = _processColor(args[1])
+        elfi narg == 3:
+            kolor = (args[0],args[1],args[2])
+            pen_color = fill_color = _processColor(kolor)
+    else:
+        return pen_color,fill_color
+    
+    
 # change the width of the lines drawn by the turtle, in pixels
 # if the function is called without arguments, it returns the current width
 def width(width = None):
