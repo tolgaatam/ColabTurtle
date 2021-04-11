@@ -141,14 +141,14 @@ def initializeTurtle(window=None, speed=None, mode=None):
         window_size = DEFAULT_WINDOW_SIZE
     elif not (isinstance(window, tuple) and len(window) == 2 and isinstance(
             window[0], int) and isinstance(window[1], int)):
-        raise ValueError('window must be a tuple of 2 integers')
+        raise ValueError('Window must be a tuple of 2 integers')
     else:
         window_size = window
 
     if speed == None:
          turtle_speed = DEFAULT_SPEED
     elif isinstance(speed,int) == False or speed not in range(0, 14):
-        raise ValueError('initial_speed must be an integer in interval [0,13]')
+        raise ValueError('Speed must be an integer in the interval [0,13]')
     else:
         turtle_speed = speed
     timeout = _speedToSec(turtle_speed)
@@ -156,7 +156,7 @@ def initializeTurtle(window=None, speed=None, mode=None):
     if mode == None:
         _mode = DEFAULT_MODE
     elif mode not in VALID_MODES:
-        raise ValueError('mode must be standard, world, logo, or svg')
+        raise ValueError('Mode must be standard, world, logo, or svg')
     else:
         _mode = mode
     
@@ -351,11 +351,11 @@ def arc(radius, degrees):
 # Positive radius has circle to left of turtle, negative radius has circle to right of turtle
 def circle(radius, degrees=360):
     if not (isinstance(radius, int) or isinstance(radius, float)):
-        raise ValueError('circle radius should be a number')
+        raise ValueError('Circle radius should be a number')
     if not (isinstance(degrees, int) or isinstance(degrees,float)):
-        raise ValueError('degrees should be a number')      
+        raise ValueError('Degrees should be a number')      
     if degrees < 0:
-        raise ValueError('degrees should be a positive number')
+        raise ValueError('Degrees should be a positive number')
      
     while degrees > 0:
         if degrees > 90:
@@ -367,7 +367,7 @@ def circle(radius, degrees=360):
 # makes the turtle move forward by 'units' units
 def forward(units):
     if not isinstance(units, (int,float)):
-        raise ValueError('units must be a number.')
+        raise ValueError('Units must be a number.')
      
     alpha = math.radians(turtle_degree)
     ending_point = (turtle_pos[0] + units * xscale * math.cos(alpha), turtle_pos[1] + units * abs(yscale) * math.sin(alpha))
@@ -379,7 +379,7 @@ fd = forward # alias
 # makes the turtle move backward by 'units' units
 def backward(units):
     if not isinstance(units, (int,float)):
-        raise ValueError('units must be a number.')
+        raise ValueError('Units must be a number.')
     forward(-1 * units)
 
 bk = backward # alias
@@ -391,7 +391,7 @@ def right(degrees):
     global turtle_degree
 
     if not isinstance(degrees, (int,float)):
-        raise ValueError('degrees must be a number.')
+        raise ValueError('Degrees must be a number.')
 
     turtle_degree = (turtle_degree + degrees) % 360
     _updateDrawing()
@@ -403,7 +403,7 @@ def face(degrees):
     global turtle_degree
 
     if not isinstance(degrees, (int,float)):
-        raise ValueError('degrees must be a number.')
+        raise ValueError('Degrees must be a number.')
 
     if _mode in ["standard","world"]: 
         turtle_degree = (360 - degrees) % 360
@@ -419,7 +419,7 @@ seth = face # alias
 # makes the turtle move right by 'degrees' degrees (NOT radians, this library does not support radians right now)
 def left(degrees):
     if not isinstance(degrees, (int,float)):
-        raise ValueError('degrees must be a number.')
+        raise ValueError('Degrees must be a number.')
     right(-1 * degrees)
 
 lt = left
@@ -453,7 +453,7 @@ def speed(speed = None):
         return turtle_speed
 
     if isinstance(speed,int) == False or speed not in range(0, 14):
-        raise ValueError('speed must be an integer in the interval [0,13].')
+        raise ValueError('Speed must be an integer in the interval [0,13].')
         
     turtle_speed = speed
     timeout = _speedToSec(speed)
@@ -468,7 +468,7 @@ def setx(x):
 # move the turtle to a designated 'y' y-coordinate, x-coordinate stays the same
 def sety(y):
     if not isinstance(y, (int,float)):
-        raise ValueError('new y position must be a number.')
+        raise ValueError('New y position must be a number.')
     _moveToNewPosition((turtle_pos[0], _converty(y)))
 
 def home():
@@ -512,15 +512,15 @@ heading = getheading # alias
 def goto(x, y=None):
     if isinstance(x, tuple) and y is None:
         if len(x) != 2:
-            raise ValueError('the tuple argument must be of length 2.')
+            raise ValueError('The tuple argument must be of length 2.')
 
         y = x[1]
         x = x[0]
 
     if not isinstance(x, (int,float)):
-        raise ValueError('new x position must be a number.')
+        raise ValueError('New x position must be a number.')
     if not isinstance(y, (int,float)):
-        raise ValueError('new y position must be a number.')
+        raise ValueError('New y position must be a number.')
     _moveToNewPosition((_convertx(x), _converty(y)))
 
 setpos = goto # alias
@@ -567,14 +567,14 @@ def _processColor(color):
     if isinstance(color, str):
         color = color.lower()
         if not _validateColorString(color):
-            raise ValueError('color is invalid. it can be a known html color name, 3-6 digit hex string or rgb string.')
+            raise ValueError('Color is invalid. It can be a known html color name, 3-6 digit hex string, or rgb string.')
         return color
     elif isinstance(color, tuple):
         if not _validateColorTuple(color):
-            raise ValueError('color tuple is invalid. it must be a tuple of three integers, which are in the interval [0,255]')
+            raise ValueError('Color tuple is invalid. It must be a tuple of three integers, which are in the interval [0,255]')
         return 'rgb(' + str(color[0]) + ',' + str(color[1]) + ',' + str(color[2]) + ')'
     else:
-        raise ValueError('the first parameter must be a color string or a tuple')
+        raise ValueError('The first parameter must be a color string or a tuple')
 
 # change the background color of the drawing area
 # if no params, return the current background color
@@ -585,7 +585,7 @@ def bgcolor(color = None, c2 = None, c3 = None):
         return background_color
     elif c2 is not None:
         if c3 is None:
-            raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
+            raise ValueError('If the second argument is set, the third arguments must be set as well to complete the rgb set.')
         color = (color, c2, c3)
 
     background_color = _processColor(color)
@@ -594,20 +594,18 @@ def bgcolor(color = None, c2 = None, c3 = None):
 
 # change the color of the pen
 # if no params, return the current pen color
-def color(color = None, c2 = None, c3 = None):
+def pencolor(color = None, c2 = None, c3 = None):
     global pen_color
 
     if color is None:
         return pen_color
     elif c2 is not None:
         if c3 is None:
-            raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
+            raise ValueError('If the second argument is set, the third arguments must be set as well to complete the rgb set.')
         color = (color, c2, c3)
 
     pen_color = _processColor(color)
     _updateDrawing()
-
-pencolor = color  #alias
 
 # change the fill color
 # if no params, return the current fill color
@@ -618,12 +616,31 @@ def fillcolor(color = None, c2 = None, c3 = None):
         return fill_color
     elif c2 is not None:
         if c3 is None:
-            raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
+            raise ValueError('If the second argument is set, the third arguments must be set as well to complete the rgb set.')
         color = (color, c2, c3)
 
     fill_color = _processColor(color)
     _updateDrawing()
 
+def color(*args):
+    global pen_color
+    global fill_color
+    if args:
+        narg = len(args)
+        if narg == 1:
+            pen_color = fill_color = _processColor(args[0])
+        elif narg == 2:
+            pen_color = _processColor(args[0])
+            fill_color = _processColor(args[1])
+        elif narg == 3:
+            kolor = (args[0],args[1],args[2])
+            pen_color = fill_color = _processColor(kolor)
+        else:
+            raise ValueError('Syntax: color(colorstring), color((r,g,b)), color(r,g,b), color(string1,string2), color((r1,g1,b1),(r2,g2,b2))')
+    else:
+        return pen_color,fill_color
+    
+    
 # change the width of the lines drawn by the turtle, in pixels
 # if the function is called without arguments, it returns the current width
 def width(width = None):
@@ -633,9 +650,9 @@ def width(width = None):
         return pen_width
     else:
         if not isinstance(width, int):
-            raise ValueError('new width position must be an integer.')
+            raise ValueError('New width value must be an integer.')
         if not width > 0:
-            raise ValueError('new width position must be positive.')
+            raise ValueError('New width value must be positive.')
 
         pen_width = width
 
@@ -645,15 +662,15 @@ pensize = width  #alias
 def distance(x, y=None):
     if isinstance(x, tuple) and y is None:
         if len(x) != 2:
-            raise ValueError('the tuple argument must be of length 2.')
+            raise ValueError('The tuple argument must be of length 2.')
         y = x[1]
         x = x[0]
 
     if not isinstance(x, (int,float)):
-        raise ValueError('new x position must be a number.')
+        raise ValueError('The x position must be a number.')
 
     if not isinstance(y, (int,float)):
-        raise ValueError('new y position must be a number.')
+        raise ValueError('The y position must be a number.')
 
     return round(math.sqrt( (getx() - x) ** 2 + (gety() - y) ** 2 ), 8)
 
@@ -662,15 +679,15 @@ def distance(x, y=None):
 def towards(x, y=None):
     if isinstance(x, tuple) and y is None:
         if len(x) != 2:
-            raise ValueError('the tuple argument must be of length 2.')
+            raise ValueError('The tuple argument must be of length 2.')
         y = x[1]
         x = x[0] 
         
     if not isinstance(x, (int,float)):
-        raise ValueError('new x position must be a number.')
+        raise ValueError('The x position must be a number.')
 
     if not isinstance(y, (int,float)):
-        raise ValueError('new y position must be a number.') 
+        raise ValueError('The y position must be a number.') 
     
     dx = x - getx()
     dy = y - gety()
@@ -840,7 +857,7 @@ def showBorder(color = None, c2 = None, c3 = None):
         color = "gray"
     elif c2 is not None:
         if c3 is None:
-            raise ValueError('if the second argument is set, the third arguments must be set as well to complete the rgb set.')
+            raise ValueError('If the second argument is set, the third arguments must be set as well to complete the rgb set.')
         color = (color, c2, c3)
 
     border_color = _processColor(color)
