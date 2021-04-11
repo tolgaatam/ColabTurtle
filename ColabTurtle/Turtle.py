@@ -623,6 +623,8 @@ def fillcolor(color = None, c2 = None, c3 = None):
     _updateDrawing()
 
 def color(*args):
+    global pen_color
+    global fill_color
     if args:
         narg = len(args)
         if narg == 1:
