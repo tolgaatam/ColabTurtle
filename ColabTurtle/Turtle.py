@@ -634,7 +634,7 @@ def color(*args):
             kolor = (args[0],args[1],args[2])
             pen_color = fill_color = _processColor(kolor)
         else:
-            raise ValueError('syntax: color(colorstring), color((r,g,b)), color(r,g,b), color(string1,string2), color((r1,g1,b1),(r2,g2,b2)))'
+            raise ValueError('syntax: color(colorstring), color((r,g,b)), color(r,g,b), color(string1,string2), color((r1,g1,b1),(r2,g2,b2))')
     else:
         return pen_color,fill_color
     
