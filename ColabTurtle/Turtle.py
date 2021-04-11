@@ -622,7 +622,7 @@ def fillcolor(color = None, c2 = None, c3 = None):
     fill_color = _processColor(color)
     _updateDrawing()
 
-def color(*args)
+def color(*args):
     if args:
         narg = len(args)
         if narg == 1:
