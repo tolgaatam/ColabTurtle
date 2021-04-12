@@ -368,7 +368,7 @@ def circle(radius, degrees=360):
 def dot(size = None, *color):
     global svg_lines_string
     if not color:
-        if instance(size, (str, tuple)):
+        if isinstance(size, (str, tuple)):
             color = _processColor(color)
             size = pen_size + max(pen_size,4)
         else:
