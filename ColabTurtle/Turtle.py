@@ -9,30 +9,33 @@ import re
 #         by: Tolga Atam
 
 # Modified April 2021 by Larry Riddle
-# Changed some default values to match turtle.py package
+# Changed some default values to match classic turtle.py package
 #   default background color is white, default pen color is black, default pen thickness is 1
 #   default mode is "standard"
 #   center of window has coordinates (0,0)
 # Added option for selecting a mode when initializing the turtle graphics
 #   "standard" : default direction is to the right (east) and positive angles measured counterclockwise
 #   "logo" : default directon is upward (north) and positive angles are measured clockwise with 0° pointing up.
-#   "svg": This is a special mode to handle how the original ColabTurtle worked. The coordinate systme is the same
+#   "svg": This is a special mode to handle how the original ColabTurtle worked. The coordinate system is the same
 #          as that used with SVG. The upper left corner is (0,0) with positive x direction being to the right, and the 
 #          positive y direction being to the bottom. Positive angles are measured clockwise with 0° pointing right.
 # Added functions to print or save the svg coding for the image.
 # Added "arrow" as a turtle shape (also default shape).
 # Added speed=0 option that displays final image with no animation. 
-#   Added done function so that final image is displayed on screen when speed=0
+#   Added done function so that final image is displayed on screen when speed=0.
 # Added setworldcoordinates function to allow for setting world coordinate system. This sets the mode to "world".
-#   This should only be done immediately after initializing the turtle window
+#   This should be done immediately after initializing the turtle window.
 # Added towards function to return the angle between the line from turtle position to specified position.
 # Implemented begin_fill and end_fill functions from aronma/ColabTurtle_2 github. Added fillcolor function.
 #   Because the fill is controlled by svg rules, the result may differ from classic turtle fill.
 # Implemented circle (arc) function from aronma/ColabTurtle_2 github. Modified these to match behavior of circle function in
 #   classic turtle.py package. If the radius is positive, the center of the circle is to the left of the turtle and the
 #   path is drawn in the counterclockwise direction. If the radius is negative, the center of the circle is to the right of
-#   the turtle and path is drawn in the clockwise direction.
-# Original ColabTurtle defaults can be set by calling OldDefaults() after importing the package but before initializeTurtle.
+#   the turtle and path is drawn in the clockwise direction. Number of steps is not used here since the circle is drawn using
+#   the svg circle function.
+# Modified the color function to set both the pencolor as well as the fillcolor, just as in classic turtle.py package.
+# Added dot function to draw a dot with given diameter and color.
+# Original ColabTurtle defaults can be set by calling OldDefaults() after importing the ColabTurtle package but before initializeTurtle.
 #   This sets default background to black, default pen color to white, default pen width to 4, and default shape to Turtle.
 #   It also sets the mode to "svg".
 
@@ -75,8 +78,8 @@ SVG_TEMPLATE = """
       <svg width="{window_width}" height="{window_height}">  
         <rect width="100%" height="100%" style="fill:{background_color};stroke:{kolor};stroke-width:1"/>
         {lines}
-        {turtle}
         {dots}
+        {turtle}
       </svg>
     """
 TURTLE_TURTLE_SVG_TEMPLATE = """<g id="turtle" visibility="{visibility}" transform="rotate({degrees},{rotation_x},{rotation_y}) translate({turtle_x}, {turtle_y})">
@@ -369,7 +372,8 @@ def circle(radius, degrees=360):
             arc(radius, degrees)
         degrees += -90        
 
-# Draw a dot with radius size, using color
+# Draw a dot with diameter size, using color
+# If size is not given, the maximum of pensize+4 and 2*pensize is used.
 def dot(size = None, *color):
     global svg_dots_string
 
@@ -385,7 +389,7 @@ def dot(size = None, *color):
         if size is None:
             size = pen_width + max(pen_width,4)
         color = _processColor(color[0])
-    svg_dots_string += """<circle cx="{cx}" cy="{cy}" r="{radius}" stroke="" fill="{kolor}" fill-opacity="1" />""".format(radius=size,
+    svg_dots_string += """<circle cx="{cx}" cy="{cy}" r="{radius}" stroke="" fill="{kolor}" fill-opacity="1" />""".format(radius=size/2,
                                                                                                       cx=turtle_pos[0],
                                                                                                       cy=turtle_pos[1],
                                                                                                       kolor=color)
@@ -649,6 +653,7 @@ def fillcolor(color = None, c2 = None, c3 = None):
     fill_color = _processColor(color)
     _updateDrawing()
 
+# Return or set pencolor and fillcolor
 def color(*args):
     global pen_color
     global fill_color
