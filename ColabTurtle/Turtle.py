@@ -78,6 +78,7 @@ SVG_TEMPLATE = """
       <svg width="{window_width}" height="{window_height}">  
         <rect width="100%" height="100%" style="fill:{background_color};stroke:{kolor};stroke-width:1"/>
         {lines}
+        {dots}
         {turtle}
       </svg>
     """
@@ -374,7 +375,7 @@ def circle(radius, degrees=360):
 # Draw a dot with diameter size, using color
 # If size is not given, the maximum of pensize+4 and 2*pensize is used.
 def dot(size = None, *color):
-    global svg_lines_string
+    global svg_dots_string
 
     if not color:
         if isinstance(size, (str, tuple)):
@@ -388,7 +389,7 @@ def dot(size = None, *color):
         if size is None:
             size = pen_width + max(pen_width,4)
         color = _processColor(color[0])
-    svg_lines_string += """<circle cx="{cx}" cy="{cy}" r="{radius}" stroke="" fill="{kolor}" fill-opacity="1" />""".format(radius=size/2,
+    svg_dots_string += """<circle cx="{cx}" cy="{cy}" r="{radius}" stroke="" fill="{kolor}" fill-opacity="1" />""".format(radius=size/2,
                                                                                                       cx=turtle_pos[0],
                                                                                                       cy=turtle_pos[1],
                                                                                                       kolor=color)
@@ -827,11 +828,12 @@ def saveSVG(filename, show_turtle=False):
     header += ("""<rect width="100%" height="100%" style="fill:{fillcolor};stroke:{kolor};stroke-width:1" />\n""").format(fillcolor=background_color,
                                                                                                                           kolor=border_color)
     image = svg_lines_string.replace(">",">\n")
+    dots = svg_dots_string.replace(">",">\n")
     if show_turtle:
         turtle_svg = _generateTurtleSvgDrawing() + " \n"
     else:
         turtle_svg = ""
-    output = header + image + turtle_svg + "</svg>"
+    output = header + image + dots + turtle_svg + "</svg>"
     text_file.write(output)
     text_file.close()
 
@@ -844,8 +846,9 @@ def showSVG(show_turtle=False):
     header += ("""<rect width="100%" height="100%" style="fill:{fillcolor};stroke:{kolor};stroke-width:1" />\n""").format(fillcolor=background_color,
                                                                                                                            kolor=border_color)
     image = svg_lines_string.replace(">",">\n")
+    dots = svg_dots_string.replace(">",">\n")
     turtle_svg = (_generateTurtleSvgDrawing() + " \n") if show_turtle else ""
-    output = header + image + turtle_svg + "</svg>"
+    output = header + image + dots + turtle_svg + "</svg>"
     print(output) 
 
 # Call this function at end of turtle commands when speed=0 (no animation) so that final image is drawn
