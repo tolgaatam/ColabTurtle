@@ -384,6 +384,7 @@ def dot(size = None, *color):
                                                                                                       cx=turtle_pos[0],
                                                                                                       cy=turtle_pos[1],
                                                                                                       kolor=color)
+    _updateDrawing()
         
 # makes the turtle move forward by 'units' units
 def forward(units):
