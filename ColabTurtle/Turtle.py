@@ -363,6 +363,26 @@ def circle(radius, degrees=360):
         else:
             arc(radius, degrees)
         degrees += -90        
+
+# Draw a dot with radius size, using color
+def dot(size = None, *color):
+    global 
+    if not color:
+        if instance(size, (str, tuple)):
+            color = _processColor(color)
+            size = pen_size + max(pen_size,4)
+        else:
+            color = pen_color
+            if not size:
+                size = pen_size + max(pen_size,4)
+    else:
+        if size is None:
+            size = pen_size + max(pen_size,4)
+        color = _processColor(color)
+    svg_lines_string += """<circle cx="{cx}" cy="{cy}" r="{radius"} stroke="" fill="{kolor}" />""".format(radius=size,
+                                                                                                      cx=turtle_pos[0],
+                                                                                                      cy=turtle_pos[1],
+                                                                                                      kolor=color)
         
 # makes the turtle move forward by 'units' units
 def forward(units):
