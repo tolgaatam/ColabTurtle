@@ -78,7 +78,6 @@ SVG_TEMPLATE = """
       <svg width="{window_width}" height="{window_height}">  
         <rect width="100%" height="100%" style="fill:{background_color};stroke:{kolor};stroke-width:1"/>
         {lines}
-        {dots}
         {turtle}
       </svg>
     """
@@ -375,7 +374,7 @@ def circle(radius, degrees=360):
 # Draw a dot with diameter size, using color
 # If size is not given, the maximum of pensize+4 and 2*pensize is used.
 def dot(size = None, *color):
-    global svg_dots_string
+    global svg_lines_string
 
     if not color:
         if isinstance(size, (str, tuple)):
@@ -389,7 +388,7 @@ def dot(size = None, *color):
         if size is None:
             size = pen_width + max(pen_width,4)
         color = _processColor(color[0])
-    svg_dots_string += """<circle cx="{cx}" cy="{cy}" r="{radius}" stroke="" fill="{kolor}" fill-opacity="1" />""".format(radius=size/2,
+    svg_lines_string += """<circle cx="{cx}" cy="{cy}" r="{radius}" stroke="" fill="{kolor}" fill-opacity="1" />""".format(radius=size/2,
                                                                                                       cx=turtle_pos[0],
                                                                                                       cy=turtle_pos[1],
                                                                                                       kolor=color)
