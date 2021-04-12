@@ -370,14 +370,14 @@ def dot(size = None, *color):
     if not color:
         if isinstance(size, (str, tuple)):
             color = _processColor(color)
-            size = pen_size + max(pen_size,4)
+            size = pen_width + max(pen_width,4)
         else:
             color = pen_color
             if not size:
-                size = pen_size + max(pen_size,4)
+                size = pen_width + max(pen_width,4)
     else:
         if size is None:
-            size = pen_size + max(pen_size,4)
+            size = pen_width + max(pen_width,4)
         color = _processColor(color)
     svg_lines_string += """<circle cx="{cx}" cy="{cy}" r="{radius"} stroke="" fill="{kolor}" />""".format(radius=size,
                                                                                                       cx=turtle_pos[0],
