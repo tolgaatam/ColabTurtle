@@ -367,6 +367,7 @@ def circle(radius, degrees=360):
 # Draw a dot with radius size, using color
 def dot(size = None, *color):
     global svg_lines_string
+    print(color)
     if not color:
         if isinstance(size, (str, tuple)):
             color = _processColor(color)
