@@ -76,6 +76,7 @@ SVG_TEMPLATE = """
         <rect width="100%" height="100%" style="fill:{background_color};stroke:{kolor};stroke-width:1"/>
         {lines}
         {turtle}
+        {dots}
       </svg>
     """
 TURTLE_TURTLE_SVG_TEMPLATE = """<g id="turtle" visibility="{visibility}" transform="rotate({degrees},{rotation_x},{rotation_y}) translate({turtle_x}, {turtle_y})">
@@ -129,6 +130,8 @@ def initializeTurtle(window=None, speed=None, mode=None):
     global background_color
     global is_pen_down
     global svg_lines_string
+    global svg_fill_string
+    global svg_dot_string
     global pen_width
     global turtle_shape
     global _mode
@@ -181,6 +184,7 @@ def initializeTurtle(window=None, speed=None, mode=None):
     turtle_shape = DEFAULT_TURTLE_SHAPE
     is_filling = False
     svg_fill_string = ''
+    svg_dots_string = ''
     fill_color = DEFAULT_FILL_COLOR
     
 
@@ -228,6 +232,7 @@ def _generateSvgDrawing():
                                window_height=window_size[1],
                                background_color=background_color, 
                                lines=svg_lines_string,
+                               dots=svg_dots_string,
                                turtle=_generateTurtleSvgDrawing(),
                                kolor=border_color)
 
@@ -366,7 +371,7 @@ def circle(radius, degrees=360):
 
 # Draw a dot with radius size, using color
 def dot(size = None, *color):
-    global svg_lines_string
+    global svg_dots_string
 
     if not color:
         if isinstance(size, (str, tuple)):
@@ -380,7 +385,7 @@ def dot(size = None, *color):
         if size is None:
             size = pen_width + max(pen_width,4)
         color = _processColor(color[0])
-    svg_lines_string += """<circle cx="{cx}" cy="{cy}" r="{radius}" stroke="" fill="{kolor}" fill-opacity="1" />""".format(radius=size,
+    svg_dots_string += """<circle cx="{cx}" cy="{cy}" r="{radius}" stroke="" fill="{kolor}" fill-opacity="1" />""".format(radius=size,
                                                                                                       cx=turtle_pos[0],
                                                                                                       cy=turtle_pos[1],
                                                                                                       kolor=color)
