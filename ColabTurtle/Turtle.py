@@ -357,23 +357,22 @@ def _arc(radius, degrees):
 # the circle function is broken into chunks of at most 90 degrees
 # From aronma/ColabTurtle_2 github
 # Positive radius has circle to left of turtle, negative radius has circle to right of turtle
-# This circle function does NOT use the step argument found in classical turtle.py. It is listed
-# here so programs usin
-def circle(radius, extent=360, *args):
-    degrees = extent
+# This circle function does NOT use the steps argument found in classical turtle.py. The kwargs
+# will ignore any keyword parameters using steps.
+def circle(radius, extent=360, **kwargs):
     if not isinstance(radius, (int,float)):
         raise ValueError('Circle radius should be a number')
-    if not isinstance(degrees, (int,float)):
+    if not isinstance(extent, (int,float)):
         raise ValueError('Extent should be a number')      
-    if degrees < 0:
+    if extent < 0:
         raise ValueError('Extent should be a positive number')
      
-    while degrees > 0:
-        if degrees > 90:
+    while extent > 0:
+        if extent > 90:
             _arc(radius, 90)
         else:
-            _arc(radius, degrees)
-        degrees += -90        
+            _arc(radius, extent)
+        extent += -90        
 
 # Draw a dot with diameter size, using color
 # If size is not given, the maximum of pensize+4 and 2*pensize is used.
