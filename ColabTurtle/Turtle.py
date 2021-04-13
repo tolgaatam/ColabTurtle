@@ -369,7 +369,7 @@ def circle(radius, **kwargs):
             if arg == "extent" or arg == "degrees":
                 degree = arg.values()
     
-    if not (isinstance(degrees, (int,float)):
+    if not isinstance(degrees, (int,float)):
         raise ValueError('Extent should be a number')      
     if degrees < 0:
         raise ValueError('Extent should be a positive number')
