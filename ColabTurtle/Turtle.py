@@ -334,10 +334,10 @@ def end_fill():
         svg_fill_string = ''
         _updateDrawing()
 
-# draws a circular arc
+# helper function to draw a circular arc
 # Modified from aronma/ColabTurtle_2 github
 # Positive radius has arc to left of turtle, negative radius has arc to right of turtle
-def arc(radius, degrees):
+def _arc(radius, degrees):
     global turtle_degree
     alpha = math.radians(turtle_degree)
     theta = math.radians(degrees)
@@ -357,19 +357,28 @@ def arc(radius, degrees):
 # the circle function is broken into chunks of at most 90 degrees
 # From aronma/ColabTurtle_2 github
 # Positive radius has circle to left of turtle, negative radius has circle to right of turtle
-def circle(radius, degrees=360):
-    if not (isinstance(radius, int) or isinstance(radius, float)):
+# This circle function does NOT use the step argument found in classical turtle.py
+def circle(radius, **kwargs):
+   
+    if not isinstance(radius, (int,float)):
         raise ValueError('Circle radius should be a number')
-    if not (isinstance(degrees, int) or isinstance(degrees,float)):
-        raise ValueError('Degrees should be a number')      
+    if not kwargs:
+        degrees = 360
+    else:
+        for arg in kwargs:
+            if arg == "extent" or arg == "degrees":
+                degree = arg.values()
+    
+    if not (isinstance(degrees, (int,float)):
+        raise ValueError('Extent should be a number')      
     if degrees < 0:
-        raise ValueError('Degrees should be a positive number')
+        raise ValueError('Extent should be a positive number')
      
     while degrees > 0:
         if degrees > 90:
-            arc(radius, 90)
+            _arc(radius, 90)
         else:
-            arc(radius, degrees)
+            _arc(radius, degrees)
         degrees += -90        
 
 # Draw a dot with diameter size, using color
