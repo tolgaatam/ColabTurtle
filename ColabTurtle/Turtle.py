@@ -359,7 +359,7 @@ def _arc(radius, degrees):
 # Positive radius has circle to left of turtle, negative radius has circle to right of turtle
 # This circle function does NOT use the step argument found in classical turtle.py. It is listed
 # here so programs usin
-def circle(radius, extent=360, **kwargs):
+def circle(radius, extent=360, *args):
     degrees = extent
     if not isinstance(radius, (int,float)):
         raise ValueError('Circle radius should be a number')
