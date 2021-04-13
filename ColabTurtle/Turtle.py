@@ -359,8 +359,15 @@ def _arc(radius, degrees):
 # Positive radius has circle to left of turtle, negative radius has circle to right of turtle
 # This circle function does NOT use the step argument found in classical turtle.py. It is listed
 # here so programs usin
-def circle(radius, extent=360, steps="ignored"):
-    degrees = extent
+def circle(radius, **kwargs):
+    if not kwargs:
+         degrees = 360
+    elif 'extent' in kwargs:
+        degrees = kwargs['extent']
+    elif 'degrees' in kwargs:
+        degrees = kwargs['degrees']
+    else:
+        degrees = 360
     if not isinstance(radius, (int,float)):
         raise ValueError('Circle radius should be a number')
     if not isinstance(degrees, (int,float)):
@@ -823,7 +830,9 @@ def window_height():
 def saveSVG(filename, show_turtle=False):
     if drawing_window == None:
         raise AttributeError("Display has not been initialized yet. Call initializeTurtle() before using.")
-    if filename[-4:] != ".svg":
+    if not isinstance(filename, str):
+        raise ValueError("Filename must be a string")
+    if not filename.endswith(".svg"):
         filename += ".svg"
     text_file = open(filename, "w")
     header = ("""<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg">\n""").format(w=window_size[0],
