@@ -357,8 +357,9 @@ def _arc(radius, degrees):
 # the circle function is broken into chunks of at most 90 degrees
 # From aronma/ColabTurtle_2 github
 # Positive radius has circle to left of turtle, negative radius has circle to right of turtle
-# This circle function does NOT use the step argument found in classical turtle.py
-def circle(radius, extent=360):
+# This circle function does NOT use the step argument found in classical turtle.py. It is listed
+# here so programs usin
+def circle(radius, extent=360, steps="ignored"):
     degrees = extent
     if not isinstance(radius, (int,float)):
         raise ValueError('Circle radius should be a number')
