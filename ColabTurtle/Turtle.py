@@ -36,8 +36,8 @@ import re
 # Modified the color function to set both the pencolor as well as the fillcolor, just as in classic turtle.py package.
 # Added dot function to draw a dot with given diameter and color.
 # Original ColabTurtle defaults can be set by calling OldDefaults() after importing the ColabTurtle package but before initializeTurtle.
-#   This sets default background to black, default pen color to white, default pen width to 4, and default shape to Turtle.
-#   It also sets the mode to "svg".
+#   This sets default background to black, default pen color to white, default pen width to 4, default shape to Turtle, and
+#   default window size to 800x500. It also sets the mode to "svg".
 
 # Module for drawing classic Turtle figures on Google Colab notebooks.
 # It uses html capabilites of IPython library to draw svg shapes inline.
@@ -910,11 +910,13 @@ def OldDefaults():
     global DEFAULT_PEN_WIDTH
     global DEFAULT_MODE
     global DEFAULT_TURTLE_SHAPE
+    global DEFAULT_WINDOW_SIZE
     
     DEFAULT_BACKGROUND_COLOR = "black"
     DEFAULT_PEN_COLOR = "white"
     DEFAULT_PEN_WIDTH = 4
     DEFAULT_MODE = 'svg'
     DEFAULT_TURTLE_SHAPE = "turtle"
+    DEFAULT_WINDOW_SIZE = (800, 500)
     
   
