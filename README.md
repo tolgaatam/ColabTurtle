@@ -7,7 +7,7 @@ Create an empty code cell and type:
 
     !pip3 install ColabTurtle
 
-Run the code cell. Google Colab will install the library.
+Run the code cell. Google Colab will install the library. [Click Here](https://www.scaler.com/topics/what-is-google-colab/) to know more about Google Colab
 
 
 Usage
