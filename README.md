@@ -27,7 +27,7 @@ The following code illustrates some usages of the library. For all functions ava
 
 ```
 from ColabTurtle.Turtle import *
-initializeTurtle()
+initializeTurtle(initial_speed=4, initial_window_size=(800,500))
 
 color('mediumblue')
 penup()
