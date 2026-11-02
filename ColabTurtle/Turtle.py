@@ -436,6 +436,7 @@ down = pendown  # alias
 
 
 def isdown():
+    """Returns whether the pen is currently down."""
     return is_pen_down
 
 
@@ -474,6 +475,9 @@ def sety(y):
 
 
 def home():
+    """Takes the turtle to the beginning position and angle.
+    The turtle will continue drawing during this operation if the pen is down.
+    """
     global turtle_degree
 
     turtle_degree = DEFAULT_TURTLE_DEGREE
@@ -561,6 +565,7 @@ ht = hideturtle  # alias
 
 
 def isvisible():
+    """Returns whether turtle is currently visible."""
     return is_turtle_visible
 
 
@@ -701,6 +706,9 @@ def clear():
 
 
 def write(obj, **kwargs):
+    """Writes the string equivalent of any value to the screen.
+    'align' and 'font' named parameters can be given as arguments optionally.
+    """
     global svg_lines_string
     global turtle_pos
     text = str(obj)
@@ -756,6 +764,9 @@ def write(obj, **kwargs):
 
 
 def shape(shape=None):
+    """Takes a shape name and transforms the main character's look.
+    If no argument is supplied, this function returns the name of the current shape.
+    """
     global turtle_shape
     if shape is None:
         return turtle_shape
