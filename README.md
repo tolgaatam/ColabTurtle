@@ -1,6 +1,10 @@
 Turtle for Google Colab notebooks
 ===================
 
+Module for drawing classic Turtle figures on Google Colab notebooks (and other IPython supported environments like Jupyter Lab)
+It uses HTML capabilities of IPython library to draw svg shapes inline.
+Looks of the figures are inspired from [Blockly Games / Turtle](https://blockly-games.appspot.com/turtle).
+
 Installation for Google Colab:
 ----
 Create an empty code cell and type:
@@ -241,6 +245,11 @@ Returns the turtle's distance to a given point x,y. The coordinates can be given
 `window_width()` -> Return the width of the turtle window.
 
 `window_height()` -> Return the height of the turtle window.
+
+Release History
+----
+- v2.1.0: Updated at 15th March 2021 by Tolga Atam
+- Initial version: Created at 23rd October 2018 by Tolga Atam
 
 <br/>
 

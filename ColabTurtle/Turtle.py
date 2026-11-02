@@ -3,15 +3,6 @@ import time
 import math
 import re
 
-# Created at: 23rd October 2018
-#         by: Tolga Atam
-# v2.1.0 Updated at: 15th March 2021
-#         by: Tolga Atam
-
-# Module for drawing classic Turtle figures on Google Colab notebooks.
-# It uses html capabilites of IPython library to draw svg shapes inline.
-# Looks of the figures are inspired from Blockly Games / Turtle (blockly-games.appspot.com/turtle)
-
 DEFAULT_WINDOW_SIZE = (800, 500)
 DEFAULT_SPEED = 4
 DEFAULT_TURTLE_VISIBILITY = True
