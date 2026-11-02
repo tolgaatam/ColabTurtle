@@ -210,8 +210,8 @@ SPEED_TO_SEC_MAP = {
 }
 
 
-# helper function that maps [1,13] speed values to ms delays
 def _speedToSec(speed):
+    """Helper function that maps [1,13] speed values to ms delays."""
     return SPEED_TO_SEC_MAP[speed]
 
 
@@ -231,10 +231,10 @@ turtle_shape = DEFAULT_TURTLE_SHAPE
 drawing_window = None
 
 
-# construct the display for turtle
 def initializeTurtle(
     initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE
 ):
+    """Construct the display for turtle."""
     global window_size
     global drawing_window
     global turtle_speed
@@ -275,8 +275,8 @@ def initializeTurtle(
     drawing_window = display(HTML(_generateSvgDrawing()), display_id=True)
 
 
-# helper function for generating svg string of the turtle
 def _generateTurtleSvgDrawing():
+    """Helper function for generating svg string of the turtle."""
     if is_turtle_visible:
         vis = "visible"
     else:
@@ -307,8 +307,8 @@ def _generateTurtleSvgDrawing():
     )
 
 
-# helper function for generating the whole svg string
 def _generateSvgDrawing():
+    """Helper function for generating the whole svg string."""
     return SVG_TEMPLATE.format(
         window_width=window_size[0],
         window_height=window_size[1],
@@ -318,8 +318,8 @@ def _generateSvgDrawing():
     )
 
 
-# helper functions for updating the screen using the latest positions/angles/lines etc.
 def _updateDrawing():
+    """Helper functions for updating the screen using the latest positions/angles/lines etc."""
     if drawing_window is None:
         raise AttributeError(
             "Display has not been initialized yet. Call initializeTurtle() before using."
@@ -328,8 +328,8 @@ def _updateDrawing():
     drawing_window.update(HTML(_generateSvgDrawing()))
 
 
-# helper function for managing any kind of move to a given 'new_pos' and draw lines if pen is down
 def _moveToNewPosition(new_pos):
+    """Helper function for managing any kind of move to a given 'new_pos' and draw lines if pen is down."""
     global turtle_pos
     global svg_lines_string
 
@@ -351,8 +351,8 @@ def _moveToNewPosition(new_pos):
     _updateDrawing()
 
 
-# makes the turtle move forward by 'units' units
 def forward(units):
+    """Makes the turtle move forward by 'units' units."""
     if not isinstance(units, (int, float)):
         raise ValueError("units must be a number.")
 
@@ -368,8 +368,8 @@ def forward(units):
 fd = forward  # alias
 
 
-# makes the turtle move backward by 'units' units
 def backward(units):
+    """Makes the turtle move backward by 'units' units."""
     if not isinstance(units, (int, float)):
         raise ValueError("units must be a number.")
     forward(-1 * units)
@@ -379,8 +379,8 @@ bk = backward  # alias
 back = backward  # alias
 
 
-# makes the turtle move right by 'degrees' degrees (NOT radians)
 def right(degrees):
+    """Makes the turtle move right by 'degrees' degrees (NOT radians)."""
     global turtle_degree
 
     if not isinstance(degrees, (int, float)):
@@ -393,8 +393,8 @@ def right(degrees):
 rt = right  # alias
 
 
-# makes the turtle face a given direction
 def face(degrees):
+    """Makes the turtle face a given direction."""
     global turtle_degree
 
     if not isinstance(degrees, (int, float)):
@@ -408,8 +408,8 @@ setheading = face  # alias
 seth = face  # alias
 
 
-# makes the turtle move right by 'degrees' degrees (NOT radians, this library does not support radians right now)
 def left(degrees):
+    """Makes the turtle move left by 'degrees' degrees (NOT radians, this library does not support radians right now)."""
     if not isinstance(degrees, (int, float)):
         raise ValueError("degrees must be a number.")
     right(-1 * degrees)
@@ -418,8 +418,8 @@ def left(degrees):
 lt = left
 
 
-# raises the pen such that following turtle moves will not cause any drawings
 def penup():
+    """Raises the pen such that following turtle moves will not cause any drawings."""
     global is_pen_down
 
     is_pen_down = False
@@ -431,8 +431,8 @@ pu = penup  # alias
 up = penup  # alias
 
 
-# lowers the pen such that following turtle moves will now cause drawings
 def pendown():
+    """Lowers the pen such that following turtle moves will now cause drawings."""
     global is_pen_down
 
     is_pen_down = True
@@ -448,9 +448,10 @@ def isdown():
     return is_pen_down
 
 
-# update the speed of the moves, [1,13]
-# if argument is omitted, it returns the speed.
 def speed(speed=None):
+    """Update the speed of the moves, [1,13].
+    If argument is omitted, it returns the speed.
+    """
     global turtle_speed
 
     if speed is None:
@@ -463,8 +464,8 @@ def speed(speed=None):
     # _updateDrawing()
 
 
-# move the turtle to a designated 'x' x-coordinate, y-coordinate stays the same
 def setx(x):
+    """Move the turtle to a designated 'x' x-coordinate, y-coordinate stays the same."""
     if not isinstance(x, (int, float)):
         raise ValueError("new x position must be a number.")
     if x < 0:
@@ -472,8 +473,8 @@ def setx(x):
     _moveToNewPosition((x, turtle_pos[1]))
 
 
-# move the turtle to a designated 'y' y-coordinate, x-coordinate stays the same
 def sety(y):
+    """Move the turtle to a designated 'y' y-coordinate, x-coordinate stays the same."""
     if not isinstance(y, (int, float)):
         raise ValueError("new y position must be a number.")
     if y < 0:
@@ -490,40 +491,40 @@ def home():
     )  # this will handle updating the drawing.
 
 
-# retrieve the turtle's currrent 'x' x-coordinate
 def getx():
+    """Retrieve the turtle's current 'x' x-coordinate."""
     return turtle_pos[0]
 
 
 xcor = getx  # alias
 
 
-# retrieve the turtle's currrent 'y' y-coordinate
 def gety():
+    """Retrieve the turtle's current 'y' y-coordinate."""
     return turtle_pos[1]
 
 
 ycor = gety  # alias
 
 
-# retrieve the turtle's current position as a (x,y) tuple vector
 def position():
+    """Retrieve the turtle's current position as a (x,y) tuple vector."""
     return turtle_pos
 
 
 pos = position  # alias
 
 
-# retrieve the turtle's current angle
 def getheading():
+    """Retrieve the turtle's current angle."""
     return turtle_degree
 
 
 heading = getheading  # alias
 
 
-# move the turtle to a designated 'x'-'y' coordinate
 def goto(x, y=None):
+    """Move the turtle to a designated 'x'-'y' coordinate."""
     if isinstance(x, tuple) and y is None:
         if len(x) != 2:
             raise ValueError("the tuple argument must be of length 2.")
@@ -546,8 +547,8 @@ setpos = goto  # alias
 setposition = goto  # alias
 
 
-# switch turtle visibility to ON
 def showturtle():
+    """Switch turtle visibility to ON."""
     global is_turtle_visible
 
     is_turtle_visible = True
@@ -557,8 +558,8 @@ def showturtle():
 st = showturtle  # alias
 
 
-# switch turtle visibility to OFF
 def hideturtle():
+    """Switch turtle visibility to OFF."""
     global is_turtle_visible
 
     is_turtle_visible = False
@@ -616,9 +617,10 @@ def _processColor(color):
         raise ValueError("the first parameter must be a color string or a tuple")
 
 
-# change the background color of the drawing area
-# if no params, return the current background color
 def bgcolor(color=None, c2=None, c3=None):
+    """Change the background color of the drawing area.
+    If no params, return the current background color.
+    """
     global background_color
 
     if color is None:
@@ -634,9 +636,10 @@ def bgcolor(color=None, c2=None, c3=None):
     _updateDrawing()
 
 
-# change the color of the pen
-# if no params, return the current pen color
 def color(color=None, c2=None, c3=None):
+    """Change the color of the pen.
+    If no params, return the current pen color.
+    """
     global pen_color
 
     if color is None:
@@ -655,9 +658,10 @@ def color(color=None, c2=None, c3=None):
 pencolor = color
 
 
-# change the width of the lines drawn by the turtle, in pixels
-# if the function is called without arguments, it returns the current width
 def width(width=None):
+    """Change the width of the lines drawn by the turtle, in pixels.
+    If the function is called without arguments, it returns the current width.
+    """
     global pen_width
 
     if width is None:
@@ -676,8 +680,8 @@ def width(width=None):
 pensize = width
 
 
-# calculate the distance between the turtle and a given point
 def distance(x, y=None):
+    """Calculate the distance between the turtle and a given point."""
     if isinstance(x, tuple) and y is None:
         if len(x) != 2:
             raise ValueError("the tuple argument must be of length 2.")
@@ -697,8 +701,8 @@ def distance(x, y=None):
     return round(math.sqrt((turtle_pos[0] - x) ** 2 + (turtle_pos[1] - y) ** 2), 4)
 
 
-# clear any text or drawing on the screen
 def clear():
+    """Clear any text or drawing on the screen."""
     global svg_lines_string
 
     svg_lines_string = ""
@@ -773,11 +777,11 @@ def shape(shape=None):
     _updateDrawing()
 
 
-# return turtle window width
 def window_width():
+    """Return turtle window width."""
     return window_size[0]
 
 
-# return turtle window height
 def window_height():
+    """Return turtle window height."""
     return window_size[1]
