@@ -108,3 +108,6 @@ venv.bak/
 
 # credential file
 .pypirc
+
+# ruff cache
+.ruff_cache__/
