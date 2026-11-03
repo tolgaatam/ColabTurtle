@@ -121,7 +121,7 @@ backward(40)
 
 This code ends up with the following drawing:
 
-![Drawing that reads "Tolga"](sample_image.jpg?raw=true "Example Code's Final Look")
+![Drawing that reads "Tolga"](https://raw.githubusercontent.com/tolgaatam/ColabTurtle/master/sample_image.jpg "Example Code's Final Look")
 
 
 API
@@ -248,8 +248,10 @@ Returns the turtle's distance to a given point x,y. The coordinates can be given
 
 Release History
 ----
-- v2.1.0: Updated at 15th March 2021 by Tolga Atam
-- Initial version: Created at 23rd October 2018 by Tolga Atam
+- **v2.2.0** (3rd November 2026): Docstrings and type hints for all functions (the package ships a `py.typed` marker), so Python 3.10+ is now required. Fixes `distance()` and the invalid escape sequence warning on Python 3.12+, and validates `rgb(...)` color strings more strictly. Packaging moved to `pyproject.toml`.
+- **v2.1.0** (19th March 2021): Better compatibility with the original turtle API: aliases like `fd`, `rt` and `pu`, new functions such as `face()`, `home()`, `getx()`/`gety()`, `distance()`, `write()`, `shape()` and `window_width()`/`window_height()`, all 140 HTML color names plus hex and rgb colors, speed range extended to [1,13], and moves by floating point units.
+- **v2.0.0** (7th November 2018): Switched from a class-based API to module-level functions for simpler usage, like the procedural interface of Python's built-in turtle module. `initializeTurtle()` replaces creating a `ColabTurtle` object.
+- **v1.0.0** (7th November 2018): Initial release by Tolga Atam.
 
 <br/>
 
