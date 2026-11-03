@@ -594,9 +594,10 @@ def _validateColorString(color: str) -> bool:
         return True
     if re.search("^#(?:[0-9a-fA-F]{3}){1,2}$", color):  # 3 or 6 digit hex color code
         return True
-    if re.search(
-        "rgb\(\s*(?:(?:\d{1,2}|1\d\d|2(?:[0-4]\d|5[0-5]))\s*,?){3}\)$", color
-    ):  # rgb color code
+    v = r"(?:\d{1,2}|1\d\d|2[0-4]\d|25[0-5])"  # an integer in [0,255]
+    if re.fullmatch(
+        rf"rgb\(\s*(?:{v}\s*,\s*{v}\s*,\s*{v}|{v}\s+{v}\s+{v})\s*\)", color
+    ):  # rgb color code, comma or space separated
         return True
     return False
 
