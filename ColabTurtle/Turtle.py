@@ -1,7 +1,12 @@
-from IPython.display import display, HTML
+from IPython.display import display, DisplayHandle, HTML
 import time
 import math
 import re
+from typing import Literal, overload
+
+TurtleShape = Literal["turtle", "circle"]
+TextAlign = Literal["left", "center", "right"]
+FontType = Literal["bold", "italic", "underline", "normal"]
 
 DEFAULT_WINDOW_SIZE = (800, 500)
 DEFAULT_SPEED = 4
@@ -164,8 +169,8 @@ VALID_COLORS = (
     "white",
 )
 VALID_COLORS_SET = set(VALID_COLORS)
-DEFAULT_TURTLE_SHAPE = "turtle"
-VALID_TURTLE_SHAPES = ("turtle", "circle")
+DEFAULT_TURTLE_SHAPE: TurtleShape = "turtle"
+VALID_TURTLE_SHAPES: tuple[TurtleShape, ...] = ("turtle", "circle")
 SVG_TEMPLATE = """
       <svg width="{window_width}" height="{window_height}">
         <rect width="100%" height="100%" fill="{background_color}"/>
@@ -201,7 +206,7 @@ SPEED_TO_SEC_MAP = {
 }
 
 
-def _speedToSec(speed):
+def _speedToSec(speed: int) -> float:
     """Helper function that maps [1,13] speed values to ms delays."""
     return SPEED_TO_SEC_MAP[speed]
 
@@ -210,21 +215,25 @@ turtle_speed = DEFAULT_SPEED
 
 is_turtle_visible = DEFAULT_TURTLE_VISIBILITY
 pen_color = DEFAULT_PEN_COLOR
-window_size = DEFAULT_WINDOW_SIZE
-turtle_pos = (DEFAULT_WINDOW_SIZE[0] // 2, DEFAULT_WINDOW_SIZE[1] // 2)
-turtle_degree = DEFAULT_TURTLE_DEGREE
+window_size: tuple[int, int] = DEFAULT_WINDOW_SIZE
+turtle_pos: tuple[int | float, int | float] = (
+    DEFAULT_WINDOW_SIZE[0] // 2,
+    DEFAULT_WINDOW_SIZE[1] // 2,
+)
+turtle_degree: int | float = DEFAULT_TURTLE_DEGREE
 background_color = DEFAULT_BACKGROUND_COLOR
 is_pen_down = DEFAULT_IS_PEN_DOWN
 svg_lines_string = DEFAULT_SVG_LINES_STRING
 pen_width = DEFAULT_PEN_WIDTH
-turtle_shape = DEFAULT_TURTLE_SHAPE
+turtle_shape: TurtleShape = DEFAULT_TURTLE_SHAPE
 
-drawing_window = None
+drawing_window: DisplayHandle | None = None
 
 
 def initializeTurtle(
-    initial_speed=DEFAULT_SPEED, initial_window_size=DEFAULT_WINDOW_SIZE
-):
+    initial_speed: int = DEFAULT_SPEED,
+    initial_window_size: tuple[int, int] = DEFAULT_WINDOW_SIZE,
+) -> None:
     """Construct the display for turtle."""
     global window_size
     global drawing_window
@@ -266,7 +275,7 @@ def initializeTurtle(
     drawing_window = display(HTML(_generateSvgDrawing()), display_id=True)
 
 
-def _generateTurtleSvgDrawing():
+def _generateTurtleSvgDrawing() -> str:
     """Helper function for generating svg string of the turtle."""
     if is_turtle_visible:
         vis = "visible"
@@ -298,7 +307,7 @@ def _generateTurtleSvgDrawing():
     )
 
 
-def _generateSvgDrawing():
+def _generateSvgDrawing() -> str:
     """Helper function for generating the whole svg string."""
     return SVG_TEMPLATE.format(
         window_width=window_size[0],
@@ -309,7 +318,7 @@ def _generateSvgDrawing():
     )
 
 
-def _updateDrawing():
+def _updateDrawing() -> None:
     """Helper functions for updating the screen using the latest positions/angles/lines etc."""
     if drawing_window is None:
         raise AttributeError(
@@ -319,7 +328,7 @@ def _updateDrawing():
     drawing_window.update(HTML(_generateSvgDrawing()))
 
 
-def _moveToNewPosition(new_pos):
+def _moveToNewPosition(new_pos: tuple[int | float, int | float]) -> None:
     """Helper function for managing any kind of move to a given 'new_pos' and draw lines if pen is down."""
     global turtle_pos
     global svg_lines_string
@@ -342,7 +351,7 @@ def _moveToNewPosition(new_pos):
     _updateDrawing()
 
 
-def forward(units):
+def forward(units: int | float) -> None:
     """Makes the turtle move forward by 'units' units."""
     if not isinstance(units, (int, float)):
         raise ValueError("units must be a number.")
@@ -359,7 +368,7 @@ def forward(units):
 fd = forward  # alias
 
 
-def backward(units):
+def backward(units: int | float) -> None:
     """Makes the turtle move backward by 'units' units."""
     if not isinstance(units, (int, float)):
         raise ValueError("units must be a number.")
@@ -370,7 +379,7 @@ bk = backward  # alias
 back = backward  # alias
 
 
-def right(degrees):
+def right(degrees: int | float) -> None:
     """Makes the turtle move right by 'degrees' degrees (NOT radians)."""
     global turtle_degree
 
@@ -384,7 +393,7 @@ def right(degrees):
 rt = right  # alias
 
 
-def face(degrees):
+def face(degrees: int | float) -> None:
     """Makes the turtle face a given direction."""
     global turtle_degree
 
@@ -399,7 +408,7 @@ setheading = face  # alias
 seth = face  # alias
 
 
-def left(degrees):
+def left(degrees: int | float) -> None:
     """Makes the turtle move left by 'degrees' degrees (NOT radians, this library does not support radians right now)."""
     if not isinstance(degrees, (int, float)):
         raise ValueError("degrees must be a number.")
@@ -409,7 +418,7 @@ def left(degrees):
 lt = left
 
 
-def penup():
+def penup() -> None:
     """Raises the pen such that following turtle moves will not cause any drawings."""
     global is_pen_down
 
@@ -422,7 +431,7 @@ pu = penup  # alias
 up = penup  # alias
 
 
-def pendown():
+def pendown() -> None:
     """Lowers the pen such that following turtle moves will now cause drawings."""
     global is_pen_down
 
@@ -435,12 +444,16 @@ pd = pendown  # alias
 down = pendown  # alias
 
 
-def isdown():
+def isdown() -> bool:
     """Returns whether the pen is currently down."""
     return is_pen_down
 
 
-def speed(speed=None):
+@overload
+def speed(speed: None = None) -> int: ...
+@overload
+def speed(speed: int) -> None: ...
+def speed(speed: int | None = None) -> int | None:
     """Update the speed of the moves, [1,13].
     If argument is omitted, it returns the speed.
     """
@@ -454,9 +467,10 @@ def speed(speed=None):
     turtle_speed = speed
     # TODO: decide if we should put the timout after changing the speed
     # _updateDrawing()
+    return None
 
 
-def setx(x):
+def setx(x: int | float) -> None:
     """Move the turtle to a designated 'x' x-coordinate, y-coordinate stays the same."""
     if not isinstance(x, (int, float)):
         raise ValueError("new x position must be a number.")
@@ -465,7 +479,7 @@ def setx(x):
     _moveToNewPosition((x, turtle_pos[1]))
 
 
-def sety(y):
+def sety(y: int | float) -> None:
     """Move the turtle to a designated 'y' y-coordinate, x-coordinate stays the same."""
     if not isinstance(y, (int, float)):
         raise ValueError("new y position must be a number.")
@@ -474,7 +488,7 @@ def sety(y):
     _moveToNewPosition((turtle_pos[0], y))
 
 
-def home():
+def home() -> None:
     """Takes the turtle to the beginning position and angle.
     The turtle will continue drawing during this operation if the pen is down.
     """
@@ -486,7 +500,7 @@ def home():
     )  # this will handle updating the drawing.
 
 
-def getx():
+def getx() -> int | float:
     """Retrieve the turtle's current 'x' x-coordinate."""
     return turtle_pos[0]
 
@@ -494,7 +508,7 @@ def getx():
 xcor = getx  # alias
 
 
-def gety():
+def gety() -> int | float:
     """Retrieve the turtle's current 'y' y-coordinate."""
     return turtle_pos[1]
 
@@ -502,7 +516,7 @@ def gety():
 ycor = gety  # alias
 
 
-def position():
+def position() -> tuple[int | float, int | float]:
     """Retrieve the turtle's current position as a (x,y) tuple vector."""
     return turtle_pos
 
@@ -510,7 +524,7 @@ def position():
 pos = position  # alias
 
 
-def getheading():
+def getheading() -> int | float:
     """Retrieve the turtle's current angle."""
     return turtle_degree
 
@@ -518,7 +532,13 @@ def getheading():
 heading = getheading  # alias
 
 
-def goto(x, y=None):
+@overload
+def goto(x: tuple[int | float, int | float]) -> None: ...
+@overload
+def goto(x: int | float, y: int | float) -> None: ...
+def goto(
+    x: int | float | tuple[int | float, int | float], y: int | float | None = None
+) -> None:
     """Move the turtle to a designated 'x'-'y' coordinate."""
     if isinstance(x, tuple) and y is None:
         if len(x) != 2:
@@ -542,7 +562,7 @@ setpos = goto  # alias
 setposition = goto  # alias
 
 
-def showturtle():
+def showturtle() -> None:
     """Switch turtle visibility to ON."""
     global is_turtle_visible
 
@@ -553,7 +573,7 @@ def showturtle():
 st = showturtle  # alias
 
 
-def hideturtle():
+def hideturtle() -> None:
     """Switch turtle visibility to OFF."""
     global is_turtle_visible
 
@@ -564,12 +584,12 @@ def hideturtle():
 ht = hideturtle  # alias
 
 
-def isvisible():
+def isvisible() -> bool:
     """Returns whether turtle is currently visible."""
     return is_turtle_visible
 
 
-def _validateColorString(color):
+def _validateColorString(color: str) -> bool:
     if color in VALID_COLORS_SET:  # 140 predefined html color names
         return True
     if re.search("^#(?:[0-9a-fA-F]{3}){1,2}$", color):  # 3 or 6 digit hex color code
@@ -581,7 +601,7 @@ def _validateColorString(color):
     return False
 
 
-def _validateColorTuple(color):
+def _validateColorTuple(color: tuple[object, ...]) -> bool:
     if len(color) != 3:
         return False
     if (
@@ -595,7 +615,7 @@ def _validateColorTuple(color):
     return True
 
 
-def _processColor(color):
+def _processColor(color: object) -> str:
     if isinstance(color, str):
         color = color.lower()
         if not _validateColorString(color):
@@ -613,7 +633,19 @@ def _processColor(color):
         raise ValueError("the first parameter must be a color string or a tuple")
 
 
-def bgcolor(color=None, c2=None, c3=None):
+@overload
+def bgcolor(color: None = None, c2: None = None, c3: None = None) -> str: ...
+@overload
+def bgcolor(
+    color: str | tuple[int, int, int], c2: None = None, c3: None = None
+) -> None: ...
+@overload
+def bgcolor(color: int, c2: int, c3: int) -> None: ...
+def bgcolor(
+    color: str | tuple[int, int, int] | int | None = None,
+    c2: int | None = None,
+    c3: int | None = None,
+) -> str | None:
     """Change the background color of the drawing area.
     If no params, return the current background color.
     """
@@ -626,13 +658,26 @@ def bgcolor(color=None, c2=None, c3=None):
             raise ValueError(
                 "if the second argument is set, the third arguments must be set as well to complete the rgb set."
             )
-        color = (color, c2, c3)
-
-    background_color = _processColor(color)
+        background_color = _processColor((color, c2, c3))
+    else:
+        background_color = _processColor(color)
     _updateDrawing()
+    return None
 
 
-def color(color=None, c2=None, c3=None):
+@overload
+def color(color: None = None, c2: None = None, c3: None = None) -> str: ...
+@overload
+def color(
+    color: str | tuple[int, int, int], c2: None = None, c3: None = None
+) -> None: ...
+@overload
+def color(color: int, c2: int, c3: int) -> None: ...
+def color(
+    color: str | tuple[int, int, int] | int | None = None,
+    c2: int | None = None,
+    c3: int | None = None,
+) -> str | None:
     """Change the color of the pen.
     If no params, return the current pen color.
     """
@@ -645,16 +690,21 @@ def color(color=None, c2=None, c3=None):
             raise ValueError(
                 "if the second argument is set, the third arguments must be set as well to complete the rgb set."
             )
-        color = (color, c2, c3)
-
-    pen_color = _processColor(color)
+        pen_color = _processColor((color, c2, c3))
+    else:
+        pen_color = _processColor(color)
     _updateDrawing()
+    return None
 
 
 pencolor = color
 
 
-def width(width=None):
+@overload
+def width(width: None = None) -> int: ...
+@overload
+def width(width: int) -> None: ...
+def width(width: int | None = None) -> int | None:
     """Change the width of the lines drawn by the turtle, in pixels.
     If the function is called without arguments, it returns the current width.
     """
@@ -671,12 +721,19 @@ def width(width=None):
         pen_width = width
         # TODO: decide if we should put the timout after changing the pen_width
         # _updateDrawing()
+        return None
 
 
 pensize = width
 
 
-def distance(x, y=None):
+@overload
+def distance(x: tuple[int | float, int | float]) -> float: ...
+@overload
+def distance(x: int | float, y: int | float) -> float: ...
+def distance(
+    x: int | float | tuple[int | float, int | float], y: int | float | None = None
+) -> float:
     """Calculate the distance between the turtle and a given point."""
     if isinstance(x, tuple) and y is None:
         if len(x) != 2:
@@ -697,7 +754,7 @@ def distance(x, y=None):
     return round(math.sqrt((turtle_pos[0] - x) ** 2 + (turtle_pos[1] - y) ** 2), 4)
 
 
-def clear():
+def clear() -> None:
     """Clear any text or drawing on the screen."""
     global svg_lines_string
 
@@ -705,40 +762,38 @@ def clear():
     _updateDrawing()
 
 
-def write(obj, **kwargs):
+def write(
+    obj: object,
+    *,
+    align: TextAlign = "left",
+    font: tuple[int, str, FontType] = (12, "Arial", "normal"),
+    **kwargs: object,
+) -> None:
     """Writes the string equivalent of any value to the screen.
     'align' and 'font' named parameters can be given as arguments optionally.
     """
     global svg_lines_string
     global turtle_pos
     text = str(obj)
-    font_size = 12
-    font_family = "Arial"
-    font_type = "normal"
-    align = "start"
+    if align == "center":
+        text_anchor = "middle"
+    elif align == "right":
+        text_anchor = "end"
+    else:  # "left", and invalid values are silently treated as "left"
+        text_anchor = "start"
 
-    if "align" in kwargs and kwargs["align"] in ("left", "center", "right"):
-        if kwargs["align"] == "left":
-            align = "start"
-        elif kwargs["align"] == "center":
-            align = "middle"
-        else:
-            align = "end"
-
-    if "font" in kwargs:
-        font = kwargs["font"]
-        if (
-            len(font) != 3
-            or not isinstance(font[0], int)
-            or not isinstance(font[1], str)
-            or font[2] not in {"bold", "italic", "underline", "normal"}
-        ):
-            raise ValueError(
-                "font parameter must be a triplet consisting of font size (int), font family (str) and font type. font type can be one of {bold, italic, underline, normal}"
-            )
-        font_size = font[0]
-        font_family = font[1]
-        font_type = font[2]
+    if (
+        len(font) != 3
+        or not isinstance(font[0], int)
+        or not isinstance(font[1], str)
+        or font[2] not in {"bold", "italic", "underline", "normal"}
+    ):
+        raise ValueError(
+            "font parameter must be a triplet consisting of font size (int), font family (str) and font type. font type can be one of {bold, italic, underline, normal}"
+        )
+    font_size = font[0]
+    font_family = font[1]
+    font_type = font[2]
 
     style_string = ""
     style_string += "font-size:" + str(font_size) + "px;"
@@ -756,14 +811,18 @@ def write(obj, **kwargs):
         y=turtle_pos[1],
         text=text,
         fill_color=pen_color,
-        align=align,
+        align=text_anchor,
         style=style_string,
     )
 
     _updateDrawing()
 
 
-def shape(shape=None):
+@overload
+def shape(shape: None = None) -> TurtleShape: ...
+@overload
+def shape(shape: TurtleShape) -> None: ...
+def shape(shape: TurtleShape | None = None) -> TurtleShape | None:
     """Takes a shape name and transforms the main character's look.
     If no argument is supplied, this function returns the name of the current shape.
     """
@@ -777,13 +836,14 @@ def shape(shape=None):
 
     turtle_shape = shape
     _updateDrawing()
+    return None
 
 
-def window_width():
+def window_width() -> int:
     """Return turtle window width."""
     return window_size[0]
 
 
-def window_height():
+def window_height() -> int:
     """Return turtle window height."""
     return window_size[1]
